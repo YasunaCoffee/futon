@@ -1,5 +1,7 @@
 # futon
 
+[English](README.en.md) | 日本語
+
 <p align="center"><img src="docs/images/hero.png" alt="futon:AIフレンドリーな個人サイトエンジン。中身は md と画像だけ" width="820"></p>
 
 **AIフレンドリーな個人サイトエンジン。**
@@ -47,7 +49,7 @@ npx futon add <棚> …     # 1話足す
 
 <p align="center"><img src="docs/images/kisekae.png" alt="同じ4コマ(ブッダめっちゃロジカル「石は沈み油は浮く」)を、plain・heisei・techou・kaomoji・vhs・keitai・mado・receipt の8着で見比べる" width="820"></p>
 
-futon には2着ついてくる。`site.json` に名前を1行書くだけで着られる。
+futon には8着ついてくる。`site.json` に名前を1行書くだけで着られる。
 
 | テーマ | 見た目 |
 |---|---|
@@ -80,16 +82,16 @@ futon には2着ついてくる。`site.json` に名前を1行書くだけで着
 | `<棚>/*.md` | 話。`date` が未来なら、その日のビルドまで出ない(予約配信)。`hidden: true` で伏せる。`cast` で「この話に出てくる人」を1話だけ変えられる |
 | `tech/*.md` | 技術記事(あれば) |
 | `about.json` | 運営についてのページ |
+| `guidelines/*.md` | ページに埋め込む文章(二次創作ガイドラインなど) |
+| `public/` | 画像・音声・favicon |
+| `pages/<名前>.astro` | 追加ページ。`site.json` の `extraPages: { "<URL>": "<名前>" }` に書いたものだけ出る。外枠は `@theme/Base.astro`、部品は `@futon/…` で読む |
+| `sources/*.mjs` | 取り込み口。置くだけで `futon sync` が使う(下) |
 
 キャラクターと本と話は、`slug` でつながる。
 
 - `site.json` の `characters[]` に `slug`(と、あれば顔のアイコン `face`)を書く
 - 本は `books[].characters: ["slug", …]` で、本に顔、キャラに「でてくる本」が出る
 - 棚は `shelves.yaml` の `cast: [slug, …]` で、話のページに「この話に出てくる人」が出る
-| `guidelines/*.md` | ページに埋め込む文章(二次創作ガイドラインなど) |
-| `public/` | 画像・音声・favicon |
-| `pages/<名前>.astro` | 追加ページ。`site.json` の `extraPages: { "<URL>": "<名前>" }` に書いたものだけ出る。外枠は `@theme/Base.astro`、部品は `@futon/…` で読む |
-| `sources/*.mjs` | 取り込み口。置くだけで `futon sync` が使う(下) |
 
 ## 取り込み口(sync)
 

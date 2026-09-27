@@ -1,6 +1,6 @@
 {
   "name": "create-futon",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "npm create futon で、AIフレンドリーな個人サイトを敷く",
   "license": "MIT",
   "type": "module",
@@ -15,7 +15,7 @@
     "node": ">=22.18"
   },
   "dependencies": {
-    "@yasuna/futon": "^0.1.0"
+    "@yasuna/futon": "^0.1.1"
   },
   "repository": {
     "type": "git",

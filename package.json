@@ -1,6 +1,6 @@
 {
   "name": "@yasuna/futon",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "AIフレンドリーな個人サイトエンジン。中身は md と画像だけ。AIに「1話足して」と頼めば、そのまま載る",
   "license": "MIT",
   "type": "module",
@@ -14,6 +14,7 @@
     "themes",
     "starter",
     "README.md",
+    "README.en.md",
     "LICENSE"
   ],
   "engines": {
