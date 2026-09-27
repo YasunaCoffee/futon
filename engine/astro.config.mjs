@@ -11,11 +11,11 @@ const FUTON = path.resolve(process.env.FUTON || "futon");
 const site = JSON.parse(fs.readFileSync(path.join(FUTON, "site.json"), "utf8"));
 
 // テーマ:site.json の "theme" に、パッケージ名か、ふとんからの相対パス("./themes/mine" など)を書く。
-// 書かなければエンジンについている plain。テーマはページの見た目(Base・Home・ShelfIndex・Episode・
+// 書かなければ heisei(futon の標準)。テーマはページの見た目(Base・Home・ShelfIndex・Episode・
 // TechIndex・TechPost・About・Privacy・NotFound の .astro)を全部持つ。エンジンの部品は @futon/… で読む
 function resolveTheme(name) {
-  // futon についてくるテーマ(themes/<名前>)は名前だけで着られる:"plain"(標準)・"heisei"
-  const builtin = path.join(ENGINE, "..", "themes", name || "plain");
+  // futon についてくるテーマ(themes/<名前>)は名前だけで着られる:"heisei"(標準)・"plain"
+  const builtin = path.join(ENGINE, "..", "themes", name || "heisei");
   if (!name || (/^[a-z0-9-]+$/.test(name) && fs.existsSync(path.join(builtin, "Base.astro")))) return builtin;
   if (name.startsWith(".") || path.isAbsolute(name)) return path.resolve(FUTON, name);
   return path.dirname(createRequire(path.join(FUTON, "_")).resolve(`${name}/package.json`));

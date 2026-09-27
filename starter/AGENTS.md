@@ -15,7 +15,7 @@
 | 「キャラを足して」 | `site.json` の `characters` に1件足す(`slug`・`name`・`image`・`text`、あれば顔の `face`) |
 | 「本を足して」 | `site.json` の `books` に1件足す。出てくるキャラは `characters: ["slug"]` |
 | 「この話に出てくる人を出して」 | 棚全体なら `shelves.yaml` の `cast: [slug]`、1話だけなら md に `cast: [slug]` |
-| 「見た目を変えて」 | `site.json` の `"theme"` を書き換える(plain / heisei / techou / kaomoji / vhs / keitai / mado / receipt) |
+| 「見た目を変えて」 | `site.json` の `"theme"` を書き換える(heisei(標準) / plain / techou / kaomoji / vhs / keitai / mado / receipt) |
 | 「サイト名・紹介文を変えて」 | `site.json` の `title`・`description`・`intro` |
 
 ## 確かめる

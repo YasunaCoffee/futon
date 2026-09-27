@@ -28,7 +28,7 @@ npm run dev                       # ふとんに入る(http://localhost:4321 で
 npm run build                     # ふとんを干す(dist/ に書き出す。どこにでも置ける静的サイト)
 ```
 
-テーマを決めて敷くなら `npm create futon@latest my-site -- --theme heisei`。
+テーマを決めて敷くなら `npm create futon@latest my-site -- --theme techou`。
 敷いたあとは、そのフォルダの中で `npx futon …` が使える:
 
 ```bash
@@ -41,7 +41,7 @@ npx futon add <棚> …     # 1話足す
 
 フォルダは引数(`futon dev ./mysite`)か環境変数 `FUTON` で渡す。どちらもなければ `./futon`。Node.js 22.18 以上。
 
-雛形をそのまま干すと、こうなる(標準テーマ plain):
+雛形をそのまま干すと、こうなる(標準テーマ heisei):
 
 <p align="center"><img src="docs/images/screens.png" alt="雛形「はじめてのふとん」のホーム・棚の一覧・話のページ" width="820"></p>
 
@@ -53,8 +53,8 @@ futon には8着ついてくる。`site.json` に名前を1行書くだけで着
 
 | テーマ | 見た目 |
 |---|---|
-| `plain`(標準) | 飾りのない、読みやすさだけのテーマ。`theme` を書かなければこれ |
-| `heisei` | 平成のキャラクターサイト風。ドットの背景・ロゴ・タブ・ティッカー・バナー・キャラクターしょうかい・本。書くと出る欄は [`themes/heisei/README.md`](themes/heisei/README.md) |
+| `heisei`(標準) | 平成のキャラクターサイト風。`theme` を書かなければこれ。ドットの背景・ロゴ・タブ・ティッカー・バナー・キャラクターしょうかい・本。書くと出る欄は [`themes/heisei/README.md`](themes/heisei/README.md) |
+| `plain` | 飾りのない、読みやすさだけのテーマ |
 | `techou` | 週間の手帳。左はウィークリー(新着)、右は方眼にキャラのスタンプとまんがのシール。蛍光マーカーと赤いダブルクリップ。[`themes/techou/README.md`](themes/techou/README.md) |
 | `kaomoji` | パステルのデスクトップの窓と、顔文字のふきだし。新着はチャット、キャラはふきだしでしゃべる。暗い画面では夜のデスクトップ |
 | `vhs` | 電気みたいな青に黄色いマーカー、ビデオデッキのメニュー画面。キャラは PLAYER SELECT、404 は黄緑の ERR0R 画面 |
@@ -112,8 +112,8 @@ export async function sync(ctx, value, args) {
 
 ## テーマ(着せ替え)
 
-見た目は全部テーマが持つ。`site.json` の `"theme"` に、ついてくるテーマの名前(`"plain"` / `"heisei"` / `"techou"` / `"kaomoji"` / `"vhs"` / `"keitai"` / `"mado"` / `"receipt"`)か、ふとんからの相対パス(`"./themes/mine"`)か、パッケージ名を書く。
-書かなければ標準の **plain**。
+見た目は全部テーマが持つ。`site.json` の `"theme"` に、ついてくるテーマの名前(`"heisei"` / `"plain"` / `"techou"` / `"kaomoji"` / `"vhs"` / `"keitai"` / `"mado"` / `"receipt"`)か、ふとんからの相対パス(`"./themes/mine"`)か、パッケージ名を書く。
+書かなければ標準の **heisei**。
 `FUTON_THEME=<テーマ> futon build` で、site.json を変えずにそのときだけ着せ替えて見られる。
 
 テーマは次の .astro を持つフォルダ(またはパッケージ):

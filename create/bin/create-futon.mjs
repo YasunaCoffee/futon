@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// npm create futon [フォルダ] [-- --theme heisei]
+// npm create futon [フォルダ] [-- --theme techou]
 // フォルダを作って、ふとん(雛形)と package.json を置く。あとは npm install して npm run dev
 import fs from "node:fs";
 import path from "node:path";
@@ -45,4 +45,4 @@ console.log(`ふとんを敷きました: ${dest}
 
 中身は futon/ の中(site.json・shelves.yaml・話の md と画像)。
 AI に頼むなら「1話足して」のように話しかければいい(手順は futon/AGENTS.md)。
-見た目は futon/site.json の "theme"(plain / heisei / techou / kaomoji / vhs / keitai / mado / receipt)。`);
+見た目は futon/site.json の "theme"(heisei(標準) / plain / techou / kaomoji / vhs / keitai / mado / receipt)。`);

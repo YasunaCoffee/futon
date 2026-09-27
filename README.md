@@ -39,7 +39,7 @@ npm run dev                       # get in (preview at http://localhost:4321)
 npm run build                     # air out (static site in dist/, host it anywhere)
 ```
 
-To pick a theme up front: `npm create futon@latest my-site -- --theme heisei`.
+To pick a theme up front: `npm create futon@latest my-site -- --theme techou`.
 Inside that folder you can also use `npx futon …`:
 
 ```bash
@@ -51,7 +51,7 @@ npx futon add <shelf> …  # add one episode
 
 The content folder is taken from the argument (`futon dev ./mysite`) or the `FUTON` environment variable, defaulting to `./futon`. Requires Node.js 22.18+.
 
-The starter, built as-is with the default theme `plain`:
+The starter, built as-is with the default theme `heisei`:
 
 <p align="center"><img src="docs/images/en/screens.png" alt="The starter site: home, shelf index and episode page" width="820"></p>
 
@@ -63,8 +63,8 @@ futon ships with eight themes. Put the name in `site.json` and you're wearing it
 
 | Theme | Look |
 |---|---|
-| `plain` (default) | No decoration, just readable. Used when `theme` is omitted |
-| `heisei` | A 2000s Japanese character fan site: polka dots, outlined logo, aqua tabs, ticker, banners, character profiles, books. Fields it reads: [`themes/heisei/README.md`](themes/heisei/README.md) |
+| `heisei` (default) | A 2000s Japanese character fan site — used when `theme` is omitted: polka dots, outlined logo, aqua tabs, ticker, banners, character profiles, books. Fields it reads: [`themes/heisei/README.md`](themes/heisei/README.md) |
+| `plain` | No decoration, just readable |
 | `techou` | A weekly planner spread: the left page is a week of new posts, the right is grid paper with character stamps and comic stickers. Highlighter pens and red binder clips |
 | `kaomoji` | Pastel desktop windows and emoticon speech bubbles. New posts are a chat; characters talk in bubbles. Night desktop in dark mode |
 | `vhs` | Electric blue with yellow highlighter, a VCR menu screen. Characters are a PLAYER SELECT; the 404 is a lime ERR0R screen |
@@ -122,8 +122,8 @@ Where images can't be fetched, episodes to add are queued in `sync/pending.json`
 
 ## Writing a theme
 
-A theme owns the whole look. Set `"theme"` in `site.json` to a bundled name (`"plain"` / `"heisei"` / `"techou"` / `"kaomoji"` / `"vhs"` / `"keitai"` / `"mado"` / `"receipt"`), a path relative to your futon (`"./themes/mine"`), or a package name.
-Omit it for **plain**.
+A theme owns the whole look. Set `"theme"` in `site.json` to a bundled name (`"heisei"` / `"plain"` / `"techou"` / `"kaomoji"` / `"vhs"` / `"keitai"` / `"mado"` / `"receipt"`), a path relative to your futon (`"./themes/mine"`), or a package name.
+Omit it for **heisei**.
 `FUTON_THEME=<theme> futon build` tries a theme once without touching `site.json`.
 
 A theme is a folder (or package) with these .astro files:
