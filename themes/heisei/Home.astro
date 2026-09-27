@@ -4,7 +4,8 @@ import { episodes, techPosts, techThumb, newest, isNew, md, url, site, today, bo
 import { series } from "@futon/lib/series";
 import { noteItems } from "@futon/lib/note";
 import Tweet from "@futon/components/Tweet.astro";
-const tech = { label: "記事", tab: "きじ", lead: "", description: "", ...(site.tech ?? {}) }; // 記事の呼び方(site.json の tech)
+import { tr } from "@futon/lib/i18n";
+const tech = { label: tr("記事"), tab: tr("きじ"), lead: "", description: "", ...(site.tech ?? {}) }; // 記事の呼び方(site.json の tech)
 
 // まんがのシリーズごとの公開済みの回(src/lib/series.ts の順)
 const shelves = await Promise.all(series.map(async (s) => ({ s, eps: await episodes(s.key) })));
@@ -31,8 +32,8 @@ const techs = (await techPosts()).slice(0, 4);
       <div class="box">
         <div class="bh"><span>Topics</span></div>
         <div class="bb">
-          {shelves.filter((x) => x.eps[0]).map(({ s, eps: [e] }) => { const t = s.topic(e.data); return <a class="topic" href={url(`${s.key}/${e.data.num}/`)}><img src={url(t.img)} alt=""><p>{t.label}<br>「{e.data.title}」</p><span class="go">よむ</span></a>; })}
-          {notes[0] && <a class="topic" href={notes[0].link} target="_blank" rel="noopener">{notes[0].thumb && <img src={notes[0].thumb} alt="">}<p>note<br>「{notes[0].title}」</p><span class="go">よむ</span></a>}
+          {shelves.filter((x) => x.eps[0]).map(({ s, eps: [e] }) => { const t = s.topic(e.data); return <a class="topic" href={url(`${s.key}/${e.data.num}/`)}><img src={url(t.img)} alt=""><p>{t.label}<br>「{e.data.title}」</p><span class="go">{tr("よむ")}</span></a>; })}
+          {notes[0] && <a class="topic" href={notes[0].link} target="_blank" rel="noopener">{notes[0].thumb && <img src={notes[0].thumb} alt="">}<p>note<br>「{notes[0].title}」</p><span class="go">{tr("よむ")}</span></a>}
         </div>
       </div>
     </aside>
@@ -49,7 +50,7 @@ const techs = (await techPosts()).slice(0, 4);
         </div>
       </div>
       <div class="box">
-        <div class="bh"><span>しんちゃくまんが</span></div>
+        <div class="bh"><span>{tr("しんちゃくまんが")}</span></div>
         <div class="bb">
           <div class="thumbs">
             {items.filter((i) => i.kind === "manga").slice(0, 8).map((i) => (
@@ -60,7 +61,7 @@ const techs = (await techPosts()).slice(0, 4);
       </div>
       {notes.length > 0 && (
         <div class="box">
-          <div class="bh"><span>よみもの(note)</span><a href={site.feeds?.note?.page} target="_blank" rel="noopener">もっと ▶</a></div>
+          <div class="bh"><span>{tr("よみもの(note)")}</span><a href={site.feeds?.note?.page} target="_blank" rel="noopener">{tr("もっと ▶")}</a></div>
           <div class="bb">
             <ul class="notes">
               {notes.map((n) => (
@@ -72,7 +73,7 @@ const techs = (await techPosts()).slice(0, 4);
       )}
       {techs.length > 0 && (
         <div class="box">
-          <div class="bh"><span>{tech.label}</span><a href={url("tech/")}>もっと ▶</a></div>
+          <div class="bh"><span>{tech.label}</span><a href={url("tech/")}>{tr("もっと ▶")}</a></div>
           <div class="bb">
             <ul class="notes">
               {techs.map((n) => (
@@ -85,7 +86,7 @@ const techs = (await techPosts()).slice(0, 4);
     </main>
 
     <aside>
-      {site.store && <a class="ban store" href={site.store} target="_blank" rel="noopener"><span class="big">{site.title}<br>ストア</span><span class="sub">{site.storeLabel}</span></a>}
+      {site.store && <a class="ban store" href={site.store} target="_blank" rel="noopener"><span class="big">{site.title}<br>{tr("ストア")}</span><span class="sub">{site.storeLabel}</span></a>}
       {shelves.map(({ s, eps }) => <a class={`ban ${s.banner.cls}`} href={url(`${s.key}/`)}><span class="cap">{s.name}</span><span class="pic"><img src={url(s.banner.img)} alt="" style={s.banner.imgStyle}></span><span class="sub">{s.banner.sub(eps.length)}</span></a>)}
       {(site.banners ?? []).map((b: any) => <a class={`ban ${b.cls}`} href={url(b.href)}><span class="cap">{b.cap}</span><span class="pic"><img src={url(b.img)} alt=""></span><span class="sub">{b.sub}</span></a>)}
       {site.since && <div class="since">{site.since.label}<b>since {site.since.date}</b></div>}
@@ -95,16 +96,16 @@ const techs = (await techPosts()).slice(0, 4);
   {site.characters?.length > 0 && (
   <div class="wide" id="chars">
     <div class="box">
-      <div class="bh pink"><span>キャラクターしょうかい</span></div>
+      <div class="bh pink"><span>{tr("キャラクターしょうかい")}</span></div>
       <div class="bb chars">
         {site.characters.map((c) => (
           <div class="chr" id={c.slug && `chr-${c.slug}`}><div class="pic"><img src={url(c.image)} alt={c.name}></div><span class="plate">{c.name}</span><p>{c.text}</p>
             {c.facts && <table class="prof-table chr-facts"><tbody>{c.facts.map(([k, v]) => <tr><th>{k}</th><td>{v}</td></tr>)}</tbody></table>}
-            {c.fanart && <div class="fanart"><b>{c.fanart.ok}!</b> {c.fanart.tags}<small>{c.fanart.note} {c.fanart.link && <a href={url(c.fanart.link)}>ガイドライン ▶</a>}</small></div>}
-            {booksOf(c.slug).length > 0 && <p class="chr-books">でてくる本 {booksOf(c.slug).map((b) => <a href={`#${b.id}`}>『{b.title}{b.sub}』</a>)}</p>}
+            {c.fanart && <div class="fanart"><b>{c.fanart.ok}!</b> {c.fanart.tags}<small>{c.fanart.note} {c.fanart.link && <a href={url(c.fanart.link)}>{tr("ガイドライン ▶")}</a>}</small></div>}
+            {booksOf(c.slug).length > 0 && <p class="chr-books">{tr("でてくる本")} {booksOf(c.slug).map((b) => <a href={`#${b.id}`}>『{b.title}{b.sub}』</a>)}</p>}
             <p class="chr-links">
-              {c.link && <a class="btn" href={url(c.link)}>よむ ▶</a>}
-              {c.site && <a class="btn" href={c.site} target="_blank" rel="noopener">公式サイト ▶</a>}
+              {c.link && <a class="btn" href={url(c.link)}>{tr("よむ ▶")}</a>}
+              {c.site && <a class="btn" href={c.site} target="_blank" rel="noopener">{tr("公式サイト ▶")}</a>}
               {c.x && <a class="btn" href={c.x} target="_blank" rel="noopener">X ▶</a>}
             </p></div>
         ))}
@@ -116,7 +117,7 @@ const techs = (await techPosts()).slice(0, 4);
   {site.videos?.length > 0 && (
     <div class="wide" id="video">
       <div class="box">
-        <div class="bh"><span>ショートどうが</span></div>
+        <div class="bh"><span>{tr("ショートどうが")}</span></div>
         <div class="bb">
           <div class="vids">
             {site.videos.map((v: any) => (
@@ -131,7 +132,7 @@ const techs = (await techPosts()).slice(0, 4);
   {site.tweets?.length > 0 && (
     <div class="wide" id="x">
       <div class="box">
-        <div class="bh"><span>Xでのようす</span><a href={site.xAccount?.url} target="_blank" rel="noopener">{site.xAccount?.handle} ▶</a></div>
+        <div class="bh"><span>{tr("Xでのようす")}</span><a href={site.xAccount?.url} target="_blank" rel="noopener">{site.xAccount?.handle} ▶</a></div>
         <div class="bb tweets">
           {site.tweets.map((t: any) => <Tweet url={t.url} note={t.note} />)}
         </div>
@@ -142,11 +143,11 @@ const techs = (await techPosts()).slice(0, 4);
   {site.books?.length > 0 && (
   <div class="wide" id="books">
     <div class="box">
-      <div class="bh pink"><span>ほん</span><a href={site.store} target="_blank" rel="noopener">ストアへ ▶</a></div>
+      <div class="bh pink"><span>{tr("ほん")}</span><a href={site.store} target="_blank" rel="noopener">{tr("ストアへ ▶")}</a></div>
       <div class="bb books">
         {books.map((b) => (
           <div class="bk" id={b.id}><img src={url(b.image)} alt={`『${b.title}${b.sub}』の表紙`} loading="lazy"><b>{b.title}<br>{b.sub}</b>
-            {b.cast.length > 0 && <span class="bk-cast">{b.cast.map((c: any) => <a href={`#chr-${c.slug}`} title={`${c.name}のしょうかいへ`}><i><img src={url(c.face ?? c.image)} alt="" loading="lazy" class={c.face ? "" : "crop"}></i>{c.name}</a>)}</span>}<span class="yen">¥{b.price.toLocaleString()}</span><a class="btn" href={site.store} target="_blank" rel="noopener">{site.storeButton ?? "ストアで見る"}</a></div>
+            {b.cast.length > 0 && <span class="bk-cast">{b.cast.map((c: any) => <a href={`#chr-${c.slug}`} title={`${c.name}のしょうかいへ`}><i><img src={url(c.face ?? c.image)} alt="" loading="lazy" class={c.face ? "" : "crop"}></i>{c.name}</a>)}</span>}<span class="yen">¥{b.price.toLocaleString()}</span><a class="btn" href={site.store} target="_blank" rel="noopener">{site.storeButton ?? tr("ストアで見る")}</a></div>
         ))}
       </div>
     </div>

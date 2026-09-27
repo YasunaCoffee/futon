@@ -1,18 +1,19 @@
 ---
 // 記事ごとの共有ボタン。URLはブラウザで開いているページのものを使う(本番のドメインが決まる前でも正しく動く)
+import { tr } from "@futon/lib/i18n";
 interface Props { text: string }
 const { text } = Astro.props;
 ---
 <div class="share" data-text={text}>
-  <span class="share-label">シェアしてね</span>
+  <span class="share-label">{tr("シェアしてね")}</span>
   <a class="sh sh-x" data-net="x" target="_blank" rel="noopener">X</a>
   <a class="sh sh-bsky" data-net="bluesky" target="_blank" rel="noopener">Bluesky</a>
   <a class="sh sh-threads" data-net="threads" target="_blank" rel="noopener">Threads</a>
   <a class="sh sh-line" data-net="line" target="_blank" rel="noopener">LINE</a>
   <a class="sh sh-fb" data-net="facebook" target="_blank" rel="noopener">Facebook</a>
-  <button class="sh sh-copy" type="button" data-net="copy">URLをコピー</button>
-  <button class="sh sh-more" type="button" data-net="native" hidden>そのほか</button>
-  <span class="share-done" hidden>コピーしました!</span>
+  <button class="sh sh-copy" type="button" data-net="copy">{tr("URLをコピー")}</button>
+  <button class="sh sh-more" type="button" data-net="native" hidden>{tr("そのほか")}</button>
+  <span class="share-done" hidden>{tr("コピーしました!")}</span>
 </div>
 
 <script>

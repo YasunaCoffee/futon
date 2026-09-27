@@ -21,6 +21,15 @@ const must = ["index.html", "404.html", "rss.xml", "about/index.html", "privacy/
 const parts = ["Base", "Home", "ShelfIndex", "GroupIndex", "Episode", "TechIndex", "TechPost", "About", "Privacy", "NotFound"].map((n) => `${n}.astro`);
 
 let bad = 0;
+// テーマの言葉 tr("…") に英語の訳があるか
+{
+  const en = JSON.parse(fs.readFileSync(path.join(ROOT, "engine/src/lib/i18n/en.json"), "utf8"));
+  const files = [...fs.readdirSync(path.join(ROOT, "themes")).flatMap((t) => fs.readdirSync(path.join(ROOT, "themes", t)).filter((f) => f.endsWith(".astro")).map((f) => path.join(ROOT, "themes", t, f))),
+    ...["components/Share.astro", "components/Tweet.astro", "fallback/GroupIndex.astro", "lib/content.ts"].map((f) => path.join(ROOT, "engine/src", f))];
+  const miss = new Set();
+  for (const f of files) for (const m of fs.readFileSync(f, "utf8").matchAll(/\btr\("([^"]+)"\)/g)) if (!(m[1] in en)) miss.add(m[1]);
+  if (miss.size) { console.log(`✗ 英語の訳がない言葉(engine/src/lib/i18n/en.json に足す): ${[...miss].join(" / ")}`); bad++; }
+}
 for (const t of want) {
   const dir = path.join(ROOT, "themes", t);
   const out = path.join(ROOT, "out", t);

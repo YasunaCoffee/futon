@@ -1,22 +1,23 @@
 ---
 import Base from "./Base.astro";
 import { url, site } from "@futon/lib/content";
+import { tr } from "@futon/lib/i18n";
 ---
-<Base title="このサイトについて" tab="about">
+<Base title={tr("このサイトについて")} tab="about">
   <div class="page">
-    <p class="crumb"><a href={url("/")}>ホーム</a> ＞ このサイトについて</p>
+    <p class="crumb"><a href={url("/")}>{tr("ホーム")}</a> {tr("＞ このサイトについて")}</p>
     <div class="box">
-      <div class="bh"><span>このサイトについて</span></div>
+      <div class="bh"><span>{tr("このサイトについて")}</span></div>
       <div class="bb prose" style="max-width:none">
-        <h3>アクセス解析</h3>
-        <p>このサイトでは、よりよいサイトにするために Google アナリティクス(Google LLC)を使っています。Cookie を使って、見られたページ、滞在時間、どこから来たか、どのボタンが押されたか(共有ボタン・外のサイトへのリンクなど)を記録します。名前やメールアドレスなど、個人を特定する情報は集めていません。</p>
-        <p>送られる情報:閲覧したページのURL、参照元、端末とブラウザの種類、おおまかな地域、Cookie による識別子。送り先:Google LLC。</p>
-        <p>記録されたくない場合は、ブラウザの設定で Cookie を無効にするか、<a href="https://tools.google.com/dlpage/gaoptout?hl=ja" target="_blank" rel="noopener">Google アナリティクス オプトアウト アドオン</a>をお使いください。Google によるデータの扱いは <a href="https://policies.google.com/technologies/partner-sites?hl=ja" target="_blank" rel="noopener">こちら</a>。</p>
-        <h3>Xの埋め込み</h3>
-        <p>一部のページでは X(旧Twitter)のポストを埋め込んでいます。埋め込みが表示されるとき、X Corp. にページのURLなどの情報が送られます(トラッキングを控える設定で読み込んでいます)。</p>
-        <h3>作品のこと</h3>
-        <p>このサイトに掲載のイラスト・漫画・文章の無断転載を禁じます。キャラクターの二次創作は、それぞれのガイドラインの範囲でどうぞ。</p>
-        <h3>運営</h3>
+        <h3>{tr("アクセス解析")}</h3>
+        <p>{tr("このサイトでは、よりよいサイトにするために Google アナリティクス(Google LLC)を使っています。Cookie を使って、見られたページ、滞在時間、どこから来たか、どのボタンが押されたか(共有ボタン・外のサイトへのリンクなど)を記録します。名前やメールアドレスなど、個人を特定する情報は集めていません。")}</p>
+        <p>{tr("送られる情報:閲覧したページのURL、参照元、端末とブラウザの種類、おおまかな地域、Cookie による識別子。送り先:Google LLC。")}</p>
+        <p>{tr("記録されたくない場合は、ブラウザの設定で Cookie を無効にするか、")}<a href="https://tools.google.com/dlpage/gaoptout?hl=ja" target="_blank" rel="noopener">{tr("Google アナリティクス オプトアウト アドオン")}</a>{tr("をお使いください。Google によるデータの扱いは")} <a href="https://policies.google.com/technologies/partner-sites?hl=ja" target="_blank" rel="noopener">{tr("こちら")}</a>。</p>
+        <h3>{tr("Xの埋め込み")}</h3>
+        <p>{tr("一部のページでは X(旧Twitter)のポストを埋め込んでいます。埋め込みが表示されるとき、X Corp. にページのURLなどの情報が送られます(トラッキングを控える設定で読み込んでいます)。")}</p>
+        <h3>{tr("作品のこと")}</h3>
+        <p>{tr("このサイトに掲載のイラスト・漫画・文章の無断転載を禁じます。キャラクターの二次創作は、それぞれのガイドラインの範囲でどうぞ。")}</p>
+        <h3>{tr("運営")}</h3>
         <p><a href={url("about/")}>{site.owner}</a></p>
       </div>
     </div>

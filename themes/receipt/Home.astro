@@ -4,6 +4,7 @@ import Base from "./Base.astro";
 import Cast from "./Cast.astro";
 import { episodes, techPosts, newest, md, dotted, url, site, characters, books, booksOf } from "@futon/lib/content";
 import { series } from "@futon/lib/series";
+import { tr } from "@futon/lib/i18n";
 const shelves = await Promise.all(series.map(async (s) => ({ s, eps: (await episodes(s.key)).slice(0, 4) })));
 const items = (await newest()).filter((i) => i.kind !== "video").slice(0, 8);
 const techs = (await techPosts()).slice(0, 5);
@@ -18,10 +19,10 @@ const techs = (await techPosts()).slice(0, 5);
   )}
   {items.length > 0 && (
     <section>
-      <h2>領　収　証</h2>
+      <h2>{tr("領　収　証")}</h2>
       <ul class="items">{items.map((i) => <li><span>◎{i.label} <a href={i.href}>{i.title}</a></span><span class="r">{md(i.date)}</span></li>)}</ul>
-      <p class="total"><span>合　計</span><span>{items.length}点</span></p>
-      <p class="sub"><a href={url("rss.xml")}>(RSS はこちら)</a></p>
+      <p class="total"><span>{tr("合　計")}</span><span>{items.length}{tr("点")}</span></p>
+      <p class="sub"><a href={url("rss.xml")}>{tr("(RSS はこちら)")}</a></p>
     </section>
   )}
   {shelves.filter((x) => x.eps.length).map(({ s, eps }) => (
@@ -30,24 +31,24 @@ const techs = (await techPosts()).slice(0, 5);
       <ul class="thumbs">
         {eps.map((e) => { const c = s.card(e.data); return <li><a href={url(`${s.key}/${e.data.num}/`)}><img src={url(c.thumb)} alt="" loading="lazy"><span><b>{e.data.title}</b><small>{c.sub}</small></span></a></li>; })}
       </ul>
-      <p class="sub"><a href={url(`${s.key}/`)}>ぜんぶ見る ＞</a></p>
+      <p class="sub"><a href={url(`${s.key}/`)}>{tr("ぜんぶ見る ＞")}</a></p>
     </section>
   ))}
   {characters.length > 0 && (
     <section id="chars">
-      <h2>会 員 情 報</h2>
+      <h2>{tr("会 員 情 報")}</h2>
       {characters.map((c, n) => (
         <div class="chr" id={c.slug && `chr-${c.slug}`}>
-          <p class="row"><span>会員番号</span><span>**** {String(n + 1).padStart(4, "0")}</span></p>
+          <p class="row"><span>{tr("会員番号")}</span><span>**** {String(n + 1).padStart(4, "0")}</span></p>
           <div class="pic"><img src={url(c.image)} alt={c.name} loading="lazy"></div>
           <p class="name">{c.name}{c.tag && <small>({c.tag})</small>}</p>
           <p>{c.text}</p>
           {c.facts && <dl class="lead-dots">{c.facts.map(([k, v]: string[]) => <><dt>{k}</dt><dd>{v}</dd></>)}</dl>}
-          {c.fanart && <p class="note">{c.fanart.ok} {c.fanart.tags} {c.fanart.note} {c.fanart.link && <a href={url(c.fanart.link)}>ガイドライン</a>}</p>}
-          {booksOf(c.slug).length > 0 && <p class="note">でてくる本 {booksOf(c.slug).map((b) => <a href={`#${b.id}`}>『{b.title}{b.sub}』</a>)}</p>}
+          {c.fanart && <p class="note">{c.fanart.ok} {c.fanart.tags} {c.fanart.note} {c.fanart.link && <a href={url(c.fanart.link)}>{tr("ガイドライン")}</a>}</p>}
+          {booksOf(c.slug).length > 0 && <p class="note">{tr("でてくる本")} {booksOf(c.slug).map((b) => <a href={`#${b.id}`}>『{b.title}{b.sub}』</a>)}</p>}
           <p class="links">
-            {c.link && <a href={url(c.link)}>[よむ]</a>}
-            {c.site && <a href={c.site} target="_blank" rel="noopener">[公式サイト]</a>}
+            {c.link && <a href={url(c.link)}>{tr("[よむ]")}</a>}
+            {c.site && <a href={c.site} target="_blank" rel="noopener">{tr("[公式サイト]")}</a>}
             {c.x && <a href={c.x} target="_blank" rel="noopener">[X]</a>}
           </p>
           <p class="dash" aria-hidden="true"></p>
@@ -57,25 +58,25 @@ const techs = (await techPosts()).slice(0, 5);
   )}
   {books.length > 0 && (
     <section id="books">
-      <h2>お買い上げ品</h2>
+      <h2>{tr("お買い上げ品")}</h2>
       {books.map((b) => (
         <div class="bk" id={b.id}>
           <img src={url(b.image)} alt={`『${b.title}${b.sub}』の表紙`} loading="lazy">
           <div>
             <p class="row"><span>{b.title}{b.sub}</span><span>¥{b.price.toLocaleString()}</span></p>
             {b.cast.length > 0 && <Cast list={b.cast} size={24} />}
-            {site.store && <p><a href={site.store} target="_blank" rel="noopener">[{site.storeButton ?? "ストアで見る"}]</a></p>}
+            {site.store && <p><a href={site.store} target="_blank" rel="noopener">[{site.storeButton ?? tr("ストアで見る")}]</a></p>}
           </div>
         </div>
       ))}
-      <p class="total"><span>小　計</span><span>¥{books.reduce((a, b) => a + b.price, 0).toLocaleString()}</span></p>
+      <p class="total"><span>{tr("小　計")}</span><span>¥{books.reduce((a, b) => a + b.price, 0).toLocaleString()}</span></p>
     </section>
   )}
   {techs.length > 0 && (
     <section>
-      <h2>【{site.tech?.label ?? "記事"}】</h2>
+      <h2>【{site.tech?.label ?? tr("記事")}】</h2>
       <ul class="items">{techs.map((p) => <li><span><a href={url(`tech/${p.id}/`)}>{p.data.emoji && `${p.data.emoji} `}{p.data.title}</a></span><span class="r">{dotted(p.data.date).slice(5)}</span></li>)}</ul>
-      <p class="sub"><a href={url("tech/")}>ぜんぶ見る ＞</a></p>
+      <p class="sub"><a href={url("tech/")}>{tr("ぜんぶ見る ＞")}</a></p>
     </section>
   )}
 </Base>

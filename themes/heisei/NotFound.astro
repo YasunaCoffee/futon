@@ -1,9 +1,10 @@
 ---
 import Base from "./Base.astro";
 import { url, site } from "@futon/lib/content";
+import { tr } from "@futon/lib/i18n";
 ---
-<Base title="ページがみつかりません">
+<Base title={tr("ページがみつかりません")}>
   <div class="page"><div class="box"><div class="bh"><span>zzz…</span></div>
-    <div class="bb" style="text-align:center">{site.mascot && <img src={url(site.mascot)} alt="" style="width:140px;margin:10px auto">}<p>このページは、まだ眠っているみたい。</p><a class="btn" href={url("/")}>ホームへ</a></div>
+    <div class="bb" style="text-align:center">{site.mascot && <img src={url(site.mascot)} alt="" style="width:140px;margin:10px auto">}<p>{tr("このページは、まだ眠っているみたい。")}</p><a class="btn" href={url("/")}>{tr("ホームへ")}</a></div>
   </div></div>
 </Base>

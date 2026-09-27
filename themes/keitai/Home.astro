@@ -4,6 +4,7 @@ import Base from "./Base.astro";
 import Cast from "./Cast.astro";
 import { episodes, techPosts, newest, md, dotted, url, site, characters, books, booksOf } from "@futon/lib/content";
 import { series } from "@futon/lib/series";
+import { tr } from "@futon/lib/i18n";
 const shelves = await Promise.all(series.map(async (s) => ({ s, eps: (await episodes(s.key)).slice(0, 4) })));
 const items = (await newest()).filter((i) => i.kind !== "video").slice(0, 6);
 const techs = (await techPosts()).slice(0, 5);
@@ -22,7 +23,7 @@ const num = ["①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨"];
   )}
   {items.length > 0 && (
     <section>
-      <h2>✉ 新着メール<small>({items.length})</small><a href={url("rss.xml")}>RSS</a></h2>
+      <h2>{tr("✉ 新着メール")}<small>({items.length})</small><a href={url("rss.xml")}>RSS</a></h2>
       <ul class="mail">
         {items.map((i, n) => <li><a href={i.href}><span class="no">{num[n]}</span><span><small>{md(i.date)} {i.label}</small>{i.title}</span></a></li>)}
       </ul>
@@ -30,7 +31,7 @@ const num = ["①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨"];
   )}
   {shelves.filter((x) => x.eps.length).map(({ s, eps }) => (
     <section>
-      <h2>▼ {s.name}<a href={url(`${s.key}/`)}>もっと</a></h2>
+      <h2>▼ {s.name}<a href={url(`${s.key}/`)}>{tr("もっと")}</a></h2>
       <div class="cards">
         {eps.map((e) => { const c = s.card(e.data); return <a class="card" href={url(`${s.key}/${e.data.num}/`)}><img src={url(c.thumb)} alt="" loading="lazy"><b>{e.data.title}</b><small>{c.sub}</small></a>; })}
       </div>
@@ -38,7 +39,7 @@ const num = ["①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨"];
   ))}
   {characters.length > 0 && (
     <section id="chars">
-      <h2>☎ アドレス帳<small>({characters.length})</small></h2>
+      <h2>{tr("☎ アドレス帳")}<small>({characters.length})</small></h2>
       <div class="chars">
         {characters.map((c) => (
           <div class="chr" id={c.slug && `chr-${c.slug}`}>
@@ -49,11 +50,11 @@ const num = ["①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨"];
             <div class="pic"><img src={url(c.image)} alt={c.name} loading="lazy"></div>
             <p>{c.text}</p>
             {c.facts && <dl class="prof">{c.facts.map(([k, v]: string[]) => <><dt>{k}</dt><dd>{v}</dd></>)}</dl>}
-            {c.fanart && <p class="note">{c.fanart.ok} {c.fanart.tags} {c.fanart.note} {c.fanart.link && <a href={url(c.fanart.link)}>ガイドライン</a>}</p>}
-            {booksOf(c.slug).length > 0 && <p class="note">でてくる本 {booksOf(c.slug).map((b) => <a href={`#${b.id}`}>『{b.title}{b.sub}』</a>)}</p>}
+            {c.fanart && <p class="note">{c.fanart.ok} {c.fanart.tags} {c.fanart.note} {c.fanart.link && <a href={url(c.fanart.link)}>{tr("ガイドライン")}</a>}</p>}
+            {booksOf(c.slug).length > 0 && <p class="note">{tr("でてくる本")} {booksOf(c.slug).map((b) => <a href={`#${b.id}`}>『{b.title}{b.sub}』</a>)}</p>}
             <p class="links">
-              {c.link && <a class="btn" href={url(c.link)}>よむ</a>}
-              {c.site && <a class="btn" href={c.site} target="_blank" rel="noopener">公式サイト</a>}
+              {c.link && <a class="btn" href={url(c.link)}>{tr("よむ")}</a>}
+              {c.site && <a class="btn" href={c.site} target="_blank" rel="noopener">{tr("公式サイト")}</a>}
               {c.x && <a class="btn" href={c.x} target="_blank" rel="noopener">X</a>}
             </p>
           </div>
@@ -63,7 +64,7 @@ const num = ["①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨"];
   )}
   {books.length > 0 && (
     <section id="books">
-      <h2>♪ おみせ{site.store && <a href={site.store} target="_blank" rel="noopener">ストア</a>}</h2>
+      <h2>{tr("♪ おみせ")}{site.store && <a href={site.store} target="_blank" rel="noopener">{tr("ストア")}</a>}</h2>
       <div class="books">
         {books.map((b) => (
           <div class="bk" id={b.id}>
@@ -71,7 +72,7 @@ const num = ["①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨"];
             <b>{b.title}<br>{b.sub}</b>
             {b.cast.length > 0 && <Cast list={b.cast} size={24} />}
             <span class="yen">¥{b.price.toLocaleString()}</span>
-            {site.store && <a class="btn" href={site.store} target="_blank" rel="noopener">{site.storeButton ?? "ストアで見る"}</a>}
+            {site.store && <a class="btn" href={site.store} target="_blank" rel="noopener">{site.storeButton ?? tr("ストアで見る")}</a>}
           </div>
         ))}
       </div>
@@ -79,7 +80,7 @@ const num = ["①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨"];
   )}
   {techs.length > 0 && (
     <section>
-      <h2>▼ {site.tech?.label ?? "記事"}<a href={url("tech/")}>もっと</a></h2>
+      <h2>▼ {site.tech?.label ?? tr("記事")}<a href={url("tech/")}>{tr("もっと")}</a></h2>
       <ul class="list">{techs.map((p) => <li><span class="d">{dotted(p.data.date)}</span><a href={url(`tech/${p.id}/`)}>{p.data.emoji && `${p.data.emoji} `}{p.data.title}</a></li>)}</ul>
     </section>
   )}

@@ -2,11 +2,12 @@
 // receipt テーマの 404。取り消しのレシート
 import Base from "./Base.astro";
 import { url } from "@futon/lib/content";
+import { tr } from "@futon/lib/i18n";
 ---
-<Base title="ページが見つかりません" tab="">
-  <h2>取　消</h2>
+<Base title={tr("ページが見つかりません")} tab="">
+  <h2>{tr("取　消")}</h2>
   <p class="big404">ERROR 404</p>
-  <p class="row"><span>このページ</span><span>-¥404</span></p>
-  <p>このページは、まだ眠っているみたい。<br>お取引は取り消されました。</p>
-  <p><a href={url("/")}>[ホームへ]</a></p>
+  <p class="row"><span>{tr("このページ")}</span><span>-¥404</span></p>
+  <p>{tr("このページは、まだ眠っているみたい。")}<br>{tr("お取引は取り消されました。")}</p>
+  <p><a href={url("/")}>{tr("[ホームへ]")}</a></p>
 </Base>

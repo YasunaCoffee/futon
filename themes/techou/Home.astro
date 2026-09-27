@@ -4,6 +4,7 @@ import Base from "./Base.astro";
 import Cast from "./Cast.astro";
 import { episodes, techPosts, newest, dotted, url, site, characters as chars, books, booksOf } from "@futon/lib/content";
 import { series } from "@futon/lib/series";
+import { tr, lang } from "@futon/lib/i18n";
 const shelves = await Promise.all(series.map(async (s) => ({ s, eps: (await episodes(s.key)).slice(0, 4) })));
 const items = (await newest()).filter((i) => i.kind !== "video").slice(0, 7);
 const techs = (await techPosts()).slice(0, 5);
@@ -16,18 +17,18 @@ const tilt = (i: number) => `--tilt:${[-6, 5, -3, 7][i % 4]}deg`;
 ---
 <Base tab="home">
   <div class="spread">
-    <section class="pg weeks" aria-label="新着">
+    <section class="pg weeks" aria-label={tr("新着")}>
       <span class="hl" aria-hidden="true"></span>
       <ol class="days">
         {items.map((i, n) => (
           <li>
-            <span class="tab"><b>{i.date.getUTCDate()}</b><small>{EN[i.date.getUTCDay()]}</small><small>{JP[i.date.getUTCDay()]}</small></span>
+            <span class="tab"><b>{i.date.getUTCDate()}</b><small>{EN[i.date.getUTCDay()]}</small>{lang === "ja" && <small>{JP[i.date.getUTCDay()]}</small>}</span>
             <span class="plan"><a href={i.href}>{i.title}</a><small>{i.label}{i.note && ` ・ ${i.note}`}</small></span>
           </li>
         ))}
       </ol>
     </section>
-    <section class="pg grid" aria-label="キャラクターとまんが">
+    <section class="pg grid" aria-label={tr("キャラクターとまんが")}>
       {chars.length > 0 && (
         <div class="stamps">
           {chars.map((c) => <a href={`#chr-${c.slug}`} title={c.name}><img src={url(c.face ?? c.image)} alt={c.name} class={c.face ? undefined : "crop"}></a>)}
@@ -53,7 +54,7 @@ const tilt = (i: number) => `--tilt:${[-6, 5, -3, 7][i % 4]}deg`;
   {shelves.filter((x) => x.eps.length).map(({ s, eps }) => (
     <section class={`pg sheet d${deco()}`}>
       <i class="wt" aria-hidden="true"></i><i class="fs" aria-hidden="true"></i>
-      <h2><span class="tape">{s.name}</span><a href={url(`${s.key}/`)}>目次 →</a></h2>
+      <h2><span class="tape">{s.name}</span><a href={url(`${s.key}/`)}>{tr("目次 →")}</a></h2>
       <div class="cards">
         {eps.map((e, i) => { const c = s.card(e.data); return <a class="card" style={`--tilt:${[-1.2, .8, -.4, 1.1][i % 4]}deg`} href={url(`${s.key}/${e.data.num}/`)}><img src={url(c.thumb)} alt="" loading="lazy"><b>{e.data.title}</b><small>{c.sub}</small></a>; })}
       </div>
@@ -62,7 +63,7 @@ const tilt = (i: number) => `--tilt:${[-6, 5, -3, 7][i % 4]}deg`;
   {chars.length > 0 && (
     <section class={`pg sheet d${deco()}`} id="chars">
       <i class="wt" aria-hidden="true"></i><i class="fs" aria-hidden="true"></i>
-      <h2><span class="tape">キャラクター</span></h2>
+      <h2><span class="tape">{tr("キャラクター")}</span></h2>
       <div class="chars">
         {chars.map((c) => (
           <div class="chr" id={c.slug && `chr-${c.slug}`}>
@@ -70,11 +71,11 @@ const tilt = (i: number) => `--tilt:${[-6, 5, -3, 7][i % 4]}deg`;
             <b class="name">{c.name}</b>{c.tag && <span class="kind">{c.tag}</span>}
             <p>{c.text}</p>
             {c.facts && <dl class="prof">{c.facts.map(([k, v]: string[]) => <><dt>{k}</dt><dd>{v}</dd></>)}</dl>}
-            {c.fanart && <p class="note"><b>{c.fanart.ok}</b> {c.fanart.tags} {c.fanart.note} {c.fanart.link && <a href={url(c.fanart.link)}>ガイドライン →</a>}</p>}
-            {booksOf(c.slug).length > 0 && <p class="note">でてくる本 {booksOf(c.slug).map((b) => <a href={`#${b.id}`}>『{b.title}{b.sub}』</a>)}</p>}
+            {c.fanart && <p class="note"><b>{c.fanart.ok}</b> {c.fanart.tags} {c.fanart.note} {c.fanart.link && <a href={url(c.fanart.link)}>{tr("ガイドライン →")}</a>}</p>}
+            {booksOf(c.slug).length > 0 && <p class="note">{tr("でてくる本")} {booksOf(c.slug).map((b) => <a href={`#${b.id}`}>『{b.title}{b.sub}』</a>)}</p>}
             <p class="links">
-              {c.link && <a class="btn" href={url(c.link)}>よむ →</a>}
-              {c.site && <a class="btn" href={c.site} target="_blank" rel="noopener">公式サイト ↗</a>}
+              {c.link && <a class="btn" href={url(c.link)}>{tr("よむ →")}</a>}
+              {c.site && <a class="btn" href={c.site} target="_blank" rel="noopener">{tr("公式サイト ↗")}</a>}
               {c.x && <a class="btn" href={c.x} target="_blank" rel="noopener">X ↗</a>}
             </p>
           </div>
@@ -85,7 +86,7 @@ const tilt = (i: number) => `--tilt:${[-6, 5, -3, 7][i % 4]}deg`;
   {books.length > 0 && (
     <section class={`pg sheet d${deco()}`} id="books">
       <i class="wt" aria-hidden="true"></i><i class="fs" aria-hidden="true"></i>
-      <h2><span class="tape">本</span>{site.store && <a href={site.store} target="_blank" rel="noopener">ストア ↗</a>}</h2>
+      <h2><span class="tape">{tr("本")}</span>{site.store && <a href={site.store} target="_blank" rel="noopener">{tr("ストア ↗")}</a>}</h2>
       <div class="books">
         {books.map((b) => (
           <div class="bk" id={b.id}>
@@ -93,7 +94,7 @@ const tilt = (i: number) => `--tilt:${[-6, 5, -3, 7][i % 4]}deg`;
             <b>{b.title}<br>{b.sub}</b>
             {b.cast.length > 0 && <Cast list={b.cast} size={26} />}
             <span class="yen">¥{b.price.toLocaleString()}</span>
-            {site.store && <a class="btn" href={site.store} target="_blank" rel="noopener">{site.storeButton ?? "ストアで見る"}</a>}
+            {site.store && <a class="btn" href={site.store} target="_blank" rel="noopener">{site.storeButton ?? tr("ストアで見る")}</a>}
           </div>
         ))}
       </div>
@@ -102,7 +103,7 @@ const tilt = (i: number) => `--tilt:${[-6, 5, -3, 7][i % 4]}deg`;
   {techs.length > 0 && (
     <section class={`pg sheet d${deco()}`}>
       <i class="wt" aria-hidden="true"></i><i class="fs" aria-hidden="true"></i>
-      <h2><span class="tape">{site.tech?.label ?? "記事"}</span><a href={url("tech/")}>目次 →</a></h2>
+      <h2><span class="tape">{site.tech?.label ?? tr("記事")}</span><a href={url("tech/")}>{tr("目次 →")}</a></h2>
       <ul class="todo">{techs.map((p) => <li><span class="stamp">{dotted(p.data.date)}</span><a href={url(`tech/${p.id}/`)}>{p.data.emoji && `${p.data.emoji} `}{p.data.title}</a></li>)}</ul>
     </section>
   )}

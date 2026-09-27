@@ -3,6 +3,7 @@ import { readFutonJson } from "./futon";
 // サイトの設定(futon/site.json)。名前・ロゴ・運営者・フィードの宛先・キャラクター・本・動画など
 const site: any = readFutonJson("site.json");
 import { series } from "./series";
+import { tr } from "./i18n";
 
 // 公開ルール:hidden でなく、公開日がビルドした日(日本時間)以前のものだけ出す。
 // 確認用に全部見たいときは SHOW_ALL=1 で起動する。
@@ -43,9 +44,9 @@ export async function newest(): Promise<Item[]> {
         href: url(`${s.key}/${e.data.num}/`), thumb: url(s.card(e.data).thumb), note: s.itemNote(e.data), newsNote: s.newsNote?.(e.data) });
   // 動画は YouTube の動画ID(youtube)で持つ。ショート動画をYouTubeに上げたら site.json の videos に足す
   const v = ((site.videos ?? []) as { title: string; youtube: string; date: string; series?: string }[])
-    .filter((x) => SHOW_ALL || x.date <= today).map((x) => ({ kind: "video" as const, series: "video", label: "どうが", title: x.title,
-      date: new Date(x.date), href: url("/#video"), thumb: `https://i.ytimg.com/vi/${x.youtube}/hqdefault.jpg`, note: "ショートどうが" }));
-  const t = (await techPosts()).map((e) => ({ kind: "tech" as const, series: "tech", label: site.tech?.tab ?? "記事", title: e.data.title, date: e.data.date,
+    .filter((x) => SHOW_ALL || x.date <= today).map((x) => ({ kind: "video" as const, series: "video", label: tr("どうが"), title: x.title,
+      date: new Date(x.date), href: url("/#video"), thumb: `https://i.ytimg.com/vi/${x.youtube}/hqdefault.jpg`, note: tr("ショートどうが") }));
+  const t = (await techPosts()).map((e) => ({ kind: "tech" as const, series: "tech", label: site.tech?.tab ?? tr("記事"), title: e.data.title, date: e.data.date,
     href: url(`tech/${e.id}/`), thumb: techThumb(e.id), note: e.data.category }));
   return [...m, ...v, ...t].sort((a, b) => +b.date - +a.date);
 }

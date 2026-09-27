@@ -1,6 +1,6 @@
 {
   "name": "@yasuna/futon",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "An AI-friendly personal site engine. Just Markdown and images — ask your AI to \"add an episode\" and it's live. (AIフレンドリーな個人サイトエンジン)",
   "license": "MIT",
   "type": "module",

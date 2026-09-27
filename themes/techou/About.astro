@@ -3,15 +3,16 @@
 import Base from "./Base.astro";
 import { url, site } from "@futon/lib/content";
 import { readFutonJson } from "@futon/lib/futon";
+import { tr } from "@futon/lib/i18n";
 let a: any = {};
 try { a = readFutonJson("about.json"); } catch {}
 ---
-<Base title="について" tab="about" description={`${site.title}について`}>
+<Base title={tr("について")} tab="about" description={`${site.title}について`}>
   <h1 class="tape">{a.name ?? site.title}{a.tagline && <span class="kind">{a.tagline}</span>}</h1>
   {a.icon && <img src={url(a.icon)} alt="" width="120" height="120" style="border-radius:50%;margin:12px 0">}
   {a.intro && <p>{a.intro}</p>}
   {a.profile?.length > 0 && <dl class="prof">{a.profile.map(([k, v]: string[]) => <><dt>{k}</dt><dd>{v}</dd></>)}</dl>}
-  {a.history?.length > 0 && <><h2>あゆみ</h2><ul class="list">{a.history.map(([d, t]: string[]) => <li><span class="d">{d}</span><span>{t}</span></li>)}</ul></>}
-  {a.links?.length > 0 && <><h2>リンク</h2><ul class="list">{a.links.map((l: any) => <li><a href={l.href} target="_blank" rel="noopener">{l.label}</a>{l.handle && <span class="d">{l.handle}</span>}</li>)}</ul></>}
-  {a.contact && <><h2>おといあわせ</h2><p>{a.contact}</p></>}
+  {a.history?.length > 0 && <><h2>{tr("あゆみ")}</h2><ul class="list">{a.history.map(([d, t]: string[]) => <li><span class="d">{d}</span><span>{t}</span></li>)}</ul></>}
+  {a.links?.length > 0 && <><h2>{tr("リンク")}</h2><ul class="list">{a.links.map((l: any) => <li><a href={l.href} target="_blank" rel="noopener">{l.label}</a>{l.handle && <span class="d">{l.handle}</span>}</li>)}</ul></>}
+  {a.contact && <><h2>{tr("おといあわせ")}</h2><p>{a.contact}</p></>}
 </Base>

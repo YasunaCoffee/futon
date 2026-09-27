@@ -5,24 +5,25 @@ import { url, site } from "@futon/lib/content";
 import { shelfNav } from "@futon/lib/series";
 import { hasTech } from "@futon/lib/futon";
 import Analytics from "@futon/components/Analytics.astro";
+import { tr, lang } from "@futon/lib/i18n";
 interface Props { title?: string; description?: string; tab?: string; image?: string; back?: string }
 const { title, description = site.description, tab = "home", image, back } = Astro.props;
 const full = title ? `${title} | ${site.title}` : site.title;
 const nav = [
-  ["home", "ホーム", url("/")],
+  ["home", tr("ホーム"), url("/")],
   ...shelfNav(url),
-  ...(hasTech ? [["tech", site.tech?.tab ?? "記事", url("tech/")]] : []),
-  ...(site.characters?.length ? [["chars", "キャラ", url("/#chars")]] : []),
-  ...(site.books?.length ? [["books", "本", url("/#books")]] : []),
-  ["about", "について", url("about/")],
-  ...(site.store ? [["store", "ストア", site.store]] : []),
+  ...(hasTech ? [["tech", site.tech?.tab ?? tr("記事"), url("tech/")]] : []),
+  ...(site.characters?.length ? [["chars", tr("キャラ"), url("/#chars")]] : []),
+  ...(site.books?.length ? [["books", tr("本"), url("/#books")]] : []),
+  ["about", tr("について"), url("about/")],
+  ...(site.store ? [["store", tr("ストア"), site.store]] : []),
 ];
 // 数字キー:1〜9 にメニューを割り当てる。余ったキーは数字だけ
 const keys = Array.from({ length: 9 }, (_, i) => nav[i] ? { n: i + 1, k: nav[i][0], label: nav[i][1], href: nav[i][2] } : { n: i + 1 });
 const ext = (h?: string) => !!h && /^https?:/.test(h);
 ---
 <!doctype html>
-<html lang="ja">
+<html lang={lang}>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -50,27 +51,27 @@ const ext = (h?: string) => !!h && /^https?:/.test(h);
       </header>
       <main class="page"><slot /></main>
       <div class="soft">
-        <a href="#keys">メニュー</a>
-        <a href={back ?? url("/")}>もどる</a>
+        <a href="#keys">{tr("メニュー")}</a>
+        <a href={back ?? url("/")}>{tr("もどる")}</a>
       </div>
     </div>
-    <nav class="keys" id="keys" aria-label="メニュー">
+    <nav class="keys" id="keys" aria-label={tr("メニュー")}>
       <div class="top">
         <a class="call ok" href={url("rss.xml")} title="RSS" aria-label="RSS">✉</a>
-        <a class="center" href={url("/")} aria-label="ホーム">{site.mascot ? <img src={url(site.mascot)} alt=""> : "●"}</a>
-        <a class="call end" href={url("about/")} title="について" aria-label="について">☎</a>
+        <a class="center" href={url("/")} aria-label={tr("ホーム")}>{site.mascot ? <img src={url(site.mascot)} alt=""> : "●"}</a>
+        <a class="call end" href={url("about/")} title={tr("について")} aria-label={tr("について")}>☎</a>
       </div>
       <div class="pad">
         {keys.map((x) => x.href
           ? <a class={`key${tab === x.k ? " on" : ""}`} href={x.href} {...(ext(x.href) ? { target: "_blank", rel: "noopener" } : {})}><b>{x.n}</b><span>{x.label}</span></a>
           : <span class="key"><b>{x.n}</b></span>)}
         <span class="key"><b>*</b></span>
-        <a class="key" href={url("privacy/")}><b>0</b><span>このサイト</span></a>
+        <a class="key" href={url("privacy/")}><b>0</b><span>{tr("このサイト")}</span></a>
         <span class="key"><b>#</b></span>
       </div>
     </nav>
     <footer class="ft">
-      <small>{site.owner && <>運営:<a href={url("about/")}>{site.owner}</a> ／ </>}{site.copyright}{site.since && ` ／ ${site.since.label} since ${site.since.date}`}</small>
+      <small>{site.owner && <>{tr("運営:")}<a href={url("about/")}>{site.owner}</a> ／ </>}{site.copyright}{site.since && ` ／ ${site.since.label} since ${site.since.date}`}</small>
     </footer>
   </div>
 </body>

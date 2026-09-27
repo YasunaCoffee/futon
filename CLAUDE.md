@@ -9,6 +9,7 @@
 - futon の顔は文字だけのロゴ(`docs/images/logo.png`、MIT)。キャラクターは顔にしない
 - README の説明画像は heisei テーマの見た目(水色の水玉・青い枠・アクアの見出し帯・ピンクのリボン、字は Mochiy Pop P One・Kosugi・DotGothic16)でそろえる
 - README は英語(`README.md`、表の顔)と日本語(`README.ja.md`)の2つ。片方を直したら、もう片方も同じ変更の中で直す。画像も英語版(`docs/images/en/`)と日本語版(`docs/images/`)の2組
+- テーマに出す言葉は `tr("日本語")` で包み、英語を `engine/src/lib/i18n/en.json` に足す(`node tools/try.mjs` が足りない訳を知らせる)
 - 売りは「AIフレンドリー」。中身の形(md・json・shelves.yaml)を変えたら、雛形の `starter/AGENTS.md` の手順も同じ変更の中で直す
 
 ## npm に出す

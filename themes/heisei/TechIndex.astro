@@ -2,15 +2,16 @@
 import Base from "./Base.astro";
 import { techPosts, techThumb, dotted, url, site } from "@futon/lib/content";
 import { zennItems } from "@futon/lib/note";
-const tech = { label: "記事", tab: "きじ", lead: "", description: "", ...(site.tech ?? {}) }; // 記事の呼び方(site.json の tech)
+import { tr } from "@futon/lib/i18n";
+const tech = { label: tr("記事"), tab: tr("きじ"), lead: "", description: "", ...(site.tech ?? {}) }; // 記事の呼び方(site.json の tech)
 const zenn = await zennItems(8);
 const posts = await techPosts();
 ---
 <Base title={tech.label} tab="tech" description={tech.description || undefined}>
   <div class="page">
-    <p class="crumb"><a href={url("/")}>ホーム</a> ＞ {tech.label}</p>
+    <p class="crumb"><a href={url("/")}>{tr("ホーム")}</a> ＞ {tech.label}</p>
     <div class="box">
-      <div class="bh"><span>{tech.label}</span><span class="count">{posts.length}本</span></div>
+      <div class="bh"><span>{tech.label}</span><span class="count">{posts.length}{tr("本")}</span></div>
       <div class="bb">
         {tech.lead && <p class="lead-p">{tech.lead}</p>}
         <ul class="techlist">
@@ -25,7 +26,7 @@ const posts = await techPosts();
     </div>
     {zenn.length > 0 && (
       <div class="box" style="margin-top:12px">
-        <div class="bh"><span>Zennにも書いています</span><a href={site.feeds?.zenn?.page} target="_blank" rel="noopener">Zennへ ▶</a></div>
+        <div class="bh"><span>{tr("Zennにも書いています")}</span><a href={site.feeds?.zenn?.page} target="_blank" rel="noopener">{tr("Zennへ ▶")}</a></div>
         <div class="bb">
           <ul class="techlist">
             {zenn.map((z) => (

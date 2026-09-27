@@ -3,6 +3,7 @@
 import Base from "./Base.astro";
 import { episodes, techPosts, newest, md, dotted, url, site } from "@futon/lib/content";
 import { series } from "@futon/lib/series";
+import { tr } from "@futon/lib/i18n";
 const shelves = await Promise.all(series.map(async (s) => ({ s, eps: (await episodes(s.key)).slice(0, 6) })));
 const items = (await newest()).filter((i) => i.kind !== "video").slice(0, 8);
 const techs = (await techPosts()).slice(0, 5);
@@ -19,7 +20,7 @@ const techs = (await techPosts()).slice(0, 5);
   )}
   {items.length > 0 && (
     <section>
-      <h2>新着<a href={url("rss.xml")}>RSS</a></h2>
+      <h2>{tr("新着")}<a href={url("rss.xml")}>RSS</a></h2>
       <ul class="list">
         {items.map((i) => <li><span class="d">{md(i.date)}</span><span><span class="tag">{i.label}</span><a href={i.href}>{i.title}</a></span></li>)}
       </ul>
@@ -27,7 +28,7 @@ const techs = (await techPosts()).slice(0, 5);
   )}
   {shelves.filter((x) => x.eps.length).map(({ s, eps }) => (
     <section>
-      <h2>{s.name}<a href={url(`${s.key}/`)}>ぜんぶ見る</a></h2>
+      <h2>{s.name}<a href={url(`${s.key}/`)}>{tr("ぜんぶ見る")}</a></h2>
       <div class="cards">
         {eps.map((e) => { const c = s.card(e.data); return <a class="card" href={url(`${s.key}/${e.data.num}/`)}><img src={url(c.thumb)} alt="" loading="lazy">{e.data.title}<small>{c.sub}</small></a>; })}
       </div>
@@ -35,7 +36,7 @@ const techs = (await techPosts()).slice(0, 5);
   ))}
   {techs.length > 0 && (
     <section>
-      <h2>{site.tech?.label ?? "記事"}<a href={url("tech/")}>ぜんぶ見る</a></h2>
+      <h2>{site.tech?.label ?? tr("記事")}<a href={url("tech/")}>{tr("ぜんぶ見る")}</a></h2>
       <ul class="list">{techs.map((p) => <li><span class="d">{dotted(p.data.date)}</span><a href={url(`tech/${p.id}/`)}>{p.data.title}</a></li>)}</ul>
     </section>
   )}

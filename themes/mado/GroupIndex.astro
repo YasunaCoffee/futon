@@ -3,6 +3,7 @@
 import Base from "./Base.astro";
 import Hana from "./Hana.astro";
 import { episodes, url } from "@futon/lib/content";
+import { tr } from "@futon/lib/i18n";
 const { g } = Astro.props;
 const shelves = await Promise.all(g.shelves.map(async (s: any) => ({ s, eps: (await episodes(s.key)).slice(0, 8) })));
 ---
@@ -16,7 +17,7 @@ const shelves = await Promise.all(g.shelves.map(async (s: any) => ({ s, eps: (aw
       <div class="cards">
         {eps.map((e: any) => { const c = s.card(e.data); return <a class="card" href={url(`${s.key}/${e.data.num}/`)}><img src={url(c.thumb)} alt="" loading="lazy"><span>{e.data.title}</span><small>{c.sub}</small></a>; })}
       </div>
-      <p class="more"><a href={url(`${s.key}/`)}>もっと見る ≫</a></p>
+      <p class="more"><a href={url(`${s.key}/`)}>{tr("もっと見る ≫")}</a></p>
     </section>
   ))}
 </Base>

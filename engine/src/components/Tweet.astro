@@ -1,5 +1,6 @@
 ---
 // Xのポストを埋め込む。スクリプトは画面に近づいてから1回だけ読む(ページを重くしない)。
+import { tr, lang } from "@futon/lib/i18n";
 // スクリプトが読めないときも、ポストへのリンクとして残る
 interface Props { url: string; note?: string }
 const { url, note } = Astro.props;
@@ -7,8 +8,8 @@ const clean = url.replace("twitter.com", "x.com").split("?")[0];
 ---
 <div class="tweet">
   {note && <p class="tweet-note">{note}</p>}
-  <blockquote class="twitter-tweet" data-dnt="true" data-lang="ja" data-conversation="none">
-    <a href={clean}>Xでポストを見る ▶</a>
+  <blockquote class="twitter-tweet" data-dnt="true" data-lang={lang} data-conversation="none">
+    <a href={clean}>{tr("Xでポストを見る ▶")}</a>
   </blockquote>
 </div>
 

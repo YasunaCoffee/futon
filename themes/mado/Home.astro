@@ -5,6 +5,7 @@ import Cast from "./Cast.astro";
 import Hana from "./Hana.astro";
 import { episodes, techPosts, newest, md, dotted, url, site, characters, books, booksOf } from "@futon/lib/content";
 import { series } from "@futon/lib/series";
+import { tr } from "@futon/lib/i18n";
 const shelves = await Promise.all(series.map(async (s) => ({ s, eps: (await episodes(s.key)).slice(0, 4) })));
 const items = (await newest()).filter((i) => i.kind !== "video").slice(0, 6);
 const techs = (await techPosts()).slice(0, 5);
@@ -25,7 +26,7 @@ const techs = (await techPosts()).slice(0, 5);
   <Hana />
   {items.length > 0 && (
     <section>
-      <h2>新作登場!!</h2>
+      <h2>{tr("新作登場!!")}</h2>
       <ul class="news">{items.map((i) => <li><span class="d">{md(i.date)}</span> <a href={i.href}>{i.label}:{i.title}</a>{i === items[0] && <b class="new">NEW!</b>}</li>)}</ul>
     </section>
   )}
@@ -35,12 +36,12 @@ const techs = (await techPosts()).slice(0, 5);
       <div class="cards">
         {eps.map((e) => { const c = s.card(e.data); return <a class="card" href={url(`${s.key}/${e.data.num}/`)}><img src={url(c.thumb)} alt="" loading="lazy"><span>{e.data.title}</span><small>{c.sub}</small></a>; })}
       </div>
-      <p class="more"><a href={url(`${s.key}/`)}>もっと見る ≫</a></p>
+      <p class="more"><a href={url(`${s.key}/`)}>{tr("もっと見る ≫")}</a></p>
     </section>
   ))}
   {characters.length > 0 && (
     <section id="chars">
-      <h2>キャラクターしょうかい</h2>
+      <h2>{tr("キャラクターしょうかい")}</h2>
       <div class="chars">
         {characters.map((c) => (
           <table class="chr" id={c.slug && `chr-${c.slug}`}>
@@ -49,11 +50,11 @@ const techs = (await techPosts()).slice(0, 5);
               <tr><td>
                 <p>{c.text}</p>
                 {c.facts && <p class="facts">{c.facts.map(([k, v]: string[]) => <>{k}:{v}<br /></>)}</p>}
-                {c.fanart && <p class="note">{c.fanart.ok} {c.fanart.tags} {c.fanart.note} {c.fanart.link && <a href={url(c.fanart.link)}>ガイドライン</a>}</p>}
-                {booksOf(c.slug).length > 0 && <p class="note">でてくる本 {booksOf(c.slug).map((b) => <a href={`#${b.id}`}>『{b.title}{b.sub}』</a>)}</p>}
+                {c.fanart && <p class="note">{c.fanart.ok} {c.fanart.tags} {c.fanart.note} {c.fanart.link && <a href={url(c.fanart.link)}>{tr("ガイドライン")}</a>}</p>}
+                {booksOf(c.slug).length > 0 && <p class="note">{tr("でてくる本")} {booksOf(c.slug).map((b) => <a href={`#${b.id}`}>『{b.title}{b.sub}』</a>)}</p>}
                 <p class="links">
-                  {c.link && <a href={url(c.link)}>≫よむ</a>}
-                  {c.site && <a href={c.site} target="_blank" rel="noopener">≫公式サイト</a>}
+                  {c.link && <a href={url(c.link)}>{tr("≫よむ")}</a>}
+                  {c.site && <a href={c.site} target="_blank" rel="noopener">{tr("≫公式サイト")}</a>}
                   {c.x && <a href={c.x} target="_blank" rel="noopener">≫X</a>}
                 </p>
               </td></tr>
@@ -65,7 +66,7 @@ const techs = (await techPosts()).slice(0, 5);
   )}
   {books.length > 0 && (
     <section id="books">
-      <h2>本のおみせ</h2>
+      <h2>{tr("本のおみせ")}</h2>
       <div class="books">
         {books.map((b) => (
           <div class="bk" id={b.id}>
@@ -73,7 +74,7 @@ const techs = (await techPosts()).slice(0, 5);
             <b>{b.title}<br>{b.sub}</b>
             {b.cast.length > 0 && <Cast list={b.cast} size={24} />}
             <span class="yen">¥{b.price.toLocaleString()}</span>
-            {site.store && <a class="btn" href={site.store} target="_blank" rel="noopener">{site.storeButton ?? "ストアで見る"}</a>}
+            {site.store && <a class="btn" href={site.store} target="_blank" rel="noopener">{site.storeButton ?? tr("ストアで見る")}</a>}
           </div>
         ))}
       </div>
@@ -81,14 +82,14 @@ const techs = (await techPosts()).slice(0, 5);
   )}
   {techs.length > 0 && (
     <section>
-      <h2>{site.tech?.label ?? "記事"}</h2>
+      <h2>{site.tech?.label ?? tr("記事")}</h2>
       <ul class="news">{techs.map((p) => <li><span class="d">{dotted(p.data.date)}</span> <a href={url(`tech/${p.id}/`)}>{p.data.emoji && `${p.data.emoji} `}{p.data.title}</a></li>)}</ul>
-      <p class="more"><a href={url("tech/")}>もっと見る ≫</a></p>
+      <p class="more"><a href={url("tech/")}>{tr("もっと見る ≫")}</a></p>
     </section>
   )}
   <Hana />
   <div class="manner">
-    <p class="mh">まなーぶっく</p>
-    <p>絵や文章の無断転載はしないでね。<br>リンクは自由だよ。<a href={url("rss.xml")}>RSS</a> もあるよ。</p>
+    <p class="mh">{tr("まなーぶっく")}</p>
+    <p>{tr("絵や文章の無断転載はしないでね。")}<br>{tr("リンクは自由だよ。")}<a href={url("rss.xml")}>RSS</a> {tr("もあるよ。")}</p>
   </div>
 </Base>

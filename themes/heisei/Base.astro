@@ -4,19 +4,20 @@ import { url, site } from "@futon/lib/content";
 import { shelfNav } from "@futon/lib/series";
 import { hasTech } from "@futon/lib/futon";
 import Analytics from "@futon/components/Analytics.astro";
-const tech = { label: "記事", tab: "きじ", lead: "", description: "", ...(site.tech ?? {}) }; // 記事の呼び方(site.json の tech)
+import { tr, lang } from "@futon/lib/i18n";
+const tech = { label: tr("記事"), tab: tr("きじ"), lead: "", description: "", ...(site.tech ?? {}) }; // 記事の呼び方(site.json の tech)
 interface Props { title?: string; description?: string; tab?: string; image?: string }
 const { title, description = site.description, tab = "home", image } = Astro.props;
 const full = title ? `${title} | ${site.title}` : site.title;
 const tabs = [
-  ["home", "ホーム", url("/")], ...shelfNav(url),
+  ["home", tr("ホーム"), url("/")], ...shelfNav(url),
   ...(hasTech ? [["tech", tech.tab, url("tech/")]] : []),
-  ...(site.characters?.length ? [["chars", "キャラクター", url("/#chars")]] : []), ...(site.books?.length ? [["books", "ほん", url("/#books")]] : []),
-  ["about", "うんえい", url("about/")],
+  ...(site.characters?.length ? [["chars", tr("キャラクター"), url("/#chars")]] : []), ...(site.books?.length ? [["books", tr("ほん"), url("/#books")]] : []),
+  ["about", tr("うんえい"), url("about/")],
 ];
 ---
 <!doctype html>
-<html lang="ja">
+<html lang={lang}>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -40,14 +41,14 @@ const tabs = [
     <a class="logo" href={url("/")} set:html={site.logo} />
     <div class="hello" set:html={site.hello} />
   </header>
-  <nav class="tabs" aria-label="メニュー">
+  <nav class="tabs" aria-label={tr("メニュー")}>
     {tabs.map(([k, label, href]) => <a class={tab === k ? "on" : undefined} href={href}>{label}</a>)}
-    {site.store && <a href={site.store} target="_blank" rel="noopener">ストア</a>}
+    {site.store && <a href={site.store} target="_blank" rel="noopener">{tr("ストア")}</a>}
   </nav>
   <slot />
   <footer class="ft">
-    <nav aria-label="フッター"><a href={url("/")}>ホーム</a>{shelfNav(url).map(([, label, href]) => <a href={href}>{label}</a>)}{hasTech && <a href={url("tech/")}>{tech.tab}</a>}{site.store && <a href={site.store} target="_blank" rel="noopener">ストア</a>}<a href={url("rss.xml")}>RSS</a><a href={url("privacy/")}>このサイトについて</a></nav>
-    <small><a href={url("about/")}>運営:{site.owner}</a> ／ このサイトに掲載のイラスト・文章の無断転載を禁じます。<br>{site.copyright}</small>
+    <nav aria-label={tr("フッター")}><a href={url("/")}>{tr("ホーム")}</a>{shelfNav(url).map(([, label, href]) => <a href={href}>{label}</a>)}{hasTech && <a href={url("tech/")}>{tech.tab}</a>}{site.store && <a href={site.store} target="_blank" rel="noopener">{tr("ストア")}</a>}<a href={url("rss.xml")}>RSS</a><a href={url("privacy/")}>{tr("このサイトについて")}</a></nav>
+    <small><a href={url("about/")}>{tr("運営:")}{site.owner}</a> {tr("／ このサイトに掲載のイラスト・文章の無断転載を禁じます。")}<br>{site.copyright}</small>
   </footer>
 </div>
 </body>

@@ -2,6 +2,7 @@
 // receipt テーマのグループのページ(いくつかの棚をまとめたもの)。props:g(グループ)
 import Base from "./Base.astro";
 import { episodes, url } from "@futon/lib/content";
+import { tr } from "@futon/lib/i18n";
 const { g } = Astro.props;
 const shelves = await Promise.all(g.shelves.map(async (s: any) => ({ s, eps: (await episodes(s.key)).slice(0, 8) })));
 ---
@@ -14,7 +15,7 @@ const shelves = await Promise.all(g.shelves.map(async (s: any) => ({ s, eps: (aw
       <ul class="thumbs">
         {eps.map((e: any) => { const c = s.card(e.data); return <li><a href={url(`${s.key}/${e.data.num}/`)}><img src={url(c.thumb)} alt="" loading="lazy"><span><b>{e.data.title}</b><small>{c.sub}</small></span></a></li>; })}
       </ul>
-      <p class="sub"><a href={url(`${s.key}/`)}>ぜんぶ見る ＞</a></p>
+      <p class="sub"><a href={url(`${s.key}/`)}>{tr("ぜんぶ見る ＞")}</a></p>
     </section>
   ))}
 </Base>

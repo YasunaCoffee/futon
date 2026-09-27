@@ -4,6 +4,7 @@ import Base from "./Base.astro";
 import Share from "@futon/components/Share.astro";
 import { render } from "astro:content";
 import { dotted, url } from "@futon/lib/content";
+import { tr } from "@futon/lib/i18n";
 const { p, newer, older } = Astro.props;
 const { Content } = await render(p);
 const d = p.data;
@@ -14,7 +15,7 @@ const d = p.data;
   <article class="prose"><Content /></article>
   <Share text={d.title} />
   <div class="pager">
-    {older ? <a class="btn" href={url(`tech/${older.id}/`)}>← まえ</a> : <span></span>}
-    {newer ? <a class="btn" href={url(`tech/${newer.id}/`)}>つぎ →</a> : <a class="btn" href={url("tech/")}>一覧へ</a>}
+    {older ? <a class="btn" href={url(`tech/${older.id}/`)}>{tr("← まえ")}</a> : <span></span>}
+    {newer ? <a class="btn" href={url(`tech/${newer.id}/`)}>{tr("つぎ →")}</a> : <a class="btn" href={url("tech/")}>{tr("一覧へ")}</a>}
   </div>
 </Base>

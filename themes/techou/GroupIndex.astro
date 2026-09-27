@@ -2,6 +2,7 @@
 // techou テーマのグループのページ(いくつかの棚をまとめたもの)。props:g(グループ)
 import Base from "./Base.astro";
 import { episodes, url } from "@futon/lib/content";
+import { tr } from "@futon/lib/i18n";
 const { g } = Astro.props;
 const shelves = await Promise.all(g.shelves.map(async (s: any) => ({ s, eps: (await episodes(s.key)).slice(0, 8) })));
 ---
@@ -11,7 +12,7 @@ const shelves = await Promise.all(g.shelves.map(async (s: any) => ({ s, eps: (aw
   {shelves.map(({ s, eps }, i) => (
     <section class={`pg sheet d${(i + 1) % 4}`}>
       <i class="wt" aria-hidden="true"></i><i class="fs" aria-hidden="true"></i>
-      <h2><span class="tape">{s.name}</span><a href={url(`${s.key}/`)}>目次 →</a></h2>
+      <h2><span class="tape">{s.name}</span><a href={url(`${s.key}/`)}>{tr("目次 →")}</a></h2>
       <div class="cards">
         {eps.map((e: any, j: number) => { const c = s.card(e.data); return <a class="card" style={`--tilt:${[-1.2, .8, -.4, 1.1][j % 4]}deg`} href={url(`${s.key}/${e.data.num}/`)}><img src={url(c.thumb)} alt="" loading="lazy"><b>{e.data.title}</b><small>{c.sub}</small></a>; })}
       </div>

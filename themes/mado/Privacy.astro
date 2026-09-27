@@ -2,16 +2,17 @@
 // mado テーマの「このサイトについて」
 import Base from "./Base.astro";
 import { url, site } from "@futon/lib/content";
+import { tr } from "@futon/lib/i18n";
 const ga = import.meta.env.PUBLIC_GA_ID;
 ---
-<Base title="このサイトについて" tab="">
-  <h1 class="big">このサイトについて</h1>
+<Base title={tr("このサイトについて")} tab="">
+  <h1 class="big">{tr("このサイトについて")}</h1>
   <div class="prose">
-    {ga && <><h2>アクセス解析</h2><p>よく読まれているページを知るために Google アナリティクスを使っています。Cookie を使って、個人を特定しない形で閲覧の情報を集めます。</p></>}
-    <h2>Xの埋め込み</h2>
-    <p>一部のページでは X のポストを埋め込んでいます。表示されるとき、X Corp. にページのURLなどの情報が送られます。</p>
-    <h2>作品のこと</h2>
-    <p>このサイトに掲載のイラスト・文章の無断転載を禁じます。</p>
-    {site.owner && <><h2>運営</h2><p><a href={url("about/")}>{site.owner}</a></p></>}
+    {ga && <><h2>{tr("アクセス解析")}</h2><p>{tr("よく読まれているページを知るために Google アナリティクスを使っています。Cookie を使って、個人を特定しない形で閲覧の情報を集めます。")}</p></>}
+    <h2>{tr("Xの埋め込み")}</h2>
+    <p>{tr("一部のページでは X のポストを埋め込んでいます。表示されるとき、X Corp. にページのURLなどの情報が送られます。")}</p>
+    <h2>{tr("作品のこと")}</h2>
+    <p>{tr("このサイトに掲載のイラスト・文章の無断転載を禁じます。")}</p>
+    {site.owner && <><h2>{tr("運営")}</h2><p><a href={url("about/")}>{site.owner}</a></p></>}
   </div>
 </Base>

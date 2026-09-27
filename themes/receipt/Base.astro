@@ -5,21 +5,22 @@ import { url, site, today, characters } from "@futon/lib/content";
 import { shelfNav } from "@futon/lib/series";
 import { hasTech } from "@futon/lib/futon";
 import Analytics from "@futon/components/Analytics.astro";
+import { tr, weekday, longDate, lang } from "@futon/lib/i18n";
 interface Props { title?: string; description?: string; tab?: string; image?: string; doodle?: boolean }
 const { title, description = site.description, tab = "home", image, doodle = true } = Astro.props;
 const full = title ? `${title} | ${site.title}` : site.title;
 const nav = [
-  ["home", "ホーム", url("/")],
+  ["home", tr("ホーム"), url("/")],
   ...shelfNav(url),
-  ...(hasTech ? [["tech", site.tech?.tab ?? "記事", url("tech/")]] : []),
-  ...(characters.length ? [["chars", "キャラ", url("/#chars")]] : []),
-  ...(site.books?.length ? [["books", "本", url("/#books")]] : []),
-  ["about", "について", url("about/")],
+  ...(hasTech ? [["tech", site.tech?.tab ?? tr("記事"), url("tech/")]] : []),
+  ...(characters.length ? [["chars", tr("キャラ"), url("/#chars")]] : []),
+  ...(site.books?.length ? [["books", tr("本"), url("/#books")]] : []),
+  ["about", tr("について"), url("about/")],
 ];
 // 落書き:紹介の絵 → マスコット → 1人目のキャラ
 const art = site.intro?.image ?? site.mascot ?? characters[0]?.image;
 const d = new Date(today + "T00:00:00Z");
-const wd = "日月火水木金土"[d.getUTCDay()];
+const wd = weekday(d.getUTCDay());
 // バーコード:サイト名から毎回同じ太さの並びを作る
 let h = 7; const bars: number[] = [];
 for (const ch of site.title + (Astro.url.pathname ?? "")) { h = (h * 31 + ch.charCodeAt(0)) >>> 0; }
@@ -27,7 +28,7 @@ for (let i = 0; i < 46; i++) { h = (h * 1103515245 + 12345) >>> 0; bars.push(1 +
 const code = String(h % 1e12).padStart(12, "0");
 ---
 <!doctype html>
-<html lang="ja">
+<html lang={lang}>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -50,25 +51,25 @@ const code = String(h % 1e12).padStart(12, "0");
     {doodle && art && <img class="doodle" src={url(art)} alt="" aria-hidden="true">}
     <header class="hd">
       <a class="logo" href={url("/")}><i aria-hidden="true"></i>{site.title}</a>
-      <p class="shop">{site.owner ? `${site.owner}店` : "本店"}{site.since && ` ／ ${site.since.label} since ${site.since.date}`}</p>
+      <p class="shop">{site.owner ? `${site.owner}店` : tr("本店")}{site.since && ` ／ ${site.since.label} since ${site.since.date}`}</p>
       {site.hello && <p class="shop" set:html={site.hello} />}
-      <p class="row"><span>{today.replaceAll("-", "年").replace(/年(\d+)$/, "月$1日")}({wd})</span><span>責No.{String(nav.length).padStart(3, "0")}</span></p>
+      <p class="row"><span>{longDate(today)}({wd})</span><span>{tr("責No.")}{String(nav.length).padStart(3, "0")}</span></p>
     </header>
     <p class="eq" aria-hidden="true"></p>
-    <nav class="menu" aria-label="メニュー">
+    <nav class="menu" aria-label={tr("メニュー")}>
       {nav.map(([k, label, href], i) => <a class={tab === k ? "on" : undefined} href={href}><span>{String(i + 1).padStart(2, "0")}</span>{label}</a>)}
-      {site.store && <a href={site.store} target="_blank" rel="noopener"><span>{String(nav.length + 1).padStart(2, "0")}</span>ストア</a>}
+      {site.store && <a href={site.store} target="_blank" rel="noopener"><span>{String(nav.length + 1).padStart(2, "0")}</span>{tr("ストア")}</a>}
     </nav>
     <p class="eq" aria-hidden="true"></p>
     <main class="page"><slot /></main>
     <footer class="ft">
       <p class="dash" aria-hidden="true"></p>
-      <p class="thanks">またのご来店を<br>お待ちしております</p>
+      <p class="thanks">{tr("またのご来店を")}<br>{tr("お待ちしております")}</p>
       <div class="barcode" aria-hidden="true">{bars.map((w, i) => <i style={`width:${w}px;${i % 2 ? "background:transparent" : ""}`}></i>)}</div>
       <p class="code">{code}</p>
-      <p class="links"><a href={url("rss.xml")}>RSS</a><a href={url("privacy/")}>このサイトについて</a>{site.owner && <a href={url("about/")}>{site.owner}</a>}</p>
+      <p class="links"><a href={url("rss.xml")}>RSS</a><a href={url("privacy/")}>{tr("このサイトについて")}</a>{site.owner && <a href={url("about/")}>{site.owner}</a>}</p>
       <p class="copy">{site.copyright}</p>
-      <p class="hikae">お 客 様 控 え</p>
+      <p class="hikae">{tr("お 客 様 控 え")}</p>
     </footer>
   </div>
 </body>

@@ -7,6 +7,7 @@ import Hana from "./Hana.astro";
 import Share from "@futon/components/Share.astro";
 import Tweet from "@futon/components/Tweet.astro";
 import { dotted, url, castOf } from "@futon/lib/content";
+import { tr } from "@futon/lib/i18n";
 const { s, e, newer, older } = Astro.props;
 const d = e.data;
 const p = s.page(d);
@@ -19,13 +20,13 @@ const cast = castOf(p.cast);
   <Hana />
   <div class="imgs">{p.images.map((i) => <img src={url(i.src)} alt={i.alt}>)}</div>
   {p.kessho && <p class="verse">{p.kessho.lines.map((l, i) => <>{i > 0 && <br />}{l}</>)}<small>{p.kessho.source}</small></p>}
-  {cast.length > 0 && <p class="memo">この話に出てくる人 <Cast list={cast} size={36} /></p>}
-  {d.x && <Tweet url={d.x} note="Xでのようす" />}
+  {cast.length > 0 && <p class="memo">{tr("この話に出てくる人")} <Cast list={cast} size={36} /></p>}
+  {d.x && <Tweet url={d.x} note={tr("Xでのようす")} />}
   <Share text={p.share} />
   <Hana />
   <p class="pager">
-    {older ? <a href={url(`${s.key}/${older.data.num}/`)}>≪まえのおはなし</a> : <span></span>}
-    <a href={url(`${s.key}/`)}>もくじ</a>
-    {newer ? <a href={url(`${s.key}/${newer.data.num}/`)}>つぎのおはなし≫</a> : <span></span>}
+    {older ? <a href={url(`${s.key}/${older.data.num}/`)}>{tr("≪まえのおはなし")}</a> : <span></span>}
+    <a href={url(`${s.key}/`)}>{tr("もくじ")}</a>
+    {newer ? <a href={url(`${s.key}/${newer.data.num}/`)}>{tr("つぎのおはなし≫")}</a> : <span></span>}
   </p>
 </Base>

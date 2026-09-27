@@ -3,6 +3,7 @@
 import { tabOf } from "@futon/lib/series";
 import Base from "./Base.astro";
 import { episodes, url } from "@futon/lib/content";
+import { tr } from "@futon/lib/i18n";
 const { s } = Astro.props;
 const eps = await episodes(s.key);
 ---
@@ -12,5 +13,5 @@ const eps = await episodes(s.key);
   <ul class="thumbs">
     {eps.map((e) => { const c = s.card(e.data); return <li><a href={url(`${s.key}/${e.data.num}/`)}><img src={url(c.thumb)} alt="" loading="lazy"><span><b>{e.data.title}</b><small>{c.sub}</small></span></a></li>; })}
   </ul>
-  <p class="total"><span>合　計</span><span>{eps.length}点</span></p>
+  <p class="total"><span>{tr("合　計")}</span><span>{eps.length}{tr("点")}</span></p>
 </Base>

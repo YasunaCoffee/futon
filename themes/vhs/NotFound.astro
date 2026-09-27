@@ -2,12 +2,13 @@
 // vhs テーマの 404。黄緑のエラー画面
 import Base from "./Base.astro";
 import { url } from "@futon/lib/content";
+import { tr } from "@futon/lib/i18n";
 ---
-<Base title="ページが見つかりません" tab="" err>
+<Base title={tr("ページが見つかりません")} tab="" err>
   <div class="e404">
     <p class="big">(ERR0R 404)</p>
     <p>PLEASE____INSERT TAPE____AGAIN</p>
-    <p>このページは、まだ眠っているみたい。</p>
-    <a class="btn" href={url("/")}>▶ ホームへ</a>
+    <p>{tr("このページは、まだ眠っているみたい。")}</p>
+    <a class="btn" href={url("/")}>{tr("▶ ホームへ")}</a>
   </div>
 </Base>

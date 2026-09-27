@@ -14,7 +14,7 @@ Lay out your *futon* (the content folder), and your homepage tidies itself up wh
 - **Tucking in (sync).** Pull updates from elsewhere — your blog, production notes — into the site (`futon sync`). Made for a nightly/morning cron
 - **Dress-up (themes).** The look is a theme. Keep the content, switch the look with one line
 
-The screenshots show Japanese sites, and the bundled themes' menu labels and the starter are in Japanese for now. Everything specific to your site — titles, intro, shelves, episodes — comes from your own files, so you can write it in any language.
+For an English site, add `"lang": "en"` to `site.json`: every theme's menus, headings and buttons switch to English. Change any single word with `"labels": { "ホーム": "Top" }`. Everything specific to your site (titles, intro, shelves, episodes) comes from your own files, so write it in any language. The starter's sample text is Japanese.
 
 ## How it works
 
@@ -87,7 +87,7 @@ A scheduled job runs `futon sync` every morning to pull the newest episodes from
 
 | File | What |
 |---|---|
-| `site.json` | Site name, logo, greeting, owner, feeds (note / Zenn), intro, characters, books, videos, embedded posts, extra pages, `theme`, `noindex`, `url`, `imageBase` (where `futon add` / `sync` fetch images), and what to call articles (`tech: { label, tab, lead, description }`) |
+| `site.json` | `lang` (`"ja"` or `"en"` for the theme's words), `labels` (rename any theme word), site name, logo, greeting, owner, feeds (note / Zenn), intro, characters, books, videos, embedded posts, extra pages, `theme`, `noindex`, `url`, `imageBase` (where `futon add` / `sync` fetch images), and what to call articles (`tech: { label, tab, lead, description }`) |
 | `shelves.yaml` | Comic shelves (series). Add one and it appears in the index, episode pages, menu, home and RSS. A `- group: <key>` line groups shelves (one menu tab, shelves listed at `/<key>/`). The starter's header explains the format |
 | `<shelf>/*.md` | Episodes. A future `date` stays hidden until the build on that day (scheduling). `hidden: true` hides one. `cast` overrides "who's in this episode" for one episode |
 | `tech/*.md` | Articles (optional) |
@@ -144,7 +144,7 @@ Extra pages in your futon (`pages/*.astro`) can import the theme's frame as `@th
 
 Try it on: `node tools/try.mjs` (every theme in `themes/`) or `node tools/try.mjs <name>`.
 It builds the showcase (`samples/showcase/`, "みほんのふとん"), which fills every field, and checks that all pages exist. Output goes to `out/<name>/`.
-Don't hard-code a particular site's wording in a theme. Read site-specific words from `site.json` and fall back to generic ones.
+Wrap every word a theme shows in `tr("…")` from `@futon/lib/i18n` (write it in Japanese; add the English to `engine/src/lib/i18n/en.json`). Don't hard-code a particular site's wording in a theme. Read site-specific words from `site.json` and fall back to generic ones.
 
 ## Shelf formats
 

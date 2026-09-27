@@ -5,18 +5,19 @@ import { url, site } from "@futon/lib/content";
 import { shelfNav } from "@futon/lib/series";
 import { hasTech } from "@futon/lib/futon";
 import Analytics from "@futon/components/Analytics.astro";
+import { tr, lang } from "@futon/lib/i18n";
 interface Props { title?: string; description?: string; tab?: string; image?: string }
 const { title, description = site.description, tab = "home", image } = Astro.props;
 const full = title ? `${title} | ${site.title}` : site.title;
 const nav = [
-  ["home", "ホーム", url("/")],
+  ["home", tr("ホーム"), url("/")],
   ...shelfNav(url),
-  ...(hasTech ? [["tech", site.tech?.tab ?? "記事", url("tech/")]] : []),
-  ["about", "について", url("about/")],
+  ...(hasTech ? [["tech", site.tech?.tab ?? tr("記事"), url("tech/")]] : []),
+  ["about", tr("について"), url("about/")],
 ];
 ---
 <!doctype html>
-<html lang="ja">
+<html lang={lang}>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -34,17 +35,17 @@ const nav = [
   <header class="hd">
     <div class="wrap">
       <a class="logo" href={url("/")}>{site.title}</a>
-      <nav class="nav" aria-label="メニュー">
+      <nav class="nav" aria-label={tr("メニュー")}>
         {nav.map(([k, label, href]) => <a class={tab === k ? "on" : undefined} href={href}>{label}</a>)}
-        {site.store && <a href={site.store} target="_blank" rel="noopener">ストア</a>}
+        {site.store && <a href={site.store} target="_blank" rel="noopener">{tr("ストア")}</a>}
       </nav>
     </div>
   </header>
   <main class="wrap"><slot /></main>
   <footer class="ft">
     <div class="wrap">
-      <nav aria-label="フッター"><a href={url("rss.xml")}>RSS</a><a href={url("privacy/")}>このサイトについて</a></nav>
-      <small>{site.owner && <>運営:<a href={url("about/")}>{site.owner}</a> ／ </>}{site.copyright}</small>
+      <nav aria-label={tr("フッター")}><a href={url("rss.xml")}>RSS</a><a href={url("privacy/")}>{tr("このサイトについて")}</a></nav>
+      <small>{site.owner && <>{tr("運営:")}<a href={url("about/")}>{site.owner}</a> ／ </>}{site.copyright}</small>
     </div>
   </footer>
 </body>
