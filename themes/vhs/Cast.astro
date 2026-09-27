@@ -1,0 +1,6 @@
+---
+// 顔のアイコンつきの名前。props:list(キャラ)・size
+import { url } from "@futon/lib/content";
+const { list, size = 30 } = Astro.props;
+---
+<span class="cast">{list.map((c: any) => <a href={url(`/#chr-${c.slug}`)} title={`${c.name}のしょうかいへ`}><i style={`width:${size}px;height:${size}px`}><img src={url(c.face ?? c.image)} alt="" loading="lazy" class={c.face ? undefined : "crop"}></i>{c.name}</a>)}</span>

@@ -1,0 +1,17 @@
+---
+// ドット絵(16×16)。当時のホームページの小さな GIF アイコンのかわり。props:name(house / globe)・size
+const { name = "house", size = 48 } = Astro.props;
+const P: Record<string, { map: string[]; col: Record<string, string> }> = {
+  house: { col: { r: "#e0404a", R: "#a8202c", w: "#fff4dc", b: "#7a4a2a", y: "#ffe46a", g: "#58a64a", k: "#3a2a2a" }, map: [
+    "................", ".......RR.......", "......RrrR..kk..", ".....RrrrrR.kk..", "....RrrrrrrRkk..", "...RrrrrrrrrR...",
+    "..RrrrrrrrrrrR..", ".RRRRRRRRRRRRRR.", "..wwwwwwwwwwww..", "..wyywwwwwwyyw..", "..wyywwbbwwyyw..", "..wwwwwbbwwwww..",
+    "..wwwwwbbwwwww..", "..wwwwwbbwwwww..", "gggggggbbggggggg", "gggggggggggggggg"] },
+  globe: { col: { b: "#2a6ad8", g: "#3aa84a", w: "#dff0ff" }, map: [
+    "................", ".....bbbbbb.....", "...bbggbbbbbb...", "..bggggbbbggbb..", "..bgggbbbbgggb..", ".bbggbbbbbggbbb.",
+    ".bbbbbbbbbbgbbb.", ".bbbggbbbbbbbbb.", ".bbgggggbbbbbbb.", ".bbbgggbbbbggbb.", "..bbbgbbbbgggb..", "..bbbbbbbbggbb..",
+    "...bbbbbbbbbb...", ".....bbbbbb.....", "................", "................"] },
+};
+const { map, col } = P[name];
+const rects = map.flatMap((row, y) => [...row].map((c, x) => (col[c] ? `<rect x="${x}" y="${y}" width="1" height="1" fill="${col[c]}"/>` : "")));
+---
+<svg class="px" viewBox="0 0 16 16" width={size} height={size} shape-rendering="crispEdges" aria-hidden="true" set:html={rects.join("")}></svg>

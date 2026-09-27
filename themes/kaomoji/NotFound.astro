@@ -1,0 +1,10 @@
+---
+import Base from "./Base.astro";
+import { url, site } from "@futon/lib/content";
+---
+<Base title="ページが見つかりません" tab="">
+  <h1 class="ttl">ページが見つかりません</h1>
+  <p class="bub lead">(´・ω・`) このページは、まだ眠っているみたい。</p>
+  {site.mascot && <img src={url(site.mascot)} alt="" style="width:120px;margin:12px 0">}
+  <a class="btn" href={url("/")}>ホームへ</a>
+</Base>

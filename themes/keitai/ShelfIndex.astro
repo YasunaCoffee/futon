@@ -1,0 +1,15 @@
+---
+// keitai テーマの棚の一覧。props:s(棚)
+import { tabOf } from "@futon/lib/series";
+import Base from "./Base.astro";
+import { episodes, url } from "@futon/lib/content";
+const { s } = Astro.props;
+const eps = await episodes(s.key);
+---
+<Base title={s.name} tab={tabOf(s)}>
+  <h1 class="ttl">▼ {s.indexHeading ?? s.name}</h1>
+  <p class="lead">{s.lead}</p>
+  <div class="cards">
+    {eps.map((e) => { const c = s.card(e.data); return <a class="card" href={url(`${s.key}/${e.data.num}/`)}><img src={url(c.thumb)} alt="" loading="lazy"><b>{e.data.title}</b><small>{c.sub}</small></a>; })}
+  </div>
+</Base>

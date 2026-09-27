@@ -1,0 +1,25 @@
+---
+// Xのポストを埋め込む。スクリプトは画面に近づいてから1回だけ読む(ページを重くしない)。
+// スクリプトが読めないときも、ポストへのリンクとして残る
+interface Props { url: string; note?: string }
+const { url, note } = Astro.props;
+const clean = url.replace("twitter.com", "x.com").split("?")[0];
+---
+<div class="tweet">
+  {note && <p class="tweet-note">{note}</p>}
+  <blockquote class="twitter-tweet" data-dnt="true" data-lang="ja" data-conversation="none">
+    <a href={clean}>Xでポストを見る ▶</a>
+  </blockquote>
+</div>
+
+<script>
+  let loaded = false;
+  const load = () => {
+    if (loaded) return; loaded = true;
+    const s = document.createElement("script");
+    s.src = "https://platform.twitter.com/widgets.js"; s.async = true; s.charset = "utf-8";
+    document.body.appendChild(s);
+  };
+  const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { load(); io.disconnect(); } }, { rootMargin: "400px" });
+  document.querySelectorAll(".tweet").forEach((el) => io.observe(el));
+</script>

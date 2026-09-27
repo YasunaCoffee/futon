@@ -1,0 +1,158 @@
+/* futon についてくるテーマ kaomoji(かおもじ)。パステルのデスクトップに窓をひらいて、顔文字のふきだしでしゃべる */
+:root {
+  --desk: #e9ecff; --dot: #d6dcff; --paper: #f7f8ff; --ink: #3b3355; --sub: #7b7596;
+  --pink: #ffd3e6; --pink-l: #f27bab; --blue: #cfdcff; --blue-l: #4b63d8; --white: #fff; --line: #3b3355;
+  --round: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", sans-serif; --pixel: "DotGothic16", monospace;
+  --kao: "MS PGothic", "ＭＳ Ｐゴシック", "Osaka", "Kosugi", sans-serif; /* 顔文字は当時の MS Pゴシック(2ちゃんねるの AA と同じ字) */
+  --wide: 920px;
+}
+@media (prefers-color-scheme: dark) {
+  /* 夜のデスクトップ:紺に、ネオンのピンクと青 */
+  :root { --desk: #151433; --dot: #242257; --paper: #1d1c42; --ink: #eeeaff; --sub: #a9a4cc;
+    --pink: #4a2a4f; --pink-l: #ff8fc0; --blue: #26306a; --blue-l: #8fa6ff; --white: #26254f; --line: #c9c4ff; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; color: var(--ink); font: 500 15px/1.85 var(--round); -webkit-font-smoothing: antialiased;
+  background: var(--desk) radial-gradient(var(--dot) 1.5px, transparent 1.6px) 0 0 / 18px 18px; }
+a { color: var(--blue-l); }
+img { max-width: 100%; height: auto; display: block; }
+.desk { padding: 18px 14px 40px; }
+
+/* 窓 */
+.win { background: var(--paper); border: 3px solid var(--blue-l); border-radius: 14px; overflow: hidden; box-shadow: 5px 5px 0 color-mix(in srgb, var(--blue-l) 25%, transparent); }
+.win.pink { border-color: var(--pink-l); box-shadow: 5px 5px 0 color-mix(in srgb, var(--pink-l) 25%, transparent); }
+.bar { height: 34px; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 0 12px;
+  font-family: var(--pixel); font-size: 15px; color: var(--blue-l); background: linear-gradient(color-mix(in srgb, var(--blue) 60%, var(--paper)), var(--blue)); border-bottom: 3px solid var(--blue-l); }
+.win.pink > .bar { color: var(--pink-l); background: linear-gradient(color-mix(in srgb, var(--pink) 60%, var(--paper)), var(--pink)); border-color: var(--pink-l); }
+.bar b { letter-spacing: 6px; }
+.bar a { color: inherit; font-size: 13px; text-decoration: none; }
+.win.main { max-width: var(--wide); margin: 0 auto; }
+.win.main > .bar { height: 40px; font-size: 18px; }
+
+/* ふきだし */
+.bub { position: relative; display: block; background: var(--white); border: 3px solid var(--line); border-radius: 18px; padding: 8px 14px; color: var(--ink);
+  box-shadow: 3px 3px 0 color-mix(in srgb, var(--line) 22%, transparent); }
+/* しっぽ:ふきだしと同じ色の四角を45度まわして、下の2辺だけ線を引く */
+.bub::after { content: ""; position: absolute; left: 26px; bottom: -10px; width: 16px; height: 16px; background: inherit;
+  border-right: 3px solid var(--line); border-bottom: 3px solid var(--line); transform: rotate(45deg); border-radius: 0 0 4px 0; }
+
+.hd { padding: 20px clamp(16px, 4vw, 34px) 10px; display: grid; gap: 10px; }
+.logo { font-weight: 800; font-size: clamp(28px, 6vw, 42px); line-height: 1.2; text-decoration: none; color: var(--pink-l);
+  -webkit-text-stroke: 1.5px var(--line); text-shadow: 3px 3px 0 var(--white), 5px 5px 0 color-mix(in srgb, var(--blue-l) 40%, transparent); }
+.hello { justify-self: start; margin: 0 0 8px; font-size: 13.5px; }
+.nav { display: flex; flex-wrap: wrap; gap: 8px; }
+.nav a { font-weight: 800; font-size: 13.5px; text-decoration: none; color: var(--blue-l); background: var(--blue); border: 2.5px solid var(--blue-l); border-radius: 99px; padding: 2px 14px; }
+.nav a:nth-child(2n) { color: var(--pink-l); background: var(--pink); border-color: var(--pink-l); }
+.nav a.on, .nav a:hover { color: var(--white); background: var(--blue-l); }
+.nav a:nth-child(2n).on, .nav a:nth-child(2n):hover { background: var(--pink-l); }
+.nav .store { background: var(--white) !important; color: var(--ink) !important; border-style: dashed; }
+
+.body { padding: 14px clamp(14px, 4vw, 34px) 30px; display: grid; gap: 26px; }
+.body > * { min-width: 0; }
+.body > .win > h2, .body > .win > .cards, .body > .win > .chars, .body > .win > .books, .body > .win > .list, .body > .win > .chat { margin-left: 16px; margin-right: 16px; }
+h1, h2 { font-weight: 800; line-height: 1.4; }
+h2 { font-size: 18px; margin: 12px 16px 10px; color: var(--ink); }
+h2::before { content: "✦ "; color: var(--pink-l); }
+.ttl { font-size: clamp(22px, 4.5vw, 30px); margin: 0; }
+.ttl::after { content: " ✧"; color: var(--pink-l); }
+.lead { justify-self: start; margin: 4px 0 16px; }
+.meta, .crumb { color: var(--sub); font-size: 13px; margin: 0; }
+.crumb a { color: var(--sub); }
+.kind { font-size: 12px; font-weight: 800; color: var(--pink-l); background: var(--pink); border-radius: 99px; padding: 1px 10px; margin-left: 8px; vertical-align: middle; }
+
+/* ひとこと */
+.intro { display: flex; gap: 14px; align-items: flex-end; }
+.intro img { width: 96px; flex: none; border-radius: 24px; }
+.intro .bub.big { padding: 14px 18px; border-radius: 22px; }
+.intro .bub.big::after { left: -10px; bottom: 28px; transform: rotate(135deg); }
+.intro h1 { font-size: 19px; margin: 0 0 4px; }
+.intro p { margin: .2em 0; }
+.dream { font-weight: 800; color: var(--pink-l); }
+
+/* 新着:チャット */
+.chat { list-style: none; padding: 10px 0 14px; margin: 0 16px; display: grid; gap: 16px; }
+.chat li { display: flex; align-items: flex-end; gap: 8px; }
+.chat li:nth-child(2n) { flex-direction: row-reverse; }
+.chat li:nth-child(2n) .bub::after { left: auto; right: 26px; }
+.chat .face { font-family: var(--kao); font-size: 12.5px; color: var(--sub); white-space: nowrap; padding-bottom: 14px; }
+.chat .bub { text-decoration: none; font-weight: 800; font-size: 14.5px; line-height: 1.5; max-width: 80%; }
+.chat .bub small { display: block; font-weight: 500; font-size: 11.5px; color: var(--sub); }
+.chat .bub:hover { background: var(--blue); }
+
+/* 絵のカード */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; padding-bottom: 18px; }
+.card { background: var(--white); border: 3px solid var(--line); border-radius: 14px; padding: 6px 6px 8px; text-decoration: none; color: var(--ink); font-size: 13px; line-height: 1.5; transition: transform .15s; }
+.card:hover { transform: translateY(-3px) rotate(-1deg); }
+.card img { aspect-ratio: 3 / 4; width: 100%; object-fit: cover; object-position: top; border-radius: 9px; margin-bottom: 5px; }
+.card b { display: block; }
+.card small { color: var(--sub); font-size: 11.5px; }
+
+/* キャラクター */
+.chars { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 18px; padding-bottom: 20px; }
+.chr { display: grid; gap: 12px; scroll-margin-top: 16px; border-radius: 14px; }
+.chr .pic { height: 170px; display: flex; align-items: flex-end; justify-content: center; }
+.chr .pic img { max-height: 170px; width: auto; }
+.chr .bub { font-size: 13.5px; }
+.chr .bub::after { left: calc(50% - 8px); bottom: auto; top: -10px; transform: rotate(-135deg); }
+.name { font-size: 18px; }
+.chr p { margin: 4px 0 0; }
+.note { font-size: 12.5px; color: var(--sub); }
+.links { display: flex; flex-wrap: wrap; gap: 6px; }
+.prof { display: grid; grid-template-columns: auto 1fr; gap: 0 12px; margin: 6px 0; font-size: 13px; }
+.prof dt { color: var(--sub); }
+.prof dd { margin: 0; }
+
+/* 本 */
+.books { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 190px)); gap: 18px; padding-bottom: 20px; }
+.bk { display: flex; flex-direction: column; gap: 5px; text-align: center; font-size: 13px; scroll-margin-top: 16px; border-radius: 10px; }
+.bk img { width: 100%; aspect-ratio: 1 / 1.414; object-fit: cover; border: 3px solid var(--line); border-radius: 8px; }
+.bk b { line-height: 1.45; }
+.yen { font-weight: 800; color: var(--pink-l); margin-top: auto; }
+
+.cast { display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 4px 10px; vertical-align: middle; }
+.cast a { display: inline-flex; align-items: center; gap: 4px; font-weight: 800; text-decoration: none; }
+.cast i { display: inline-block; border-radius: 50%; overflow: hidden; border: 2.5px solid var(--pink-l); background: #fff; position: relative; flex: none; }
+.cast img { width: 100%; height: 100%; object-fit: cover; }
+.cast img.crop { position: absolute; left: -40%; top: -6%; width: 180%; height: auto; object-fit: initial; }
+.memo { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 14px; font-weight: 800; margin: 0;
+  border: 3px dashed var(--pink-l); border-radius: 16px; padding: 8px 12px; background: var(--pink); }
+:target { animation: futon-hi 1.6s ease-out; }
+@keyframes futon-hi { from { box-shadow: 0 0 0 6px var(--pink-l); } to { box-shadow: 0 0 0 0 transparent; } }
+
+/* 話のページ */
+.imgs { display: grid; gap: 14px; justify-items: center; }
+.imgs img { width: 100%; max-width: 560px; border: 3px solid var(--line); border-radius: 12px; }
+.verse { justify-self: center; text-align: center; font-weight: 800; font-size: 18px; line-height: 2; margin: 0; }
+.verse small { display: block; font-weight: 500; font-size: 12px; color: var(--sub); }
+.pager { display: flex; justify-content: space-between; gap: 12px; }
+.btn { display: inline-block; font-weight: 800; font-size: 13.5px; color: var(--white); text-decoration: none; background: var(--blue-l); border: 2.5px solid var(--line); border-radius: 99px; padding: 3px 16px; box-shadow: 2px 2px 0 var(--line); }
+.btn:hover { background: var(--pink-l); }
+@media (prefers-color-scheme: dark) { .btn { color: #fff; } }
+
+/* 一覧・記事 */
+.list { list-style: none; margin: 0; padding: 0 0 16px; }
+.list li { display: flex; gap: 12px; padding: 8px 2px; border-bottom: 2px dotted color-mix(in srgb, var(--blue-l) 40%, transparent); }
+.list .d { color: var(--sub); font-family: var(--pixel); font-size: 13px; min-width: 6.5em; }
+.prose { background: var(--white); border: 3px solid var(--line); border-radius: 16px; padding: 20px clamp(16px, 4vw, 30px); overflow-wrap: anywhere; }
+.prose h2 { font-size: 19px; margin: 1.4em 0 .6em; }
+.prose pre { overflow-x: auto; background: var(--desk); padding: 12px; border-radius: 10px; font-size: 13px; }
+.prose table { border-collapse: collapse; display: block; overflow-x: auto; }
+.prose th, .prose td { border: 1px solid var(--dot); padding: 4px 8px; }
+
+.share { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 13px; }
+.share-label { font-weight: 800; }
+.sh { cursor: pointer; font: inherit; text-decoration: none; color: var(--ink); background: var(--white); border: 2.5px solid var(--line); border-radius: 99px; padding: 2px 12px; }
+.sh:hover { background: var(--pink); }
+.share-done { color: var(--pink-l); }
+.tweet-note { color: var(--sub); font-size: 13px; margin: 0 0 4px; }
+
+.ft { border-top: 3px dashed var(--dot); color: var(--sub); font-size: 12.5px; padding: 14px clamp(16px, 4vw, 34px) 18px; }
+.ft nav { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-bottom: 4px; }
+.ft a { color: var(--sub); }
+.bye { font-family: var(--kao); color: var(--pink-l); margin: 6px 0 0; }
+@media (max-width: 560px) {
+  .desk { padding: 8px 6px 24px; }
+  .intro { flex-direction: column; align-items: flex-start; }
+  .intro .bub.big::after { left: 30px; bottom: auto; top: -10px; transform: rotate(-135deg); }
+  .cards, .books { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+}

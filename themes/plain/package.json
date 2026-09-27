@@ -1,0 +1,1 @@
+{ "name": "futon-theme-plain", "private": true, "description": "futon の標準テーマ。飾りのない、読みやすさだけのテーマ", "futon": { "theme": true } }

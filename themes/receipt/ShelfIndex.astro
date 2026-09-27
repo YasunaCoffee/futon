@@ -1,0 +1,16 @@
+---
+// receipt テーマの棚の一覧。props:s(棚)
+import { tabOf } from "@futon/lib/series";
+import Base from "./Base.astro";
+import { episodes, url } from "@futon/lib/content";
+const { s } = Astro.props;
+const eps = await episodes(s.key);
+---
+<Base title={s.name} tab={tabOf(s)}>
+  <h1 class="h1">【{s.indexHeading ?? s.name}】</h1>
+  <p class="lead">{s.lead}</p>
+  <ul class="thumbs">
+    {eps.map((e) => { const c = s.card(e.data); return <li><a href={url(`${s.key}/${e.data.num}/`)}><img src={url(c.thumb)} alt="" loading="lazy"><span><b>{e.data.title}</b><small>{c.sub}</small></span></a></li>; })}
+  </ul>
+  <p class="total"><span>合　計</span><span>{eps.length}点</span></p>
+</Base>

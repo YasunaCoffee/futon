@@ -1,0 +1,29 @@
+{
+  "name": "create-futon",
+  "version": "0.1.0",
+  "description": "npm create futon で、AIフレンドリーな個人サイトを敷く",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "create-futon": "bin/create-futon.mjs"
+  },
+  "files": [
+    "bin",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=22.18"
+  },
+  "dependencies": {
+    "@yasuna/futon": "^0.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YasunaCoffee/futon.git",
+    "directory": "create"
+  },
+  "keywords": [
+    "ai-friendly",
+    "agents-md"
+  ]
+}

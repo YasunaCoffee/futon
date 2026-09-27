@@ -1,0 +1,20 @@
+---
+// vhs テーマのグループのページ(いくつかの棚をまとめたもの)。props:g(グループ)
+import Base from "./Base.astro";
+import { episodes, url } from "@futon/lib/content";
+const { g } = Astro.props;
+const shelves = await Promise.all(g.shelves.map(async (s: any) => ({ s, eps: (await episodes(s.key)).slice(0, 8) })));
+const no = (n: number) => String(n).padStart(2, "0");
+---
+<Base title={g.name} tab={g.key}>
+  <h1 class="ttl"><mark>{g.name}</mark></h1>
+  {g.lead && <p class="lead">{g.lead}</p>}
+  {shelves.map(({ s, eps }, i) => (
+    <section>
+      <h2><span>[{no(i + 1)}]</span> <mark>{s.name}</mark><a href={url(`${s.key}/`)}>ALL ▶</a></h2>
+      <div class="cards">
+        {eps.map((e: any, n: number) => { const c = s.card(e.data); return <a class="card" href={url(`${s.key}/${e.data.num}/`)}><img src={url(c.thumb)} alt="" loading="lazy"><span class="n">{no(n + 1)} &gt;</span> {e.data.title}<small>{c.sub}</small></a>; })}
+      </div>
+    </section>
+  ))}
+</Base>

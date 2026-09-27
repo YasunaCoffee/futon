@@ -1,0 +1,77 @@
+---
+// keitai テーマの外枠。ピンクのガラケー:上に画面(電波・メール・電池、下にソフトキー)、下に数字キー(メニュー)
+import "./style.css";
+import { url, site } from "@futon/lib/content";
+import { shelfNav } from "@futon/lib/series";
+import { hasTech } from "@futon/lib/futon";
+import Analytics from "@futon/components/Analytics.astro";
+interface Props { title?: string; description?: string; tab?: string; image?: string; back?: string }
+const { title, description = site.description, tab = "home", image, back } = Astro.props;
+const full = title ? `${title} | ${site.title}` : site.title;
+const nav = [
+  ["home", "ホーム", url("/")],
+  ...shelfNav(url),
+  ...(hasTech ? [["tech", site.tech?.tab ?? "記事", url("tech/")]] : []),
+  ...(site.characters?.length ? [["chars", "キャラ", url("/#chars")]] : []),
+  ...(site.books?.length ? [["books", "本", url("/#books")]] : []),
+  ["about", "について", url("about/")],
+  ...(site.store ? [["store", "ストア", site.store]] : []),
+];
+// 数字キー:1〜9 にメニューを割り当てる。余ったキーは数字だけ
+const keys = Array.from({ length: 9 }, (_, i) => nav[i] ? { n: i + 1, k: nav[i][0], label: nav[i][1], href: nav[i][2] } : { n: i + 1 });
+const ext = (h?: string) => !!h && /^https?:/.test(h);
+---
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  {site.noindex && <meta name="robots" content="noindex,nofollow">}
+  <title>{full}</title>
+  <meta name="description" content={description}>
+  <meta property="og:title" content={full}>
+  <meta property="og:description" content={description}>
+  <meta property="og:type" content="website">
+  {image && <meta property="og:image" content={image}>}
+  <link rel="alternate" type="application/rss+xml" title={site.title} href={url("rss.xml")}>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@800&display=swap">
+  <Analytics />
+</head>
+<body>
+  <div class="phone">
+    <div class="speaker" aria-hidden="true"><i></i></div>
+    <div class="screen">
+      <div class="status" aria-hidden="true"><span>Y.ıl ✉</span><span class="bat"><i></i></span></div>
+      <header class="hd">
+        <a class="logo" href={url("/")}>{site.title}</a>
+        {site.hello && <p class="ticker"><span set:html={site.hello} /></p>}
+      </header>
+      <main class="page"><slot /></main>
+      <div class="soft">
+        <a href="#keys">メニュー</a>
+        <a href={back ?? url("/")}>もどる</a>
+      </div>
+    </div>
+    <nav class="keys" id="keys" aria-label="メニュー">
+      <div class="top">
+        <a class="call ok" href={url("rss.xml")} title="RSS" aria-label="RSS">✉</a>
+        <a class="center" href={url("/")} aria-label="ホーム">{site.mascot ? <img src={url(site.mascot)} alt=""> : "●"}</a>
+        <a class="call end" href={url("about/")} title="について" aria-label="について">☎</a>
+      </div>
+      <div class="pad">
+        {keys.map((x) => x.href
+          ? <a class={`key${tab === x.k ? " on" : ""}`} href={x.href} {...(ext(x.href) ? { target: "_blank", rel: "noopener" } : {})}><b>{x.n}</b><span>{x.label}</span></a>
+          : <span class="key"><b>{x.n}</b></span>)}
+        <span class="key"><b>*</b></span>
+        <a class="key" href={url("privacy/")}><b>0</b><span>このサイト</span></a>
+        <span class="key"><b>#</b></span>
+      </div>
+    </nav>
+    <footer class="ft">
+      <small>{site.owner && <>運営:<a href={url("about/")}>{site.owner}</a> ／ </>}{site.copyright}{site.since && ` ／ ${site.since.label} since ${site.since.date}`}</small>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,8 @@
+.astro/
+.out/
+.work/
+__pycache__/
+dist-*/
+dist/
+node_modules/
+out/

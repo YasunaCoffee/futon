@@ -1,0 +1,42 @@
+---
+import Base from "./Base.astro";
+import { techPosts, techThumb, dotted, url, site } from "@futon/lib/content";
+import { zennItems } from "@futon/lib/note";
+const tech = { label: "記事", tab: "きじ", lead: "", description: "", ...(site.tech ?? {}) }; // 記事の呼び方(site.json の tech)
+const zenn = await zennItems(8);
+const posts = await techPosts();
+---
+<Base title={tech.label} tab="tech" description={tech.description || undefined}>
+  <div class="page">
+    <p class="crumb"><a href={url("/")}>ホーム</a> ＞ {tech.label}</p>
+    <div class="box">
+      <div class="bh"><span>{tech.label}</span><span class="count">{posts.length}本</span></div>
+      <div class="bb">
+        {tech.lead && <p class="lead-p">{tech.lead}</p>}
+        <ul class="techlist">
+          {posts.map((p) => (
+            <li><a href={url(`tech/${p.id}/`)}>
+              <img src={techThumb(p.id)} alt="" loading="lazy" onerror="this.remove()">
+              <span><b>{p.data.emoji} {p.data.title}</b><span class="d">{dotted(p.data.date)}{p.data.category && ` ／ ${p.data.category}`}</span></span>
+            </a></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+    {zenn.length > 0 && (
+      <div class="box" style="margin-top:12px">
+        <div class="bh"><span>Zennにも書いています</span><a href={site.feeds?.zenn?.page} target="_blank" rel="noopener">Zennへ ▶</a></div>
+        <div class="bb">
+          <ul class="techlist">
+            {zenn.map((z) => (
+              <li><a href={z.link} target="_blank" rel="noopener" data-track="outbound" data-label="zenn">
+                {z.thumb && <img src={z.thumb} alt="" loading="lazy">}
+                <span><b>{z.title}</b><span class="d">{dotted(z.date)} ／ Zenn</span></span>
+              </a></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    )}
+  </div>
+</Base>

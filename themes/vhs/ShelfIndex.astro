@@ -1,0 +1,16 @@
+---
+// vhs テーマの棚の一覧。props:s(棚)
+import { tabOf } from "@futon/lib/series";
+import Base from "./Base.astro";
+import { episodes, url } from "@futon/lib/content";
+const { s } = Astro.props;
+const eps = await episodes(s.key);
+const no = (n: number) => String(n).padStart(2, "0");
+---
+<Base title={s.name} tab={tabOf(s)}>
+  <h1 class="ttl"><mark>{s.indexHeading ?? s.name}</mark></h1>
+  <p class="lead">{s.lead}</p>
+  <div class="cards">
+    {eps.map((e, n) => { const c = s.card(e.data); return <a class="card" href={url(`${s.key}/${e.data.num}/`)}><img src={url(c.thumb)} alt="" loading="lazy"><span class="n">{no(eps.length - n)} &gt;</span> {e.data.title}<small>{c.sub}</small></a>; })}
+  </div>
+</Base>

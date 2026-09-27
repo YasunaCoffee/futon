@@ -1,0 +1,24 @@
+---
+// plain テーマの話のページ。props:s(棚)・e(話)・newer / older
+import { tabOf } from "@futon/lib/series";
+import Base from "./Base.astro";
+import Share from "@futon/components/Share.astro";
+import Tweet from "@futon/components/Tweet.astro";
+import { dotted, url } from "@futon/lib/content";
+const { s, e, newer, older } = Astro.props;
+const d = e.data;
+const p = s.page(d);
+---
+<Base title={p.title} tab={tabOf(s)} description={p.description}>
+  <p class="meta"><a href={url(`${s.key}/`)}>{s.name}</a> ／ {p.crumb}</p>
+  <h1>{d.title}{p.kind && <span class="kind">{p.kind}</span>}</h1>
+  <p class="meta">{dotted(d.date)} ／ {p.meta}</p>
+  <div class="imgs">{p.images.map((i) => <img src={url(i.src)} alt={i.alt}>)}</div>
+  {p.kessho && <p class="verse">{p.kessho.lines.map((l, i) => <>{i > 0 && <br />}{l}</>)}<small>{p.kessho.source}</small></p>}
+  {d.x && <Tweet url={d.x} />}
+  <Share text={p.share} />
+  <div class="pager">
+    {older ? <a class="btn" href={url(`${s.key}/${older.data.num}/`)}>← まえ</a> : <span></span>}
+    {newer ? <a class="btn" href={url(`${s.key}/${newer.data.num}/`)}>つぎ →</a> : <a class="btn" href={url(`${s.key}/`)}>一覧へ</a>}
+  </div>
+</Base>

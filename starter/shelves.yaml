@@ -1,0 +1,22 @@
+# 棚の例。1枚で読む「single」の形。
+# 棚をまとめたいときは「- group: <key>」(name・lead)の行を足して、棚に group: <key> を書く。メニューのタブが1つになり、/<key>/ に棚がならぶ
+# cast: [slug, ...] を書くと、話のページに「この話に出てくる人」(site.json の characters)。話の md の cast で1話ずつ変えられる
+- key: nikki
+  name: まいにち絵日記
+  short: 絵日記
+  format: single
+  lead: 1日1枚の絵日記。
+  card: { thumb: "{thumb}", sub: "{cite} {date|md}" }
+  page:
+    title: 「{title}」まいにち絵日記
+    description: "{lett}"
+    crumb: "{title}"
+    heading: まいにち絵日記
+    meta: "{cite}"
+    images:
+      - { src: "{image}", alt: "「{title}」{lett}" }
+    share: まいにち絵日記「{title}」
+  topic: { img: "{thumb}", label: まいにち絵日記 }
+  newsNote: "{lett}"
+  itemNote: "{lett}"
+  banner: { cls: p, img: img/nikki/001.webp, sub: "{count}まい" }

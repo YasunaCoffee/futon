@@ -1,0 +1,17 @@
+---
+// mado テーマの棚の一覧。props:s(棚)
+import { tabOf } from "@futon/lib/series";
+import Base from "./Base.astro";
+import Hana from "./Hana.astro";
+import { episodes, url } from "@futon/lib/content";
+const { s } = Astro.props;
+const eps = await episodes(s.key);
+---
+<Base title={s.name} tab={tabOf(s)}>
+  <h1 class="big">{s.indexHeading ?? s.name}</h1>
+  <Hana />
+  <p class="welcome">{s.lead}</p>
+  <div class="cards">
+    {eps.map((e) => { const c = s.card(e.data); return <a class="card" href={url(`${s.key}/${e.data.num}/`)}><img src={url(c.thumb)} alt="" loading="lazy"><span>{e.data.title}</span><small>{c.sub}</small></a>; })}
+  </div>
+</Base>

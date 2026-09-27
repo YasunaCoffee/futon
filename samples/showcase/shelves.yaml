@@ -1,0 +1,50 @@
+# 見本の棚。sheets(3枚組)と single(1枚)を1つずつ。2つをグループ「まんが」にまとめている
+- group: manga
+  name: まんが
+  lead: 見本のグループ。棚をまとめると、メニューのタブが1つになり、/manga/ に棚がならぶ。
+- key: mangaka
+  group: manga
+  name: みほん連載
+  short: 連載
+  format: sheets
+  lead: 3枚組で読む連載の見本。
+  card: { thumb: "{images.card}", sub: "第{kanji}話 {date|md}" }
+  page:
+    title: 第{kanji}話「{title}」みほん連載
+    description: "{kessho|oneline}"
+    crumb: 第{kanji}話
+    heading: 第{kanji}話
+    meta: みほん連載
+    images:
+      - { src: "{images.right}", alt: "前半" }
+      - { src: "{images.left}", alt: "後半" }
+      - { src: "{images.card}", alt: "札" }
+    verse: { text: "{kessho}", source: "{source}" }
+    share: みほん連載 第{kanji}話「{title}」
+  topic: { img: "{images.right}", label: "連載 第{kanji}話" }
+  itemNote: 第{kanji}話
+  banner: { cls: p, img: img/mangaka/001/card.webp, sub: "連載中 {count}話" }
+  cast: [a] # 出てくるキャラ(site.json の characters の slug)。話の md に cast を書けばその話だけ変えられる
+- key: yonkoma
+  group: manga
+  name: ブッダめっちゃロジカル
+  short: ブッダ
+  format: single
+  lead: 1枚で読む4コマの見本。中身は作者のほんものの4コマ「ブッダめっちゃロジカル」(初期仏典を読んで「これ、いまの自分の話じゃん」と思ったところを4コマに)。
+  card: { thumb: "{thumb}", sub: "{cite} {date|md}" }
+  page:
+    title: 「{title}」ブッダめっちゃロジカル
+    description: "{lett}"
+    crumb: "{title}"
+    heading: ブッダめっちゃロジカル
+    kind: "{kind}"
+    meta: "{cite}"
+    images:
+      - { src: "{image}", alt: "「{title}」4コマ。決め台詞「{lett}」" }
+    share: ブッダめっちゃロジカル「{title}」{lett}
+  topic: { img: "{thumb}", label: ブッダめっちゃロジカル }
+  newsNote: "{lett}"
+  itemNote: "{lett}"
+  banner: { cls: b, img: img/yonkoma/001_s.webp, sub: "4コマ {count}本" }
+  cast: [a]
+  hero: { img: "{image}", alt: "「{title}」", cap: "ブッダめっちゃロジカル「{title}」 ▶" }

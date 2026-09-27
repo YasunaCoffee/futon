@@ -1,0 +1,61 @@
+---
+// techou テーマの外枠。週間の手帳:赤いダブルクリップでとめて、右の小口にインデックスのシール(メニュー)
+import "./style.css";
+import { url, site, today } from "@futon/lib/content";
+import { shelfNav } from "@futon/lib/series";
+import { hasTech } from "@futon/lib/futon";
+import Analytics from "@futon/components/Analytics.astro";
+interface Props { title?: string; description?: string; tab?: string; image?: string }
+const { title, description = site.description, tab = "home", image } = Astro.props;
+const full = title ? `${title} | ${site.title}` : site.title;
+const nav = [
+  ["home", "ホーム", url("/")],
+  ...shelfNav(url),
+  ...(hasTech ? [["tech", site.tech?.tab ?? "記事", url("tech/")]] : []),
+  ...(site.characters?.length ? [["chars", "キャラ", url("/#chars")]] : []),
+  ...(site.books?.length ? [["books", "本", url("/#books")]] : []),
+  ["about", "について", url("about/")],
+];
+// その年の何週目か(手帳の上の「34th WEEK」)
+const d = new Date(today + "T00:00:00Z");
+const jan1 = Date.UTC(d.getUTCFullYear(), 0, 1);
+const week = Math.ceil(((+d - jan1) / 86400e3 + new Date(jan1).getUTCDay() + 1) / 7);
+const th = (n: number) => n + (n % 10 === 1 && n !== 11 ? "st" : n % 10 === 2 && n !== 12 ? "nd" : n % 10 === 3 && n !== 13 ? "rd" : "th");
+---
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  {site.noindex && <meta name="robots" content="noindex,nofollow">}
+  <title>{full}</title>
+  <meta name="description" content={description}>
+  <meta property="og:title" content={full}>
+  <meta property="og:description" content={description}>
+  <meta property="og:type" content="website">
+  {image && <meta property="og:image" content={image}>}
+  <link rel="alternate" type="application/rss+xml" title={site.title} href={url("rss.xml")}>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;700&family=Barlow+Condensed:wght@500;700&family=Yellowtail&display=swap">
+  <Analytics />
+</head>
+<body>
+  <div class="book">
+    <i class="clip tl" aria-hidden="true"></i><i class="clip br" aria-hidden="true"></i>
+    <header class="top">
+      <a class="logo" href={url("/")}>{site.title}</a>
+      <span class="wk">{th(week)} WEEK</span>
+    </header>
+    <nav class="index" aria-label="メニュー">
+      {nav.map(([k, label, href]) => <a class={tab === k ? "on" : undefined} href={href}>{label}</a>)}
+      {site.store && <a href={site.store} target="_blank" rel="noopener">ストア</a>}
+    </nav>
+    <main class="main"><slot /></main>
+    <footer class="ft">
+      <nav aria-label="フッター"><a href={url("rss.xml")}>RSS</a><a href={url("privacy/")}>このサイトについて</a>{site.since && <span>{site.since.label} since {site.since.date}</span>}</nav>
+      <small>{site.owner && <>運営:<a href={url("about/")}>{site.owner}</a> ／ </>}{site.copyright}</small>
+    </footer>
+  </div>
+</body>
+</html>

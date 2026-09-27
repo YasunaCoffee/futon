@@ -1,0 +1,29 @@
+---
+import Base from "./Base.astro";
+import Share from "@futon/components/Share.astro";
+import { render } from "astro:content";
+import { techPosts, dotted, url, site } from "@futon/lib/content";
+const tech = { label: "記事", tab: "きじ", lead: "", description: "", ...(site.tech ?? {}) }; // 記事の呼び方(site.json の tech)
+const { p, newer, older } = Astro.props;
+const { Content } = await render(p);
+const d = p.data;
+---
+<Base title={d.title} tab="tech" description={d.description}>
+  <div class="page">
+    <p class="crumb"><a href={url("/")}>ホーム</a> ＞ <a href={url("tech/")}>{tech.label}</a> ＞ {d.title}</p>
+    <article class="box">
+      <div class="bh"><span>{tech.label}</span></div>
+      <div class="bb">
+        <p class="post-emoji" aria-hidden="true">{d.emoji}</p>
+        <h1 class="ep-title">{d.title}</h1>
+        <p class="ep-meta">{dotted(d.date)}{d.category && ` ／ ${d.category}`}{d.tags?.length ? ` ／ ${d.tags.join("・")}` : ""}</p>
+        <div class="prose"><Content /></div>
+        <Share text={d.title} />
+        <div class="pager">
+          {older ? <a class="btn" href={url(`tech/${older.id}/`)}>◀ まえの記事</a> : <span></span>}
+          {newer ? <a class="btn" href={url(`tech/${newer.id}/`)}>つぎの記事 ▶</a> : <a class="btn" href={url("tech/")}>いちらんへ</a>}
+        </div>
+      </div>
+    </article>
+  </div>
+</Base>

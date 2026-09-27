@@ -1,0 +1,14 @@
+{
+  "title": "はじめてのふとん",
+  "description": "寝ている間も、自分のホームページが勝手に最新になる。その最初の一歩。",
+  "logo": "はじめて<small>zzZ</small>",
+  "hello": "ようこそ! ここは<br><b>中身のフォルダ</b>だけで建ったサイトです",
+  "owner": "あなた",
+  "copyright": "© 2026 はじめてのふとん",
+  "store": "https://example.com/",
+  "storeLabel": "おみせ ▶",
+  "intro": {
+    "heading": "このふとんについて",
+    "paragraphs": ["フォルダに md と画像を置くだけで、一覧・話のページ・新着・RSS ができます。", "棚をふやすときは <b>shelves.yaml</b> に1件足します。"]
+  }
+}

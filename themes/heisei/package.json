@@ -1,0 +1,9 @@
+{
+  "name": "futon-theme-heisei",
+  "private": true,
+  "description": "平成のキャラクターサイト風(ドットの背景・ロゴ・タブ・ティッカー・バナー・キャラクターしょうかい・本)",
+  "futon": {
+    "theme": true,
+    "name": "へいせい"
+  }
+}

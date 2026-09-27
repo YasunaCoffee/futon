@@ -1,0 +1,40 @@
+---
+// まんがの話のページ。見せ方はシリーズごとに src/lib/series.ts の page() で決める
+import { tabOf, groupOf } from "@futon/lib/series";
+import Base from "./Base.astro";
+import Share from "@futon/components/Share.astro";
+import Tweet from "@futon/components/Tweet.astro";
+import { series } from "@futon/lib/series";
+import { episodes, dotted, url, castOf } from "@futon/lib/content";
+const { s, e, newer, older } = Astro.props;
+const d = e.data;
+const p = s.page(d);
+const cast = castOf(p.cast);
+---
+<Base title={p.title} tab={tabOf(s)} description={p.description}>
+  <div class="page">
+    <p class="crumb"><a href={url("/")}>ホーム</a> ＞ {groupOf(s) && <><a href={url(`${groupOf(s)!.key}/`)}>{groupOf(s)!.name}</a> ＞ </>}<a href={url(`${s.key}/`)}>{s.name}</a> ＞ {p.crumb}</p>
+    <div class="box">
+      <div class="bh"><span>{p.heading}</span></div>
+      <div class="bb">
+        <h1 class="ep-title">{d.title}{p.kind && <small style="font-size:12px;margin-left:8px;color:var(--sub)">{p.kind}</small>}</h1>
+        <p class="ep-meta">{dotted(d.date)} ／ {p.meta}</p>
+        <div class="ep-imgs">
+          {p.images.map((i) => <img src={url(i.src)} alt={i.alt}>)}
+        </div>
+        {p.kessho && <p class="ep-kes">{p.kessho.lines.map((l, i) => <>{i > 0 && <br />}{l}</>)}<small>{p.kessho.source}</small></p>}
+        {cast.length > 0 && (
+          <div class="ep-cast"><span>この話に出てくる人</span>
+            {cast.map((c: any) => <a href={url(`/#chr-${c.slug}`)}><i><img src={url(c.face ?? c.image)} alt="" class={c.face ? "" : "crop"}></i>{c.name}</a>)}
+          </div>
+        )}
+        {d.x && <div class="ep-x"><Tweet url={d.x} note="Xでのようす" /></div>}
+        <Share text={p.share} />
+        <div class="pager">
+          {older ? <a class="btn" href={url(`${s.key}/${older.data.num}/`)}>◀ まえのはなし</a> : <span></span>}
+          {newer ? <a class="btn" href={url(`${s.key}/${newer.data.num}/`)}>つぎのはなし ▶</a> : <a class="btn" href={url(`${s.key}/`)}>いちらんへ</a>}
+        </div>
+      </div>
+    </div>
+  </div>
+</Base>

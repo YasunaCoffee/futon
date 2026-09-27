@@ -1,0 +1,19 @@
+---
+// mado テーマの 404。むかしのブラウザの「ページを表示できません」
+import Base from "./Base.astro";
+import { url } from "@futon/lib/content";
+---
+<Base title="ページを表示できません" tab="" err>
+  <div class="e404">
+    <p class="ico" aria-hidden="true">⚠</p>
+    <h1>ページを表示できません</h1>
+    <p>探しているページは、まだ眠っているか、名前が変わったか、なくなったみたいです。</p>
+    <hr>
+    <p>次のことを試してください:</p>
+    <ul>
+      <li><a href={url("/")}>ホーム</a>を開いて、そこからリンクをたどる。</li>
+      <li>[戻る] ボタンで前のページに戻る。</li>
+    </ul>
+    <p class="code">HTTP 404 - ファイルが見つかりません<br>ふとん Explorer</p>
+  </div>
+</Base>

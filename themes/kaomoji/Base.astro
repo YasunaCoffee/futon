@@ -1,0 +1,60 @@
+---
+// kaomoji テーマの外枠。デスクトップに開いた窓(タイトルバーに _□×)と、ふきだしのメニュー
+import "./style.css";
+import { url, site } from "@futon/lib/content";
+import { shelfNav } from "@futon/lib/series";
+import { hasTech } from "@futon/lib/futon";
+import Analytics from "@futon/components/Analytics.astro";
+interface Props { title?: string; description?: string; tab?: string; image?: string }
+const { title, description = site.description, tab = "home", image } = Astro.props;
+const full = title ? `${title} | ${site.title}` : site.title;
+const nav = [
+  ["home", "ホーム", url("/")],
+  ...shelfNav(url),
+  ...(hasTech ? [["tech", site.tech?.tab ?? "記事", url("tech/")]] : []),
+  ...(site.characters?.length ? [["chars", "キャラ", url("/#chars")]] : []),
+  ...(site.books?.length ? [["books", "本", url("/#books")]] : []),
+  ["about", "について", url("about/")],
+];
+const file = `${tab === "home" ? "index" : tab || "page"}.png`;
+---
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  {site.noindex && <meta name="robots" content="noindex,nofollow">}
+  <title>{full}</title>
+  <meta name="description" content={description}>
+  <meta property="og:title" content={full}>
+  <meta property="og:description" content={description}>
+  <meta property="og:type" content="website">
+  {image && <meta property="og:image" content={image}>}
+  <link rel="alternate" type="application/rss+xml" title={site.title} href={url("rss.xml")}>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;800&family=DotGothic16&family=Kosugi&display=swap">
+  <Analytics />
+</head>
+<body>
+  <div class="desk">
+    <div class="win main">
+      <div class="bar"><span>{file}</span><b aria-hidden="true">_□×</b></div>
+      <header class="hd">
+        <a class="logo" href={url("/")}>{site.title}</a>
+        {site.hello && <p class="bub hello" set:html={site.hello} />}
+        <nav class="nav" aria-label="メニュー">
+          {nav.map(([k, label, href]) => <a class={tab === k ? "on" : undefined} href={href}>{label}</a>)}
+          {site.store && <a class="store" href={site.store} target="_blank" rel="noopener">ストア ↗</a>}
+        </nav>
+      </header>
+      <main class="body"><slot /></main>
+      <footer class="ft">
+        <nav aria-label="フッター"><a href={url("rss.xml")}>RSS</a><a href={url("privacy/")}>このサイトについて</a>{site.since && <span>{site.since.label} since {site.since.date}</span>}</nav>
+        <small>{site.owner && <>運営:<a href={url("about/")}>{site.owner}</a> ／ </>}{site.copyright}</small>
+        <p class="bye" aria-hidden="true">またきてね (｡•ω•｡)ﾉ</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+---
+// まんがのシリーズの一覧ページ。シリーズは src/lib/series.ts の一覧表から作る
+import { tabOf, groupOf } from "@futon/lib/series";
+import Base from "./Base.astro";
+import { series } from "@futon/lib/series";
+import { episodes, url } from "@futon/lib/content";
+const { s } = Astro.props;
+const eps = await episodes(s.key);
+---
+<Base title={s.name} tab={tabOf(s)}>
+  <div class="page">
+    <p class="crumb"><a href={url("/")}>ホーム</a> ＞ {groupOf(s) && <><a href={url(`${groupOf(s)!.key}/`)}>{groupOf(s)!.name}</a> ＞ </>}{s.name}</p>
+    <div class="box">
+      <div class="bh"><span>{s.indexHeading ?? s.name}</span></div>
+      <div class="bb">
+        <p class="lead-p">{s.lead}</p>
+        <div class="archive">
+          {eps.map((e) => { const c = s.card(e.data); return <a href={url(`${s.key}/${e.data.num}/`)}><img src={url(c.thumb)} alt="" loading="lazy">{e.data.title}<span class="s">{c.sub}</span></a>; })}
+        </div>
+      </div>
+    </div>
+  </div>
+</Base>

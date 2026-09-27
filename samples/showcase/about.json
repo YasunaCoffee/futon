@@ -1,0 +1,9 @@
+{
+  "name": "みほん", "tagline": "見本の運営者",
+  "intro": "運営についての見本の文章。",
+  "profile": [["すんでいる", "ふとんの中"], ["すき", "テーマの試着"]],
+  "history": [["2026.09", "見本のふとんを敷く"], ["2026.10", "見本の本を出す"]],
+  "links": [{ "label": "X", "href": "https://x.com/", "handle": "@example" }],
+  "contact": "hello@example.com",
+  "contactNote": "見本へのおといあわせ。"
+}

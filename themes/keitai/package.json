@@ -1,0 +1,1 @@
+{ "name": "futon-theme-keitai", "private": true, "description": "futon についてくるテーマ。ピンクのガラケーの画面で読む。メニューは数字キー、新着はメール、キャラはアドレス帳", "futon": { "theme": true } }

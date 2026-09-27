@@ -1,0 +1,10 @@
+---
+// 技術記事のページ。props:p(記事)・newer / older。見た目はテーマの TechPost.astro
+import TechPost from "@theme/TechPost.astro";
+import { techPosts } from "../../lib/content";
+export async function getStaticPaths() {
+  const posts = await techPosts();
+  return posts.map((p, i) => ({ params: { slug: p.id }, props: { p, newer: posts[i - 1], older: posts[i + 1] } }));
+}
+---
+<TechPost {...Astro.props} />

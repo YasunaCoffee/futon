@@ -1,0 +1,15 @@
+---
+// techou テーマの棚の一覧。props:s(棚)
+import { tabOf } from "@futon/lib/series";
+import Base from "./Base.astro";
+import { episodes, url } from "@futon/lib/content";
+const { s } = Astro.props;
+const eps = await episodes(s.key);
+---
+<Base title={s.name} tab={tabOf(s)}>
+  <h1 class="tape">{s.indexHeading ?? s.name}</h1>
+  <p class="lead">{s.lead}</p>
+  <div class="cards">
+    {eps.map((e, i) => { const c = s.card(e.data); return <a class="card" style={`--tilt:${[-1.2, .8, -.4, 1.1][i % 4]}deg`} href={url(`${s.key}/${e.data.num}/`)}><img src={url(c.thumb)} alt="" loading="lazy"><b>{e.data.title}</b><small>{c.sub}</small></a>; })}
+  </div>
+</Base>

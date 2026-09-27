@@ -1,0 +1,71 @@
+---
+// mado テーマの外枠。むかしのブラウザの窓(タイトルバー・メニュー・ツールバー・アドレス)と、左右のフレーム、ステータスバーとタスクバー
+import "./style.css";
+import { url, site, today } from "@futon/lib/content";
+import { shelfNav } from "@futon/lib/series";
+import { hasTech } from "@futon/lib/futon";
+import Analytics from "@futon/components/Analytics.astro";
+import Pixel from "./Pixel.astro";
+interface Props { title?: string; description?: string; tab?: string; image?: string; err?: boolean }
+const { title, description = site.description, tab = "home", image, err = false } = Astro.props;
+const full = title ? `${title} | ${site.title}` : site.title;
+const nav = [
+  ["home", "HOME", url("/")],
+  ...shelfNav(url, "name"),
+  ...(hasTech ? [["tech", site.tech?.label ?? "記事", url("tech/")]] : []),
+  ...(site.characters?.length ? [["chars", "キャラクター", url("/#chars")]] : []),
+  ...(site.books?.length ? [["books", "本", url("/#books")]] : []),
+  ["about", "について", url("about/")],
+];
+const addr = `http://www.futon.home/~${site.title}${decodeURI(Astro.url.pathname)}`;
+---
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  {site.noindex && <meta name="robots" content="noindex,nofollow">}
+  <title>{full}</title>
+  <meta name="description" content={description}>
+  <meta property="og:title" content={full}>
+  <meta property="og:description" content={description}>
+  <meta property="og:type" content="website">
+  {image && <meta property="og:image" content={image}>}
+  <link rel="alternate" type="application/rss+xml" title={site.title} href={url("rss.xml")}>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+P+One&display=swap">
+  <Analytics />
+</head>
+<body>
+  <div class="win">
+    <div class="title"><span>{full} - ふとん Explorer</span><span class="ctl" aria-hidden="true"><i>_</i><i>□</i><i>×</i></span></div>
+    <div class="menubar" aria-hidden="true"><span>ファイル(<u>F</u>)</span><span>編集(<u>E</u>)</span><span>表示(<u>V</u>)</span><span>お気に入り(<u>A</u>)</span><span>ヘルプ(<u>H</u>)</span></div>
+    <div class="tools">
+      <a href={url("/")}>⌂<small>ホーム</small></a>
+      <a href={url("rss.xml")}>✉<small>RSS</small></a>
+      <a href={url("about/")}>☺<small>について</small></a>
+      {site.store && <a href={site.store} target="_blank" rel="noopener">★<small>ストア</small></a>}
+    </div>
+    <div class="addr"><span>アドレス(<u>D</u>)</span><p>{addr}</p></div>
+    <div class={`frames${err ? " err" : ""}`}>
+      {!err && (
+        <nav class="left" aria-label="メニュー">
+          <a class="house" href={url("/")}><Pixel name="house" size={64} />HOME</a>
+          <p>お好きなメニューから<br>ご覧ください</p>
+          <ul>{nav.map(([k, label, href]) => <li><a class={tab === k ? "on" : undefined} href={href}>{label}</a></li>)}</ul>
+          {site.since && <p class="since">{site.since.label}<br>since {site.since.date}</p>}
+        </nav>
+      )}
+      <main class="main"><slot /></main>
+    </div>
+    <div class="status"><span>(1 item remaining) Opening page {addr}...</span><span class="bar" aria-hidden="true"><i></i></span><span class="net"><Pixel name="globe" size={16} /> インターネット</span></div>
+  </div>
+  <footer class="task">
+    <span class="start">▦ スタート</span>
+    <span class="item">▣ {site.title} - ふとん…</span>
+    <nav aria-label="フッター"><a href={url("privacy/")}>このサイトについて</a><small>{site.copyright}</small></nav>
+    <span class="clock">{today.slice(5).replace("-", "/")}</span>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,43 @@
+# 雛形(starter)を敷いて干せるか、push のたびに確かめる
+name: check
+on: [push, pull_request]
+jobs:
+  starter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: ふとんを敷いて干す
+        run: |
+          mkdir -p /tmp/site && cd /tmp/site
+          node $GITHUB_WORKSPACE/bin/futon.mjs init
+          node $GITHUB_WORKSPACE/bin/futon.mjs build
+          test -f dist/index.html && test -f dist/rss.xml && test -f dist/nikki/1/index.html
+          grep -q "はじめてのふとん" dist/index.html
+      - name: ついてくるテーマを全部、見本(みほんのふとん)で試着する
+        run: node tools/try.mjs
+  package:
+    # npm に出す形(npm pack)で入れても、敷いて干せるか。create-futon も通す
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 包む
+        run: |
+          mkdir -p /tmp/pkg
+          npm pack --pack-destination /tmp/pkg
+          (cd create && npm pack --pack-destination /tmp/pkg)
+      - name: create-futon で敷いて、入れて、干す
+        run: |
+          mkdir -p /tmp/ct && cd /tmp/ct && npm init -y > /dev/null
+          npm i /tmp/pkg/yasuna-futon-*.tgz /tmp/pkg/create-futon-*.tgz
+          npx create-futon mysite --theme techou
+          cd mysite && npm i /tmp/pkg/yasuna-futon-*.tgz
+          npm run build
+          test -f dist/index.html && grep -q "Klee" dist/index.html

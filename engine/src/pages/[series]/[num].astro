@@ -1,0 +1,15 @@
+---
+// 話のページ。props:s(棚)・e(話)・newer / older(となりの話)。見た目はテーマの Episode.astro
+import Episode from "@theme/Episode.astro";
+import { series } from "../../lib/series";
+import { episodes } from "../../lib/content";
+export async function getStaticPaths() {
+  const paths = [];
+  for (const s of series) {
+    const eps = await episodes(s.key);
+    paths.push(...eps.map((e, i) => ({ params: { series: s.key, num: String(e.data.num) }, props: { s, e, newer: eps[i - 1], older: eps[i + 1] } })));
+  }
+  return paths;
+}
+---
+<Episode {...Astro.props} />

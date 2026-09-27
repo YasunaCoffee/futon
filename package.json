@@ -1,0 +1,43 @@
+{
+  "name": "@yasuna/futon",
+  "version": "0.1.0",
+  "description": "AIフレンドリーな個人サイトエンジン。中身は md と画像だけ。AIに「1話足して」と頼めば、そのまま載る",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "futon": "bin/futon.mjs"
+  },
+  "files": [
+    "bin",
+    "engine",
+    "lib",
+    "themes",
+    "starter",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22.18"
+  },
+  "dependencies": {
+    "@astrojs/rss": "^4.0.19",
+    "astro": "^5.18.2",
+    "js-yaml": "^4.3.2",
+    "sharp": "^0.35.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YasunaCoffee/futon.git"
+  },
+  "homepage": "https://github.com/YasunaCoffee/futon#readme",
+  "keywords": [
+    "static-site",
+    "astro",
+    "local-first",
+    "homepage",
+    "manga",
+    "webcomic",
+    "ai-friendly",
+    "agents-md"
+  ]
+}

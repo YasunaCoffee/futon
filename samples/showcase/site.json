@@ -1,0 +1,88 @@
+{
+  "title": "みほんのふとん",
+  "description": "futon のテーマを試着するための見本。全部の欄を使っている。",
+  "logo": "み<b>ほん</b><small>zzZ</small>",
+  "hello": "ようこそ! ここは<br><b>テーマの試着室</b>です",
+  "owner": "みほん",
+  "copyright": "© 2026 みほんのふとん",
+  "store": "https://example.com/",
+  "storeLabel": "おみせはこちら ▶",
+  "storeButton": "おみせで見る",
+  "tickerTail": "見本のお知らせ",
+  "banners": [
+    {
+      "cls": "g",
+      "href": "about/",
+      "cap": "みほんのキャラ",
+      "img": "img/chars/a.webp",
+      "sub": "キャラクター"
+    }
+  ],
+  "since": {
+    "label": "連載",
+    "date": "2026.09.01"
+  },
+  "tech": {
+    "label": "つくりかたの記事",
+    "tab": "きじ",
+    "lead": "見本の記事の説明文。",
+    "description": "見本の記事"
+  },
+  "intro": {
+    "heading": "みほんのふとんってなに?",
+    "paragraphs": [
+      "テーマの試着に使う見本です。<b>全部の欄</b>に何かが入っています。",
+      "ここは紹介文の2段落目。"
+    ],
+    "dream": "ゆめ:見本の<em>ゆめ</em>の欄"
+  },
+  "characters": [
+    {
+      "slug": "a",
+      "name": "ヤスナ",
+      "image": "img/chars/a.webp",
+      "text": "見本のキャラクター(ブッダめっちゃロジカルの主役)。",
+      "facts": [
+        [
+          "すき",
+          "おひるね"
+        ],
+        [
+          "にがて",
+          "はやおき"
+        ]
+      ],
+      "fanart": {
+        "ok": "ファンアート(見本)",
+        "tags": "#みほん",
+        "note": "見本の文言です。実際の可否ではありません。",
+        "link": "about/"
+      },
+      "link": "mangaka/",
+      "x": "https://x.com/",
+      "face": "img/chars/a_face.webp"
+    },
+    {
+      "slug": "b",
+      "name": "のんたん",
+      "image": "img/chars/b.webp",
+      "text": "もうひとりの見本(『AITuberをつくる人を増やす本』の主役)。",
+      "face": "img/chars/b_face.webp"
+    }
+  ],
+  "books": [
+    {
+      "slug": "1",
+      "title": "みほんの本",
+      "sub": "第1巻",
+      "price": 500,
+      "image": "img/books/1.webp",
+      "characters": [
+        "a",
+        "b"
+      ]
+    }
+  ],
+  "videos": [],
+  "tweets": []
+}

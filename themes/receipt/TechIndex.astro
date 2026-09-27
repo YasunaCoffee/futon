@@ -1,0 +1,11 @@
+---
+// receipt テーマの記事一覧
+import Base from "./Base.astro";
+import { techPosts, dotted, url, site } from "@futon/lib/content";
+const posts = await techPosts();
+---
+<Base title={site.tech?.label ?? "記事"} tab="tech" description={site.tech?.description}>
+  <h1 class="h1">{site.tech?.label ?? "記事"}</h1>
+  {site.tech?.lead && <p class="lead">{site.tech.lead}</p>}
+  <ul class="list">{posts.map((p) => <li><span class="d">{dotted(p.data.date)}</span><a href={url(`tech/${p.id}/`)}>{p.data.emoji && `${p.data.emoji} `}{p.data.title}</a></li>)}</ul>
+</Base>

@@ -1,0 +1,28 @@
+---
+// アクセス解析(Google Analytics 4)。環境変数 PUBLIC_GA_ID(G-XXXXXXX)があるときだけ読み込む
+const id = import.meta.env.PUBLIC_GA_ID;
+---
+{id && (
+  <>
+    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${id}`}></script>
+    <script is:inline define:vars={{ id }}>
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { dataLayer.push(arguments); };
+      gtag("js", new Date());
+      gtag("config", id, { anonymize_ip: true });
+    </script>
+  </>
+)}
+<script>
+  // サイト全体のクリック計測:外へのリンク(ストア・note・Zenn・X等)と、data-track をつけた要素
+  import { track } from "../lib/track";
+  document.addEventListener("click", (e) => {
+    const a = (e.target as HTMLElement).closest("a");
+    if (!a) return;
+    if (a.dataset.track) { track(a.dataset.track, { label: a.dataset.label, link_url: a.href }); return; }
+    if (a.hostname && a.hostname !== location.hostname && !a.closest(".share")) {
+      const name = a.hostname.includes("booth.pm") ? "store_click" : "outbound_click";
+      track(name, { link_url: a.href, link_domain: a.hostname });
+    }
+  });
+</script>

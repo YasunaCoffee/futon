@@ -1,0 +1,118 @@
+/* futon についてくるテーマ receipt(レシート)。感熱紙の細長い紙に、等幅の字で印字する */
+:root {
+  --desk: #d9d6cf; --paper: #fbfbf8; --ink: #1c1c1c; --sub: #5d5d5d; --fade: #9a9a9a;
+  --mono: "MS Gothic", "ＭＳ ゴシック", "Osaka-Mono", "Kosugi", monospace; /* 当時の字:レジの印字はドットの等幅ゴシック → MS ゴシック、なければ似た Kosugi */ --logo: "Dela Gothic One", "M PLUS 1 Code", sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root { --desk: #1d1e22; } }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--desk); color: var(--ink); font: 14px/1.75 var(--mono); padding: 26px 12px 60px; }
+a { color: var(--ink); text-underline-offset: 3px; }
+img { max-width: 100%; height: auto; display: block; }
+/* 紙:上下をギザギザに切る */
+.paper { position: relative; max-width: 440px; margin: 0 auto; background: var(--paper); padding: 30px 26px 34px; overflow: hidden;
+  filter: drop-shadow(0 8px 10px rgb(0 0 0 / .25)); transform: rotate(-.6deg);
+}
+/* 上下のギザギザ:机の色の三角を並べて、紙の縁を切る */
+.zig { position: absolute; left: 0; right: 0; height: 10px; z-index: 3; background-size: 14px 10px; background-repeat: repeat-x; }
+.zig.top { top: 0; background-image: linear-gradient(135deg, var(--desk) 5px, transparent 0), linear-gradient(-135deg, var(--desk) 5px, transparent 0); }
+.zig.bot { bottom: 0; background-image: linear-gradient(45deg, var(--desk) 5px, transparent 0), linear-gradient(-45deg, var(--desk) 5px, transparent 0); }
+.paper::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5;
+  background: repeating-linear-gradient(0deg, transparent 0 3px, rgb(0 0 0 / .015) 3px 4px); }
+/* 落書き:キャラの絵を紙の上に重ねる */
+.doodle { position: absolute; right: -40px; top: 40px; width: 72%; max-width: 330px; opacity: .55; mix-blend-mode: multiply; filter: grayscale(1) contrast(1.6); pointer-events: none; transform: rotate(4deg); z-index: 1; }
+.hd, .menu, .page, .ft, .eq { position: relative; z-index: 2; }
+
+.logo { display: flex; align-items: center; gap: 10px; font-family: var(--logo); font-size: clamp(26px, 8vw, 36px); line-height: 1.15; text-decoration: none; color: var(--ink); letter-spacing: -.01em; }
+.logo i { flex: none; width: 34px; height: 26px; background: linear-gradient(var(--ink) 0 40%, transparent 40% 60%, var(--ink) 60%); }
+.shop { margin: 8px 0 0; font-size: 13px; }
+.row { display: flex; justify-content: space-between; gap: 12px; margin: 6px 0; }
+.eq { height: 10px; margin: 12px 0; background: repeating-linear-gradient(90deg, var(--ink) 0 10px, transparent 10px 14px) 0 2px / 100% 2px no-repeat,
+  repeating-linear-gradient(90deg, var(--ink) 0 10px, transparent 10px 14px) 0 7px / 100% 2px no-repeat; }
+.dash { height: 2px; margin: 14px 0; background: repeating-linear-gradient(90deg, var(--ink) 0 6px, transparent 6px 10px); }
+.menu { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 12px; font-size: 13.5px; }
+.menu a { text-decoration: none; }
+.menu a span { color: var(--fade); margin-right: 6px; }
+.menu a.on { background: var(--ink); color: var(--paper); }
+.menu a.on span { color: var(--paper); }
+
+section { margin: 22px 0; }
+h2 { text-align: center; font-size: 17px; font-weight: 700; letter-spacing: .3em; margin: 0 0 10px; }
+.h1 { font-size: 19px; line-height: 1.5; margin: 6px 0; }
+.h1 small { font-size: 12px; font-weight: 400; margin-left: 6px; }
+.lead, .small, .sub { color: var(--sub); font-size: 12.5px; }
+.sub { text-align: right; margin: 4px 0 0; }
+.ttl { font-weight: 700; margin: 0 0 4px; }
+.intro p { margin: .2em 0; }
+.intro .dream { font-weight: 700; }
+.items { list-style: none; margin: 0; padding: 0; }
+.items li { display: flex; justify-content: space-between; gap: 10px; padding: 2px 0; }
+.items a { text-decoration: none; }
+.items a:hover { text-decoration: underline; }
+.r { flex: none; font-variant-numeric: tabular-nums; }
+.total { display: flex; justify-content: space-between; font-size: 18px; font-weight: 700; border-top: 2px solid var(--ink); margin: 8px 0 0; padding-top: 4px; }
+
+.thumbs { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.thumbs a { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; align-items: center; text-decoration: none; }
+.thumbs img { width: 64px; aspect-ratio: 3 / 4; object-fit: cover; object-position: top; filter: grayscale(1) contrast(1.25); border: 1px solid var(--ink); }
+.thumbs b { display: block; font-weight: 700; }
+.thumbs small { color: var(--sub); font-size: 12px; }
+
+.chr { scroll-margin-top: 16px; }
+.chr .pic { display: flex; justify-content: center; margin: 6px 0; }
+.chr .pic img { max-height: 220px; width: auto; filter: grayscale(1) contrast(1.3); }
+.name { font-size: 18px; font-weight: 700; margin: 4px 0; }
+.name small { font-size: 12px; font-weight: 400; margin-left: 6px; }
+.chr p { margin: 4px 0; }
+.lead-dots { display: grid; grid-template-columns: auto 1fr; gap: 0 4px; margin: 6px 0; }
+.lead-dots dt::after { content: " ................................"; color: var(--fade); }
+.lead-dots dt { overflow: hidden; white-space: nowrap; max-width: 12em; }
+.lead-dots dd { margin: 0; text-align: right; }
+.note { font-size: 12px; color: var(--sub); }
+.links { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.bk { display: grid; grid-template-columns: 70px minmax(0, 1fr); gap: 12px; margin: 10px 0; scroll-margin-top: 16px; }
+.bk img { width: 70px; aspect-ratio: 1 / 1.414; object-fit: cover; filter: grayscale(1) contrast(1.2); border: 1px solid var(--ink); }
+.bk .row { margin: 0; font-weight: 700; }
+.bk p { margin: 2px 0; }
+.cast { display: inline-flex; flex-wrap: wrap; gap: 4px 10px; vertical-align: middle; }
+.cast a { display: inline-flex; align-items: center; gap: 4px; text-decoration: none; }
+.cast i { display: inline-block; overflow: hidden; border: 1px solid var(--ink); border-radius: 50%; background: #fff; position: relative; flex: none; }
+.cast img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); }
+.cast img.crop { position: absolute; left: -40%; top: -6%; width: 180%; height: auto; object-fit: initial; }
+.memo { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; border-top: 1px dashed var(--ink); border-bottom: 1px dashed var(--ink); padding: 6px 0; }
+:target { background: #fff3a8; }
+
+.imgs { display: grid; gap: 10px; margin: 10px 0; }
+.imgs img { width: 100%; }
+.verse { text-align: center; font-weight: 700; font-size: 16px; line-height: 2; }
+.verse small { display: block; font-weight: 400; font-size: 12px; color: var(--sub); }
+.list { list-style: none; margin: 0; padding: 0; }
+.list li { display: flex; flex-direction: column; padding: 4px 0; border-bottom: 1px dashed var(--fade); }
+.list .d { font-size: 12px; color: var(--sub); }
+.kind { font-size: 12px; margin-left: 6px; }
+.prof { display: grid; grid-template-columns: auto 1fr; gap: 0 12px; }
+.prof dd { margin: 0; }
+.prose { overflow-wrap: anywhere; font-size: 13.5px; }
+.prose h2 { text-align: left; letter-spacing: 0; font-size: 16px; border-bottom: 2px solid var(--ink); margin-top: 1.6em; }
+.prose pre { overflow-x: auto; border: 1px dashed var(--ink); padding: 8px; font-size: 12px; }
+.prose img { filter: grayscale(1); }
+.prose table { border-collapse: collapse; display: block; overflow-x: auto; }
+.prose th, .prose td { border: 1px solid var(--ink); padding: 3px 6px; }
+.share { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 14px 0; font-size: 12.5px; }
+.sh { cursor: pointer; font: 12.5px var(--mono); color: var(--ink); background: none; border: 1px solid var(--ink); padding: 0 8px; text-decoration: none; }
+.share-done { font-weight: 700; }
+.tweet-note { font-size: 12px; color: var(--sub); margin: 0 0 4px; }
+.big404 { text-align: center; font-family: var(--logo); font-size: 40px; margin: 10px 0; }
+
+.ft { text-align: center; }
+.thanks { font-size: 13px; }
+.barcode { display: flex; justify-content: center; align-items: stretch; height: 54px; margin: 12px 0 2px; }
+.barcode i { display: block; background: var(--ink); margin-right: 1px; }
+.code { margin: 0; font-size: 12px; letter-spacing: .3em; }
+.ft .links { justify-content: center; font-size: 12.5px; margin-top: 12px; }
+.copy { font-size: 11.5px; color: var(--sub); margin: 4px 0; }
+.hikae { font-size: 18px; letter-spacing: .1em; margin: 14px 0 0; }
+@media (max-width: 480px) {
+  body { padding: 14px 8px 40px; }
+  .paper { padding: 26px 18px 30px; transform: none; }
+}

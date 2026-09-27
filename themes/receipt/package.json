@@ -1,0 +1,1 @@
+{ "name": "futon-theme-receipt", "private": true, "description": "futon についてくるテーマ。感熱紙のレシート。新着は品目、キャラは会員情報、下にバーコード。上にキャラの落書き", "futon": { "theme": true } }

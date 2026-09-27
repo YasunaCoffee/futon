@@ -1,0 +1,49 @@
+---
+// 記事ごとの共有ボタン。URLはブラウザで開いているページのものを使う(本番のドメインが決まる前でも正しく動く)
+interface Props { text: string }
+const { text } = Astro.props;
+---
+<div class="share" data-text={text}>
+  <span class="share-label">シェアしてね</span>
+  <a class="sh sh-x" data-net="x" target="_blank" rel="noopener">X</a>
+  <a class="sh sh-bsky" data-net="bluesky" target="_blank" rel="noopener">Bluesky</a>
+  <a class="sh sh-threads" data-net="threads" target="_blank" rel="noopener">Threads</a>
+  <a class="sh sh-line" data-net="line" target="_blank" rel="noopener">LINE</a>
+  <a class="sh sh-fb" data-net="facebook" target="_blank" rel="noopener">Facebook</a>
+  <button class="sh sh-copy" type="button" data-net="copy">URLをコピー</button>
+  <button class="sh sh-more" type="button" data-net="native" hidden>そのほか</button>
+  <span class="share-done" hidden>コピーしました!</span>
+</div>
+
+<script>
+  import { track } from "../lib/track";
+  for (const box of document.querySelectorAll<HTMLElement>(".share")) {
+    const url = location.href.split("#")[0];
+    const text = box.dataset.text ?? document.title;
+    const u = encodeURIComponent(url), t = encodeURIComponent(text);
+    const links: Record<string, string> = {
+      x: `https://x.com/intent/post?text=${t}&url=${u}`,
+      bluesky: `https://bsky.app/intent/compose?text=${encodeURIComponent(`${text} ${url}`)}`,
+      threads: `https://www.threads.net/intent/post?text=${encodeURIComponent(`${text} ${url}`)}`,
+      line: `https://social-plugins.line.me/lineit/share?url=${u}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${u}`,
+    };
+    box.querySelectorAll<HTMLAnchorElement>("a[data-net]").forEach((a) => {
+      a.href = links[a.dataset.net!];
+      a.addEventListener("click", () => track("share", { method: a.dataset.net, content: url }));
+    });
+    const done = box.querySelector<HTMLElement>(".share-done")!;
+    box.querySelector(".sh-copy")!.addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(url); } catch { prompt?.("URL", url); }
+      done.hidden = false; setTimeout(() => (done.hidden = true), 1800);
+      track("share", { method: "copy", content: url });
+    });
+    const more = box.querySelector<HTMLButtonElement>(".sh-more")!;
+    if (navigator.share) {
+      more.hidden = false;
+      more.addEventListener("click", () => {
+        navigator.share({ title: text, url }).then(() => track("share", { method: "native", content: url })).catch(() => {});
+      });
+    }
+  }
+</script>

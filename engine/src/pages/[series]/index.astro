@@ -1,0 +1,12 @@
+---
+// 棚(シリーズ)の一覧ページと、グループ(棚をまとめたもの)のページ。棚はふとんの shelves.yaml から。
+// 見た目はテーマの ShelfIndex.astro / GroupIndex.astro(テーマに GroupIndex が無ければエンジンの標準のもの)
+import ShelfIndex from "@theme/ShelfIndex.astro";
+import GroupIndex from "@theme/GroupIndex.astro";
+import { series, groups } from "../../lib/series";
+export async function getStaticPaths() {
+  return [...series.map((s) => ({ params: { series: s.key }, props: { s } })), ...groups.map((g) => ({ params: { series: g.key }, props: { g } }))];
+}
+const { s, g } = Astro.props;
+---
+{s ? <ShelfIndex s={s} /> : <GroupIndex g={g} />}

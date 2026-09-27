@@ -1,0 +1,51 @@
+---
+// plain テーマの外枠。ヘッダー(サイト名・メニュー)とフッター
+import "./style.css";
+import { url, site } from "@futon/lib/content";
+import { shelfNav } from "@futon/lib/series";
+import { hasTech } from "@futon/lib/futon";
+import Analytics from "@futon/components/Analytics.astro";
+interface Props { title?: string; description?: string; tab?: string; image?: string }
+const { title, description = site.description, tab = "home", image } = Astro.props;
+const full = title ? `${title} | ${site.title}` : site.title;
+const nav = [
+  ["home", "ホーム", url("/")],
+  ...shelfNav(url),
+  ...(hasTech ? [["tech", site.tech?.tab ?? "記事", url("tech/")]] : []),
+  ["about", "について", url("about/")],
+];
+---
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  {site.noindex && <meta name="robots" content="noindex,nofollow">}
+  <title>{full}</title>
+  <meta name="description" content={description}>
+  <meta property="og:title" content={full}>
+  <meta property="og:description" content={description}>
+  <meta property="og:type" content="website">
+  {image && <meta property="og:image" content={image}>}
+  <link rel="alternate" type="application/rss+xml" title={site.title} href={url("rss.xml")}>
+  <Analytics />
+</head>
+<body>
+  <header class="hd">
+    <div class="wrap">
+      <a class="logo" href={url("/")}>{site.title}</a>
+      <nav class="nav" aria-label="メニュー">
+        {nav.map(([k, label, href]) => <a class={tab === k ? "on" : undefined} href={href}>{label}</a>)}
+        {site.store && <a href={site.store} target="_blank" rel="noopener">ストア</a>}
+      </nav>
+    </div>
+  </header>
+  <main class="wrap"><slot /></main>
+  <footer class="ft">
+    <div class="wrap">
+      <nav aria-label="フッター"><a href={url("rss.xml")}>RSS</a><a href={url("privacy/")}>このサイトについて</a></nav>
+      <small>{site.owner && <>運営:<a href={url("about/")}>{site.owner}</a> ／ </>}{site.copyright}</small>
+    </div>
+  </footer>
+</body>
+</html>

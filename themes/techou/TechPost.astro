@@ -1,0 +1,20 @@
+---
+// techou テーマの記事のページ。props:p(記事)・newer / older
+import Base from "./Base.astro";
+import Share from "@futon/components/Share.astro";
+import { render } from "astro:content";
+import { dotted, url } from "@futon/lib/content";
+const { p, newer, older } = Astro.props;
+const { Content } = await render(p);
+const d = p.data;
+---
+<Base title={d.title} tab="tech" description={d.description}>
+  <h1 class="tape">{d.emoji && `${d.emoji} `}{d.title}</h1>
+  <p class="meta">{dotted(d.date)}{d.category && ` ／ ${d.category}`}</p>
+  <article class="prose"><Content /></article>
+  <Share text={d.title} />
+  <div class="pager">
+    {older ? <a class="btn" href={url(`tech/${older.id}/`)}>← まえ</a> : <span></span>}
+    {newer ? <a class="btn" href={url(`tech/${newer.id}/`)}>つぎ →</a> : <a class="btn" href={url("tech/")}>一覧へ</a>}
+  </div>
+</Base>

@@ -1,0 +1,33 @@
+# npm に出す。Actions の画面から「Run workflow」で流す(スマホの GitHub アプリからも)。
+# 前もって:npm で Access Token(Automation / Granular で @yasuna/futon と create-futon に書き込み)を作り、
+# このリポジトリの Settings → Secrets and variables → Actions に NPM_TOKEN という名前で入れておく。
+# 版を上げるときは package.json と create/package.json の version を上げてから流す。
+name: publish
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write # npm の provenance(どこで作ったかの証明)に使う
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      - run: npm ci
+      - name: 見本で全部のテーマを試着してから出す
+        run: node tools/try.mjs
+      - name: futon 本体
+        run: npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: create-futon
+        working-directory: create
+        run: npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

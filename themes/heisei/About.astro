@@ -1,0 +1,94 @@
+---
+import Base from "./Base.astro";
+import { url } from "@futon/lib/content";
+import { readFutonJson } from "@futon/lib/futon";
+import { site } from "@futon/lib/content";
+const a = readFutonJson("about.json");
+import { noteItems } from "@futon/lib/note";
+import { techPosts } from "@futon/lib/content";
+const tech = { label: "記事", tab: "きじ", lead: "", description: "", ...(site.tech ?? {}) }; // 記事の呼び方(site.json の tech)
+const notes = await noteItems(6);
+const techs = (await techPosts()).slice(0, 6).map((e) => ({ title: e.data.title, date: e.data.date, link: url(`tech/${e.id}/`) }));
+const ymd = (d: Date) => new Date(+d + 9 * 3600e3).toISOString().slice(0, 10).replaceAll("-", ".");
+---
+<Base title="運営について" tab="about" description={`${site.title}を運営している${a.name}(${a.tagline})のプロフィールと活動のあゆみ。`}>
+  <div class="page">
+    <p class="crumb"><a href={url("/")}>ホーム</a> ＞ 運営について</p>
+
+    <div class="box">
+      <div class="bh pink"><span>運営しているひと</span></div>
+      <div class="bb prof">
+        {a.icon && <figure class="prof-icon">
+          <img src={url(a.icon)} alt={`${a.name}のアイコン`} width="160" height="160">
+          <figcaption>{a.iconCredit}</figcaption>
+        </figure>}
+        <div>
+          <p class="prof-name">{a.name}<small>{a.tagline}</small></p>
+          {a.intro && <p>{a.intro}</p>}
+          {a.profile?.length > 0 && <table class="prof-table">
+            <tbody>{a.profile.map(([k, v]) => <tr><th>{k}</th><td>{v}</td></tr>)}</tbody>
+          </table>}
+        </div>
+      </div>
+    </div>
+
+    <div class="about-cols">
+      {a.history?.length > 0 ? <div class="box">
+        <div class="bh"><span>活動のあゆみ</span></div>
+        <div class="bb">
+          <ul class="news history">
+            {a.history.map(([d, t]) => <li><span class="d">{d}</span><span>{t}</span></li>)}
+          </ul>
+        </div>
+      </div> : <div></div>}
+
+      <div>
+        {notes.length > 0 && (
+          <div class="box">
+            <div class="bh"><span>さいきん書いたこと(note)</span></div>
+            <div class="bb"><ul class="news">{notes.map((n) => <li><span class="d">{ymd(n.date).slice(5)}</span><a href={n.link} target="_blank" rel="noopener">{n.title}</a></li>)}</ul></div>
+          </div>
+        )}
+        {techs.length > 0 && (
+          <div class="box">
+            <div class="bh"><span>{tech.label}</span></div>
+            <div class="bb"><ul class="news">{techs.map((n) => <li><span class="d">{ymd(n.date).slice(5)}</span><a href={n.link}>{n.title}</a></li>)}</ul></div>
+          </div>
+        )}
+        {a.links?.length > 0 && <div class="box">
+          <div class="bh"><span>リンク</span></div>
+          <div class="bb">
+            <ul class="linklist">
+              {a.links.map((l) => <li><a href={l.href} target="_blank" rel="noopener"><b>{l.label}</b>{l.handle}</a></li>)}
+            </ul>
+          </div>
+        </div>}
+        {a.contact && <div class="box">
+          <div class="bh pink"><span>おといあわせ</span></div>
+          <div class="bb">
+            <p style="margin:0 0 6px">{a.contactNote ?? "おといあわせは、メールでどうぞ。"}</p>
+            <p class="mail"><span id="mail">{a.contact}</span></p>
+            <button class="btn" type="button" id="copy">アドレスをコピー</button>
+            <span class="copied" id="copied" hidden>コピーしました</span>
+          </div>
+        </div>}
+      </div>
+    </div>
+  </div>
+</Base>
+
+<script>
+  const btn = document.getElementById("copy");
+  const mail = document.getElementById("mail");
+  const done = document.getElementById("copied");
+  btn?.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(mail!.textContent!.trim());
+      done!.hidden = false;
+      setTimeout(() => (done!.hidden = true), 1800);
+    } catch {
+      const r = document.createRange(); r.selectNodeContents(mail!);
+      const s = getSelection(); s?.removeAllRanges(); s?.addRange(r);
+    }
+  });
+</script>
