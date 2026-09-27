@@ -1,7 +1,7 @@
 ---
 // techou テーマの外枠。週間の手帳:赤いダブルクリップでとめて、右の小口にインデックスのシール(メニュー)
 import "./style.css";
-import { url, site, today } from "@futon/lib/content";
+import { url, site } from "@futon/lib/content";
 import { shelfNav } from "@futon/lib/series";
 import { hasTech } from "@futon/lib/futon";
 import Analytics from "@futon/components/Analytics.astro";
@@ -16,11 +16,6 @@ const nav = [
   ...(site.books?.length ? [["books", "本", url("/#books")]] : []),
   ["about", "について", url("about/")],
 ];
-// その年の何週目か(手帳の上の「34th WEEK」)
-const d = new Date(today + "T00:00:00Z");
-const jan1 = Date.UTC(d.getUTCFullYear(), 0, 1);
-const week = Math.ceil(((+d - jan1) / 86400e3 + new Date(jan1).getUTCDay() + 1) / 7);
-const th = (n: number) => n + (n % 10 === 1 && n !== 11 ? "st" : n % 10 === 2 && n !== 12 ? "nd" : n % 10 === 3 && n !== 13 ? "rd" : "th");
 ---
 <!doctype html>
 <html lang="ja">
@@ -37,7 +32,7 @@ const th = (n: number) => n + (n % 10 === 1 && n !== 11 ? "st" : n % 10 === 2 &&
   <link rel="alternate" type="application/rss+xml" title={site.title} href={url("rss.xml")}>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;700&family=Barlow+Condensed:wght@500;700&family=Yellowtail&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;700&family=Barlow+Condensed:wght@500;700&display=swap">
   <Analytics />
 </head>
 <body>
@@ -45,7 +40,6 @@ const th = (n: number) => n + (n % 10 === 1 && n !== 11 ? "st" : n % 10 === 2 &&
     <i class="clip tl" aria-hidden="true"></i><i class="clip br" aria-hidden="true"></i>
     <header class="top">
       <a class="logo" href={url("/")}>{site.title}</a>
-      <span class="wk">{th(week)} WEEK</span>
     </header>
     <nav class="index" aria-label="メニュー">
       {nav.map(([k, label, href]) => <a class={tab === k ? "on" : undefined} href={href}>{label}</a>)}

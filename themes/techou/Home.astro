@@ -9,25 +9,23 @@ const items = (await newest()).filter((i) => i.kind !== "video").slice(0, 7);
 const techs = (await techPosts()).slice(0, 5);
 const EN = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 const JP = "日月火水木金土";
-const moon = ["●", "◐", "○", "◑"];
 const stickers = shelves.flatMap(({ s, eps }) => eps.slice(0, 2).map((e) => ({ s, e, c: s.card(e.data) }))).slice(0, 4);
 let dn = 0;
-const deco = () => dn++ % 4; // 飾りの型:0 蛍光マーカー+しましまマステ / 1 はんこ枠+付箋 / 2 手描きの丸+水玉マステ / 3 テプラ風ラベル+星シール
+const deco = () => dn++ % 4; // 飾りの型:0 蛍光マーカー+しましまマステ / 1 はんこ枠+付箋 / 2 手描きの丸+水玉マステ / 3 テプラ風ラベル+黄緑のマステ
 const tilt = (i: number) => `--tilt:${[-6, 5, -3, 7][i % 4]}deg`;
 ---
 <Base tab="home">
   <div class="spread">
     <section class="pg weeks" aria-label="新着">
-      <span class="hl" aria-hidden="true"></span><span class="dot o" aria-hidden="true"></span><span class="dot r" aria-hidden="true"></span><span class="star" aria-hidden="true">✦</span>
+      <span class="hl" aria-hidden="true"></span>
       <ol class="days">
         {items.map((i, n) => (
           <li>
-            <span class="tab"><b>{i.date.getUTCDate()}</b><small>{EN[i.date.getUTCDay()]}</small><small>{JP[i.date.getUTCDay()]}</small><i>{moon[n % 4]}</i></span>
+            <span class="tab"><b>{i.date.getUTCDate()}</b><small>{EN[i.date.getUTCDay()]}</small><small>{JP[i.date.getUTCDay()]}</small></span>
             <span class="plan"><a href={i.href}>{i.title}</a><small>{i.label}{i.note && ` ・ ${i.note}`}</small></span>
           </li>
         ))}
       </ol>
-      <p class="happy"><span>{site.techou?.word ?? "happiness"}</span><a href={url("rss.xml")}>RSS</a></p>
     </section>
     <section class="pg grid" aria-label="キャラクターとまんが">
       {chars.length > 0 && (
@@ -39,7 +37,6 @@ const tilt = (i: number) => `--tilt:${[-6, 5, -3, 7][i % 4]}deg`;
       <div class="stickers">
         {stickers.map(({ s, e, c }, i) => <a class="sticker" style={tilt(i)} href={url(`${s.key}/${e.data.num}/`)}><img src={url(c.thumb)} alt="" loading="lazy"><span>{e.data.title}</span></a>)}
       </div>
-      <span class="dot g" aria-hidden="true"></span><span class="dot p" aria-hidden="true"></span><span class="swirl" aria-hidden="true"></span>
     </section>
   </div>
 
