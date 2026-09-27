@@ -1,6 +1,6 @@
 # futon
 
-[English](README.en.md) | 日本語
+[English](README.en.md) / [日本語](README.md)
 
 <p align="center"><img src="docs/images/hero.png" alt="futon:AIフレンドリーな個人サイトエンジン。中身は md と画像だけ" width="820"></p>
 

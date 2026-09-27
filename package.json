@@ -15,7 +15,10 @@
     "starter",
     "README.md",
     "README.en.md",
-    "LICENSE"
+    "LICENSE",
+    "!engine/.out",
+    "!engine/.work",
+    "!engine/.astro"
   ],
   "engines": {
     "node": ">=22.18"
