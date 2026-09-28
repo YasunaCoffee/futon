@@ -86,7 +86,7 @@ const tilt = (i: number) => `--tilt:${[-6, 5, -3, 7][i % 4]}deg`;
   {books.length > 0 && (
     <section class={`pg sheet d${deco()}`} id="books">
       <i class="wt" aria-hidden="true"></i><i class="fs" aria-hidden="true"></i>
-      <h2><span class="tape">{tr("本")}</span>{site.store && <a href={site.store} target="_blank" rel="noopener">{tr("ストア ↗")}</a>}</h2>
+      <h2><span class="tape">{site.booksHeading ?? tr("本")}</span>{site.store && <a href={site.store} target="_blank" rel="noopener">{tr("ストア ↗")}</a>}</h2>
       <div class="books">
         {books.map((b) => (
           <div class="bk" id={b.id}>

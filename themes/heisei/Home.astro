@@ -143,7 +143,7 @@ const techs = (await techPosts()).slice(0, 4);
   {site.books?.length > 0 && (
   <div class="wide" id="books">
     <div class="box">
-      <div class="bh pink"><span>{tr("ほん")}</span><a href={site.store} target="_blank" rel="noopener">{tr("ストアへ ▶")}</a></div>
+      <div class="bh pink"><span>{site.booksHeading ?? tr("ほん")}</span><a href={site.store} target="_blank" rel="noopener">{tr("ストアへ ▶")}</a></div>
       <div class="bb books">
         {books.map((b) => (
           <div class="bk" id={b.id}><img src={url(b.image)} alt={`『${b.title}${b.sub}』の表紙`} loading="lazy"><b>{b.title}<br>{b.sub}</b>
