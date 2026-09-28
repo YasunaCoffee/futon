@@ -87,7 +87,7 @@ const techs = (await techPosts()).slice(0, 4);
 
     <aside>
       {site.store && <a class="ban store" href={site.store} target="_blank" rel="noopener"><span class="big">{site.storeName ?? <>{site.title}<br>{tr("ストア")}</>}</span><span class="sub">{site.storeLabel}</span></a>}
-      {shelves.map(({ s, eps }) => <a class={`ban ${s.banner.cls}`} href={url(`${s.key}/`)}><span class="cap">{s.name}</span><span class="pic"><img src={url(s.banner.img)} alt="" style={s.banner.imgStyle}></span><span class="sub">{s.banner.sub(eps.length)}</span></a>)}
+      {shelves.filter(({ s }) => s.banner).map(({ s, eps }) => s.banner && <a class={`ban ${s.banner.cls}`} href={url(`${s.key}/`)}><span class="cap">{s.name}</span><span class="pic"><img src={url(s.banner.img)} alt="" style={s.banner.imgStyle}></span><span class="sub">{s.banner.sub(eps.length)}</span></a>)}
       {(site.banners ?? []).map((b: any) => <a class={`ban ${b.cls}`} href={url(b.href)}><span class="cap">{b.cap}</span><span class="pic"><img src={url(b.img)} alt=""></span><span class="sub">{b.sub}</span></a>)}
       {site.since && <div class="since">{site.since.label}<b>since {site.since.date}</b></div>}
     </aside>

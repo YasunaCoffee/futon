@@ -56,7 +56,7 @@ export type Series = {
   topic: (d: any) => { img: string; label: string };
   newsNote?: (d: any) => string;
   itemNote: (d: any) => string;
-  banner: { cls: string; img: string; imgStyle?: string; sub: (n: number) => string };
+  banner?: { cls: string; img: string; imgStyle?: string; sub: (n: number) => string };
   hero?: (d: any) => { img: string; alt: string; cap: string };
 };
 
@@ -77,7 +77,7 @@ function compile(y: any): Series {
     topic: (d) => ({ img: fill(y.topic.img, d), label: fill(y.topic.label, d) }),
     newsNote: y.newsNote ? (d) => fill(y.newsNote, d) : undefined,
     itemNote: (d) => fill(y.itemNote, d),
-    banner: { cls: y.banner.cls, img: y.banner.img, imgStyle: y.banner.imgStyle, sub: (n) => fill(y.banner.sub, { count: n }) },
+    banner: y.banner ? { cls: y.banner.cls, img: y.banner.img, imgStyle: y.banner.imgStyle, sub: (n) => fill(y.banner.sub, { count: n }) } : undefined,
     hero: y.hero ? (d) => ({ img: fill(y.hero.img, d), alt: fill(y.hero.alt, d), cap: fill(y.hero.cap, d) }) : undefined,
   };
 }
