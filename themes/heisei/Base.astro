@@ -1,6 +1,6 @@
 ---
 import "./site.css";
-import { url, site } from "@futon/lib/content";
+import { url, site, menuNav, extAttrs } from "@futon/lib/content";
 import { shelfNav } from "@futon/lib/series";
 import { hasTech } from "@futon/lib/futon";
 import Analytics from "@futon/components/Analytics.astro";
@@ -13,7 +13,7 @@ const tabs = [
   ["home", tr("ホーム"), url("/")], ...shelfNav(url),
   ...(hasTech ? [["tech", tech.tab, url("tech/")]] : []),
   ...(site.characters?.length ? [["chars", tr("キャラクター"), url("/#chars")]] : []), ...(site.books?.length ? [["books", tr("ほん"), url("/#books")]] : []),
-  ["about", tr("うんえい"), url("about/")],
+  ["about", tr("うんえい"), url("about/")], ...menuNav(url),
 ];
 ---
 <!doctype html>
@@ -42,7 +42,7 @@ const tabs = [
     <div class="hello" set:html={site.hello} />
   </header>
   <nav class="tabs" aria-label={tr("メニュー")}>
-    {tabs.map(([k, label, href]) => <a class={tab === k ? "on" : undefined} href={href}>{label}</a>)}
+    {tabs.map(([k, label, href]) => <a class={tab === k ? "on" : undefined} href={href} {...extAttrs(href)}>{label}</a>)}
     {site.store && <a href={site.store} target="_blank" rel="noopener">{tr("ストア")}</a>}
   </nav>
   <slot />

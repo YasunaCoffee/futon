@@ -1,7 +1,7 @@
 ---
 // receipt テーマの外枠。感熱紙のレシート:店名のロゴ・店の情報・領収証、下にバーコードとお客様控え。上にキャラの絵を落書きのように重ねる
 import "./style.css";
-import { url, site, today, characters } from "@futon/lib/content";
+import { url, site, today, characters, menuNav, extAttrs } from "@futon/lib/content";
 import { shelfNav } from "@futon/lib/series";
 import { hasTech } from "@futon/lib/futon";
 import Analytics from "@futon/components/Analytics.astro";
@@ -15,7 +15,7 @@ const nav = [
   ...(hasTech ? [["tech", site.tech?.tab ?? tr("記事"), url("tech/")]] : []),
   ...(characters.length ? [["chars", tr("キャラ"), url("/#chars")]] : []),
   ...(site.books?.length ? [["books", tr("本"), url("/#books")]] : []),
-  ["about", tr("について"), url("about/")],
+  ["about", tr("について"), url("about/")], ...menuNav(url),
 ];
 // 落書き:紹介の絵 → マスコット → 1人目のキャラ
 const art = site.intro?.image ?? site.mascot ?? characters[0]?.image;
@@ -57,7 +57,7 @@ const code = String(h % 1e12).padStart(12, "0");
     </header>
     <p class="eq" aria-hidden="true"></p>
     <nav class="menu" aria-label={tr("メニュー")}>
-      {nav.map(([k, label, href], i) => <a class={tab === k ? "on" : undefined} href={href}><span>{String(i + 1).padStart(2, "0")}</span>{label}</a>)}
+      {nav.map(([k, label, href], i) => <a class={tab === k ? "on" : undefined} href={href} {...extAttrs(href)}><span>{String(i + 1).padStart(2, "0")}</span>{label}</a>)}
       {site.store && <a href={site.store} target="_blank" rel="noopener"><span>{String(nav.length + 1).padStart(2, "0")}</span>{tr("ストア")}</a>}
     </nav>
     <p class="eq" aria-hidden="true"></p>

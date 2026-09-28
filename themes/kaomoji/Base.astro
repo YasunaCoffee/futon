@@ -1,7 +1,7 @@
 ---
 // kaomoji テーマの外枠。デスクトップに開いた窓(タイトルバーに _□×)と、ふきだしのメニュー
 import "./style.css";
-import { url, site } from "@futon/lib/content";
+import { url, site, menuNav, extAttrs } from "@futon/lib/content";
 import { shelfNav } from "@futon/lib/series";
 import { hasTech } from "@futon/lib/futon";
 import Analytics from "@futon/components/Analytics.astro";
@@ -15,7 +15,7 @@ const nav = [
   ...(hasTech ? [["tech", site.tech?.tab ?? tr("記事"), url("tech/")]] : []),
   ...(site.characters?.length ? [["chars", tr("キャラ"), url("/#chars")]] : []),
   ...(site.books?.length ? [["books", tr("本"), url("/#books")]] : []),
-  ["about", tr("について"), url("about/")],
+  ["about", tr("について"), url("about/")], ...menuNav(url),
 ];
 const file = `${tab === "home" ? "index" : tab || "page"}.png`;
 ---
@@ -45,7 +45,7 @@ const file = `${tab === "home" ? "index" : tab || "page"}.png`;
         <a class="logo" href={url("/")}>{site.title}</a>
         {site.hello && <p class="bub hello" set:html={site.hello} />}
         <nav class="nav" aria-label={tr("メニュー")}>
-          {nav.map(([k, label, href]) => <a class={tab === k ? "on" : undefined} href={href}>{label}</a>)}
+          {nav.map(([k, label, href]) => <a class={tab === k ? "on" : undefined} href={href} {...extAttrs(href)}>{label}</a>)}
           {site.store && <a class="store" href={site.store} target="_blank" rel="noopener">{tr("ストア ↗")}</a>}
         </nav>
       </header>

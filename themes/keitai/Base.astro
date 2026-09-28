@@ -1,7 +1,7 @@
 ---
 // keitai テーマの外枠。ピンクのガラケー:上に画面(電波・メール・電池、下にソフトキー)、下に数字キー(メニュー)
 import "./style.css";
-import { url, site } from "@futon/lib/content";
+import { url, site, menuNav, extAttrs } from "@futon/lib/content";
 import { shelfNav } from "@futon/lib/series";
 import { hasTech } from "@futon/lib/futon";
 import Analytics from "@futon/components/Analytics.astro";
@@ -15,7 +15,7 @@ const nav = [
   ...(hasTech ? [["tech", site.tech?.tab ?? tr("記事"), url("tech/")]] : []),
   ...(site.characters?.length ? [["chars", tr("キャラ"), url("/#chars")]] : []),
   ...(site.books?.length ? [["books", tr("本"), url("/#books")]] : []),
-  ["about", tr("について"), url("about/")],
+  ["about", tr("について"), url("about/")], ...menuNav(url),
   ...(site.store ? [["store", tr("ストア"), site.store]] : []),
 ];
 // 数字キー:1〜9 にメニューを割り当てる。余ったキーは数字だけ

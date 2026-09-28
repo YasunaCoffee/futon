@@ -1,7 +1,7 @@
 ---
 // mado テーマの外枠。むかしのブラウザの窓(タイトルバー・メニュー・ツールバー・アドレス)と、左右のフレーム、ステータスバーとタスクバー
 import "./style.css";
-import { url, site, today } from "@futon/lib/content";
+import { url, site, today, menuNav, extAttrs } from "@futon/lib/content";
 import { shelfNav } from "@futon/lib/series";
 import { hasTech } from "@futon/lib/futon";
 import Analytics from "@futon/components/Analytics.astro";
@@ -16,7 +16,7 @@ const nav = [
   ...(hasTech ? [["tech", site.tech?.label ?? tr("記事"), url("tech/")]] : []),
   ...(site.characters?.length ? [["chars", tr("キャラクター"), url("/#chars")]] : []),
   ...(site.books?.length ? [["books", tr("本"), url("/#books")]] : []),
-  ["about", tr("について"), url("about/")],
+  ["about", tr("について"), url("about/")], ...menuNav(url),
 ];
 const addr = `http://www.futon.home/~${site.title}${decodeURI(Astro.url.pathname)}`;
 ---
@@ -54,7 +54,7 @@ const addr = `http://www.futon.home/~${site.title}${decodeURI(Astro.url.pathname
         <nav class="left" aria-label={tr("メニュー")}>
           <a class="house" href={url("/")}><Pixel name="house" size={64} />HOME</a>
           <p>{tr("お好きなメニューから")}<br>{tr("ご覧ください")}</p>
-          <ul>{nav.map(([k, label, href]) => <li><a class={tab === k ? "on" : undefined} href={href}>{label}</a></li>)}</ul>
+          <ul>{nav.map(([k, label, href]) => <li><a class={tab === k ? "on" : undefined} href={href} {...extAttrs(href)}>{label}</a></li>)}</ul>
           {site.since && <p class="since">{site.since.label}<br>since {site.since.date}</p>}
         </nav>
       )}

@@ -84,5 +84,11 @@
     }
   ],
   "videos": [],
-  "tweets": []
+  "tweets": [],
+  "menu": [
+    {
+      "label": "おといあわせ",
+      "href": "https://example.com/form"
+    }
+  ]
 }

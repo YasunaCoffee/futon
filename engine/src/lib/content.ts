@@ -55,5 +55,9 @@ export const characters: any[] = site.characters ?? [];
 export const castOf = (slugs: string[] = []): any[] => slugs.map((k) => characters.find((c) => c.slug === k)).filter(Boolean);
 export const books: any[] = (site.books ?? []).map((b: any, i: number) => ({ ...b, id: `book-${b.slug ?? i + 1}`, cast: castOf(b.characters) }));
 export const booksOf = (slug?: string): any[] => (slug ? books.filter((b) => b.characters?.includes(slug)) : []);
+// メニューに足すリンク(site.json の menu:[{ "label": "おといあわせ", "href": "https://…" }])。外のサイトは新しいタブで開く
+export const menuNav = (u: (p: string) => string): [string, string, string][] =>
+  ((site.menu ?? []) as { label: string; href: string; key?: string }[]).map((l) => [l.key ?? `menu:${l.label}`, l.label, /^https?:/.test(l.href) ? l.href : u(l.href)]);
+export const extAttrs = (href: string) => (/^https?:/.test(href) ? { target: "_blank", rel: "noopener" } : {});
 export const isNew = (d: Date) => (Date.parse(today) - +d) / 86400e3 <= 2;
 export { site };
