@@ -46,7 +46,7 @@ const addr = `http://www.futon.home/~${site.title}${decodeURI(Astro.url.pathname
       <a href={url("/")}>⌂<small>{tr("ホーム")}</small></a>
       <a href={url("rss.xml")}>✉<small>RSS</small></a>
       <a href={url("about/")}>☺<small>{tr("について")}</small></a>
-      {site.store && <a href={site.store} target="_blank" rel="noopener">★<small>{tr("ストア")}</small></a>}
+      {site.store && <a href={site.store} target="_blank" rel="noopener">★<small>{site.storeName ?? tr("ストア")}</small></a>}
     </div>
     <div class="addr"><span>{tr("アドレス(")}<u>D</u>)</span><p>{addr}</p></div>
     <div class={`frames${err ? " err" : ""}`}>

@@ -58,7 +58,7 @@ const code = String(h % 1e12).padStart(12, "0");
     <p class="eq" aria-hidden="true"></p>
     <nav class="menu" aria-label={tr("メニュー")}>
       {nav.map(([k, label, href], i) => <a class={tab === k ? "on" : undefined} href={href} {...extAttrs(href)}><span>{String(i + 1).padStart(2, "0")}</span>{label}</a>)}
-      {site.store && <a href={site.store} target="_blank" rel="noopener"><span>{String(nav.length + 1).padStart(2, "0")}</span>{tr("ストア")}</a>}
+      {site.store && <a href={site.store} target="_blank" rel="noopener"><span>{String(nav.length + 1).padStart(2, "0")}</span>{site.storeName ?? tr("ストア")}</a>}
     </nav>
     <p class="eq" aria-hidden="true"></p>
     <main class="page"><slot /></main>

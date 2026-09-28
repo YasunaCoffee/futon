@@ -46,7 +46,7 @@ const file = `${tab === "home" ? "index" : tab || "page"}.png`;
         {site.hello && <p class="bub hello" set:html={site.hello} />}
         <nav class="nav" aria-label={tr("メニュー")}>
           {nav.map(([k, label, href]) => <a class={tab === k ? "on" : undefined} href={href} {...extAttrs(href)}>{label}</a>)}
-          {site.store && <a class="store" href={site.store} target="_blank" rel="noopener">{tr("ストア ↗")}</a>}
+          {site.store && <a class="store" href={site.store} target="_blank" rel="noopener">{(site.storeName ? `${site.storeName} ↗` : tr("ストア ↗"))}</a>}
         </nav>
       </header>
       <main class="body"><slot /></main>

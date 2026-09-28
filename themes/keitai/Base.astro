@@ -16,7 +16,7 @@ const nav = [
   ...(site.characters?.length ? [["chars", tr("キャラ"), url("/#chars")]] : []),
   ...(site.books?.length ? [["books", tr("本"), url("/#books")]] : []),
   ["about", tr("について"), url("about/")], ...menuNav(url),
-  ...(site.store ? [["store", tr("ストア"), site.store]] : []),
+  ...(site.store ? [["store", site.storeName ?? tr("ストア"), site.store]] : []),
 ];
 // 数字キー:1〜9 にメニューを割り当てる。余ったキーは数字だけ
 const keys = Array.from({ length: 9 }, (_, i) => nav[i] ? { n: i + 1, k: nav[i][0], label: nav[i][1], href: nav[i][2] } : { n: i + 1 });
