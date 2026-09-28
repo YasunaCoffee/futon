@@ -14,5 +14,5 @@ try { a = readFutonJson("about.json"); } catch {}
   {a.profile?.length > 0 && <dl class="prof">{a.profile.map(([k, v]: string[]) => <><dt>{k}</dt><dd>{v}</dd></>)}</dl>}
   {a.history?.length > 0 && <><h2>{tr("あゆみ")}</h2><ul class="list">{a.history.map(([d, t]: string[]) => <li><span class="d">{d}</span><span>{t}</span></li>)}</ul></>}
   {a.links?.length > 0 && <><h2>{tr("リンク")}</h2><ul class="list">{a.links.map((l: any) => <li><a href={l.href} target="_blank" rel="noopener">{l.label}</a>{l.handle && <span class="d">{l.handle}</span>}</li>)}</ul></>}
-  {a.contact && <><h2>{tr("おといあわせ")}</h2><p>{a.contact}</p></>}
+  {a.contactForm ? <><h2>{tr("おといあわせ")}</h2><p>{a.contactNote ?? tr("おといあわせは、フォームからどうぞ。")} <a href={a.contactForm} target="_blank" rel="noopener">{tr("おといあわせフォーム ▶")}</a></p></> : a.contact && <><h2>{tr("おといあわせ")}</h2><p>{a.contact}</p></>}
 </Base>

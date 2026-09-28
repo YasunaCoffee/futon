@@ -64,13 +64,18 @@ const ymd = (d: Date) => new Date(+d + 9 * 3600e3).toISOString().slice(0, 10).re
             </ul>
           </div>
         </div>}
-        {a.contact && <div class="box">
+        {(a.contactForm || a.contact) && <div class="box">
           <div class="bh pink"><span>{tr("おといあわせ")}</span></div>
           <div class="bb">
-            <p style="margin:0 0 6px">{a.contactNote ?? tr("おといあわせは、メールでどうぞ。")}</p>
-            <p class="mail"><span id="mail">{a.contact}</span></p>
-            <button class="btn" type="button" id="copy">{tr("アドレスをコピー")}</button>
-            <span class="copied" id="copied" hidden>{tr("コピーしました")}</span>
+            {a.contactForm ? <>
+              <p style="margin:0 0 8px">{a.contactNote ?? tr("おといあわせは、フォームからどうぞ。")}</p>
+              <a class="btn" href={a.contactForm} target="_blank" rel="noopener">{tr("おといあわせフォーム ▶")}</a>
+            </> : <>
+              <p style="margin:0 0 6px">{a.contactNote ?? tr("おといあわせは、メールでどうぞ。")}</p>
+              <p class="mail"><span id="mail">{a.contact}</span></p>
+              <button class="btn" type="button" id="copy">{tr("アドレスをコピー")}</button>
+              <span class="copied" id="copied" hidden>{tr("コピーしました")}</span>
+            </>}
           </div>
         </div>}
       </div>

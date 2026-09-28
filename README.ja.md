@@ -83,7 +83,7 @@ futon には8着ついてくる。`site.json` に名前を1行書くだけで着
 | `shelves.yaml` | まんがの棚(シリーズ)。1件足すと一覧・話のページ・メニュー・ホーム・RSS に出る。`- group: <key>` の行で棚をまとめられる(メニューのタブが1つになり、`/<key>/` に棚がならぶ)。書き方は雛形の先頭に |
 | `<棚>/*.md` | 話。`date` が未来なら、その日のビルドまで出ない(予約配信)。`hidden: true` で伏せる。`cast` で「この話に出てくる人」を1話だけ変えられる |
 | `tech/*.md` | 技術記事(あれば) |
-| `about.json` | 運営についてのページ |
+| `about.json` | 運営についてのページ。連絡先は `contactForm`(フォームのURL。ボタンで出る)か `contact`(文字で出る) |
 | `guidelines/*.md` | ページに埋め込む文章(二次創作ガイドラインなど) |
 | `public/` | 画像・音声・favicon |
 | `pages/<名前>.astro` | 追加ページ。`site.json` の `extraPages: { "<URL>": "<名前>" }` に書いたものだけ出る。外枠は `@theme/Base.astro`、部品は `@futon/…` で読む |

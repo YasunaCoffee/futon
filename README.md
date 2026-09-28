@@ -91,7 +91,7 @@ A scheduled job runs `futon sync` every morning to pull the newest episodes from
 | `shelves.yaml` | Comic shelves (series). Add one and it appears in the index, episode pages, menu, home and RSS. A `- group: <key>` line groups shelves (one menu tab, shelves listed at `/<key>/`). The starter's header explains the format |
 | `<shelf>/*.md` | Episodes. A future `date` stays hidden until the build on that day (scheduling). `hidden: true` hides one. `cast` overrides "who's in this episode" for one episode |
 | `tech/*.md` | Articles (optional) |
-| `about.json` | The "about" page |
+| `about.json` | The "about" page. For contact, `contactForm` (a form URL, shown as a button) or `contact` (shown as text) |
 | `guidelines/*.md` | Text embedded in pages (fan-art guidelines, etc.) |
 | `public/` | Images, audio, favicon |
 | `pages/<name>.astro` | Extra pages. Only those listed in `site.json` `extraPages: { "<url>": "<name>" }` are built. Use `@theme/Base.astro` for the frame and `@futon/…` for parts |
