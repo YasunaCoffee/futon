@@ -61,6 +61,8 @@ const extraPages = {
 // 公開先が決まったら site.json に url を入れる(RSSとOGPの絶対URLに使う)
 export default defineConfig({
   site: site.url,
+  // サブフォルダに置くとき(例:/heisei/)は FUTON_BASE で渡す。リンクは全部 url() を通すので付いてくる
+  base: process.env.FUTON_BASE || "/",
   trailingSlash: "always",
   publicDir: path.join(FUTON, "public"),
   integrations: [extraPages],
