@@ -6,6 +6,7 @@ import { shelfNav } from "@futon/lib/series";
 import { hasTech } from "@futon/lib/futon";
 import Analytics from "@futon/components/Analytics.astro";
 import { tr, lang } from "@futon/lib/i18n";
+import Og from "@futon/components/Og.astro";
 interface Props { title?: string; description?: string; tab?: string; image?: string; back?: string }
 const { title, description = site.description, tab = "home", image, back } = Astro.props;
 const full = title ? `${title} | ${site.title}` : site.title;
@@ -30,10 +31,7 @@ const ext = (h?: string) => !!h && /^https?:/.test(h);
   {site.noindex && <meta name="robots" content="noindex,nofollow">}
   <title>{full}</title>
   <meta name="description" content={description}>
-  <meta property="og:title" content={full}>
-  <meta property="og:description" content={description}>
-  <meta property="og:type" content="website">
-  {image && <meta property="og:image" content={image}>}
+  <Og title={full} description={description} image={image} />
   <link rel="alternate" type="application/rss+xml" title={site.title} href={url("rss.xml")}>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

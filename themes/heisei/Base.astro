@@ -5,6 +5,7 @@ import { shelfNav } from "@futon/lib/series";
 import { hasTech } from "@futon/lib/futon";
 import Analytics from "@futon/components/Analytics.astro";
 import { tr, lang } from "@futon/lib/i18n";
+import Og from "@futon/components/Og.astro";
 const tech = { label: tr("記事"), tab: tr("きじ"), lead: "", description: "", ...(site.tech ?? {}) }; // 記事の呼び方(site.json の tech)
 interface Props { title?: string; description?: string; tab?: string; image?: string }
 const { title, description = site.description, tab = "home", image } = Astro.props;
@@ -24,10 +25,7 @@ const tabs = [
   {site.noindex && <meta name="robots" content="noindex,nofollow">}
   <title>{full}</title>
   <meta name="description" content={description}>
-  <meta property="og:title" content={full}>
-  <meta property="og:description" content={description}>
-  <meta property="og:type" content="website">
-  {image && <meta property="og:image" content={image}>}
+  <Og title={full} description={description} image={image} />
   <link rel="icon" href={url("favicon.svg")} type="image/svg+xml">
   <link rel="alternate" type="application/rss+xml" title={site.title} href={url("rss.xml")}>
   <link rel="preconnect" href="https://fonts.googleapis.com">

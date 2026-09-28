@@ -12,7 +12,7 @@ const d = e.data;
 const p = s.page(d);
 const cast = castOf(p.cast);
 ---
-<Base title={p.title} tab={tabOf(s)} description={p.description}>
+<Base image={p.og} title={p.title} tab={tabOf(s)} description={p.description}>
   <p class="crumb"><a href={url(`${s.key}/`)}>{s.name}</a> &gt; {p.crumb}</p>
   <h1 class="ttl"><mark>{d.title}</mark>{p.kind && <span class="kind">{p.kind}</span>}</h1>
   <p class="meta">REC {dotted(d.date)} ／ {p.meta}</p>

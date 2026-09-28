@@ -9,7 +9,7 @@ const { p, newer, older } = Astro.props;
 const { Content } = await render(p);
 const d = p.data;
 ---
-<Base title={d.title} tab="tech" description={d.description}>
+<Base image={`img/tech/thumbs/${p.id}.png`} title={d.title} tab="tech" description={d.description}>
   <div class="page">
     <p class="crumb"><a href={url("/")}>{tr("ホーム")}</a> ＞ <a href={url("tech/")}>{tech.label}</a> ＞ {d.title}</p>
     <article class="box">

@@ -9,7 +9,7 @@ const { p, newer, older } = Astro.props;
 const { Content } = await render(p);
 const d = p.data;
 ---
-<Base title={d.title} tab="tech" description={d.description}>
+<Base image={`img/tech/thumbs/${p.id}.png`} title={d.title} tab="tech" description={d.description}>
   <h1 class="big">{d.emoji && `${d.emoji} `}{d.title}</h1>
   <p class="meta">{dotted(d.date)}{d.category && ` ／ ${d.category}`}</p>
   <article class="prose"><Content /></article>

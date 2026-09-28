@@ -52,6 +52,7 @@ export type Series = {
     title: string; description: string; crumb: string; heading: string; kind?: string; meta: string;
     images: Img[]; kessho?: { lines: string[]; source: string }; share: string;
     cast: string[]; // 出てくるキャラの slug(話の md の cast、なければ棚の cast)
+    og: string;
   };
   topic: (d: any) => { img: string; label: string };
   newsNote?: (d: any) => string;
@@ -73,6 +74,7 @@ function compile(y: any): Series {
       kessho: p.verse && { lines: fill(p.verse.text, d).split("／"), source: fill(p.verse.source, d) },
       share: fill(p.share, d),
       cast: d.cast ?? y.cast ?? [],
+      og: fill(p.og ?? y.hero?.img ?? p.images[0].src, d), // OGP の画像(page.og。無ければ hero、それも無ければ1枚目)
     }),
     topic: (d) => ({ img: fill(y.topic.img, d), label: fill(y.topic.label, d) }),
     newsNote: y.newsNote ? (d) => fill(y.newsNote, d) : undefined,

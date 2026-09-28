@@ -12,7 +12,7 @@ const d = e.data;
 const p = s.page(d);
 const cast = castOf(p.cast);
 ---
-<Base title={p.title} tab={tabOf(s)} description={p.description} doodle={false}>
+<Base image={p.og} title={p.title} tab={tabOf(s)} description={p.description} doodle={false}>
   <p class="row small"><a href={url(`${s.key}/`)}>{s.name}</a><span>{dotted(d.date)}</span></p>
   <h1 class="h1">{d.title}{p.kind && <small>({p.kind})</small>}</h1>
   <p class="lead">{p.meta}</p>

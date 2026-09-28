@@ -12,7 +12,7 @@ const d = e.data;
 const p = s.page(d);
 const cast = castOf(p.cast);
 ---
-<Base title={p.title} tab={tabOf(s)} description={p.description}>
+<Base image={p.og} title={p.title} tab={tabOf(s)} description={p.description}>
   <div class="page">
     <p class="crumb"><a href={url("/")}>{tr("ホーム")}</a> ＞ {groupOf(s) && <><a href={url(`${groupOf(s)!.key}/`)}>{groupOf(s)!.name}</a> ＞ </>}<a href={url(`${s.key}/`)}>{s.name}</a> ＞ {p.crumb}</p>
     <div class="box">
