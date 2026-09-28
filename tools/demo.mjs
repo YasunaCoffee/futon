@@ -77,7 +77,7 @@ footer{text-align:center;margin-top:40px;color:var(--sub);font-size:13px}
 <p class="lead"><b>AIフレンドリー</b>な個人サイトエンジン<br><span style="font-size:.7em">An AI-friendly personal site engine</span></p>
 <p class="sub">同じ見本(みほんのふとん)を、8種のきせかえで。どれも <code>site.json</code> の1行で着られます。<br>One sample site, eight themes. Each is one line in <code>site.json</code>.</p>
 <p class="sub"><span class="cmd">npm create futon@latest my-site</span></p>
-<p class="links"><a class="btn" href="https://github.com/YasunaCoffee/futon">GitHub</a><a class="btn b" href="https://www.npmjs.com/package/create-futon">npm</a></p>
+<p class="links"><a class="btn" href="https://github.com/YasunaCoffee/futon">GitHub</a><a class="btn b" href="https://www.npmjs.com/package/@yasuna/futon">npm</a></p>
 <ul class="grid">${THEMES.map((x) => card(...x)).join("\n")}</ul>
 <footer>MIT(見本のヤスナとのんたんの絵とブッダめっちゃロジカルの4コマは MIT の対象外・© yasuna)</footer>
 </div></body></html>`);
