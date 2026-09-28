@@ -9,6 +9,8 @@ npm run dev
 
 テーマを決めて敷くなら `npm create futon@latest my-site -- --theme techou`(`heisei`(標準) / `plain` / `techou` / `kaomoji` / `vhs` / `keitai` / `mado` / `receipt`)。
 
+8種きせかえのお試し:https://futon.suyasuya.me/
+
 futon 本体の説明は https://github.com/YasunaCoffee/futon
 
 ---

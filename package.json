@@ -1,6 +1,6 @@
 {
   "name": "@yasuna/futon",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "An AI-friendly personal site engine. Just Markdown and images — ask your AI to \"add an episode\" and it's live. (AIフレンドリーな個人サイトエンジン)",
   "license": "MIT",
   "type": "module",
@@ -33,7 +33,7 @@
     "type": "git",
     "url": "git+https://github.com/YasunaCoffee/futon.git"
   },
-  "homepage": "https://github.com/YasunaCoffee/futon#readme",
+  "homepage": "https://futon.suyasuya.me/",
   "keywords": [
     "static-site",
     "astro",

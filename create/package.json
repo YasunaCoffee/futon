@@ -1,6 +1,6 @@
 {
   "name": "create-futon",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Lay out a new futon site: npm create futon (AIフレンドリーな個人サイトを敷く)",
   "license": "MIT",
   "type": "module",
@@ -15,7 +15,7 @@
     "node": ">=22.18"
   },
   "dependencies": {
-    "@yasuna/futon": "^0.3.0"
+    "@yasuna/futon": "^0.4.0"
   },
   "repository": {
     "type": "git",
@@ -25,5 +25,6 @@
   "keywords": [
     "ai-friendly",
     "agents-md"
-  ]
+  ],
+  "homepage": "https://futon.suyasuya.me/"
 }

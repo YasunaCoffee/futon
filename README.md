@@ -5,6 +5,8 @@ English / [日本語](README.ja.md)
 <p align="center"><img src="docs/images/en/hero.png" alt="futon: an AI-friendly personal site engine. Your content is just Markdown and images." width="820"></p>
 
 **An AI-friendly personal site engine.**
+**▶ Try all 8 themes (Japanese / English): https://futon.suyasuya.me/**
+
 Your content is just Markdown, images and a couple of settings files. Ask an AI "add episode 12" or "hide this one", and it goes live as-is.
 Lay out your *futon* (the content folder), and your homepage tidies itself up while you sleep.
 
