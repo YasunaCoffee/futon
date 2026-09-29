@@ -8,13 +8,14 @@ const { images, dir = "ltr" } = Astro.props;
 const rtl = dir === "rtl";
 ---
 <div class="fswipe" dir={dir}>
+  {/* 矢印は dir="ltr" で包む(rtl の中だと ‹ › → が鏡写しになる) */}
   <div class="fswipe-track" tabindex="0" aria-label={tr("スワイプで次へ")}>
     {images.map((i, n) => <figure class="fswipe-slide" aria-label={`${n + 1} / ${images.length}`}><img src={url(i.src)} alt={i.alt} loading={n ? "lazy" : undefined}></figure>)}
   </div>
-  <button class="fswipe-btn prev" type="button" aria-label={tr("まえへ")} hidden>{rtl ? "›" : "‹"}</button>
-  <button class="fswipe-btn next" type="button" aria-label={tr("つぎへ")}>{rtl ? "‹" : "›"}</button>
+  <button class="fswipe-btn prev" type="button" dir="ltr" aria-label={tr("まえへ")} hidden>{rtl ? "›" : "‹"}</button>
+  <button class="fswipe-btn next" type="button" dir="ltr" aria-label={tr("つぎへ")}>{rtl ? "‹" : "›"}</button>
   <div class="fswipe-dots">{images.map((_, n) => <button type="button" aria-label={`${n + 1}`} class={n ? "" : "on"}></button>)}</div>
-  <p class="fswipe-hint">{rtl ? tr("スワイプで次へ →") : tr("← スワイプで次へ")}</p>
+  <p class="fswipe-hint" dir="ltr">{rtl ? tr("スワイプで次へ →") : tr("← スワイプで次へ")}</p>
 </div>
 
 <style>
