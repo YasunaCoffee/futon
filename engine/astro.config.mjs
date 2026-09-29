@@ -58,14 +58,31 @@ const extraPages = {
   },
 };
 
-// 公開先が決まったら site.json に url を入れる(RSSとOGPの絶対URLに使う)
+// sitemap.xml:site.json に url があって noindex でないときだけ、干したページを全部並べて書き出す
+// (404 は入れない)。検索エンジンに robots.txt の Sitemap: 行で教えると見つけてもらいやすい
+const sitemap = {
+  name: "futon-sitemap",
+  hooks: {
+    "astro:build:done": ({ dir, pages }) => {
+      if (!site.url || site.noindex) return;
+      const base = (process.env.FUTON_BASE || "/").replace(/\/?$/, "/");
+      const esc = (u) => u.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+      const urls = pages.map((p) => p.pathname).filter((p) => !/^404\/?$/.test(p))
+        .map((p) => new URL(base.slice(1) + p, site.url.replace(/\/?$/, "/")).href).sort();
+      const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((u) => `  <url><loc>${esc(u)}</loc></url>`).join("\n")}\n</urlset>\n`;
+      fs.writeFileSync(new URL("sitemap.xml", dir), xml);
+    },
+  },
+};
+
+// 公開先が決まったら site.json に url を入れる(RSSとOGPの絶対URL、sitemap.xml に使う)
 export default defineConfig({
   site: site.url,
   // サブフォルダに置くとき(例:/heisei/)は FUTON_BASE で渡す。リンクは全部 url() を通すので付いてくる
   base: process.env.FUTON_BASE || "/",
   trailingSlash: "always",
   publicDir: path.join(FUTON, "public"),
-  integrations: [extraPages],
+  integrations: [extraPages, sitemap],
   vite: {
     resolve: { alias: { "@futon": path.join(ENGINE, "src"), "@theme": THEME } },
     server: { fs: { allow: [ENGINE, FUTON, THEME] } },
