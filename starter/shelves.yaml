@@ -16,6 +16,7 @@
     images:
       - { src: "{image}", alt: "「{title}」{lett}" }
     share: まいにち絵日記「{title}」
+    # swipe: true      # 画像が何枚かあるとき、横スワイプで1枚ずつ読む
     # og: "{image}"   # シェアのカード画像(書かなければ hero、それも無ければ images の1枚目)
   topic: { img: "{thumb}", label: まいにち絵日記 }
   newsNote: "{lett}"
