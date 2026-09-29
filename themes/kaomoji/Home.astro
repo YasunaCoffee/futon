@@ -49,7 +49,7 @@ const faces = ["(｡•ω•｡)", "(*´∀｀*)", "(o^∇^o)", "(・ω・)ﾉ",
             <div class="bub">
               <b class="name">{c.name}</b>{c.tag && <span class="kind">{c.tag}</span>}
               <p>{c.text}</p>
-              {c.facts && <dl class="prof">{c.facts.map(([k, v]: string[]) => <><dt>{k}</dt><dd>{v}</dd></>)}</dl>}
+              {c.facts && <dl class="prof">{c.facts.map(([k, v, href]: string[]) => <><dt>{k}</dt><dd>{href ? <a href={href} target="_blank" rel="noopener">{v}</a> : v}</dd></>)}</dl>}
               {c.fanart && <p class="note"><b>{c.fanart.ok}</b> {c.fanart.tags} {c.fanart.note} {c.fanart.link && <a href={url(c.fanart.link)}>{tr("ガイドライン ▶")}</a>}</p>}
               {booksOf(c.slug).length > 0 && <p class="note">{tr("でてくる本")} {booksOf(c.slug).map((b) => <a href={`#${b.id}`}>『{b.title}{b.sub}』</a>)}</p>}
               <p class="links">

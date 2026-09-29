@@ -100,7 +100,7 @@ const techs = (await techPosts()).slice(0, 4);
       <div class="bb chars">
         {site.characters.map((c) => (
           <div class="chr" id={c.slug && `chr-${c.slug}`}><div class="pic"><img src={url(c.image)} alt={c.name}></div><span class="plate">{c.name}</span><p>{c.text}</p>
-            {c.facts && <table class="prof-table chr-facts"><tbody>{c.facts.map(([k, v]) => <tr><th>{k}</th><td>{v}</td></tr>)}</tbody></table>}
+            {c.facts && <table class="prof-table chr-facts"><tbody>{c.facts.map(([k, v, href]) => <tr><th>{k}</th><td>{href ? <a href={href} target="_blank" rel="noopener">{v}</a> : v}</td></tr>)}</tbody></table>}
             {c.fanart && <div class="fanart"><b>{c.fanart.ok}!</b> {c.fanart.tags}<small>{c.fanart.note} {c.fanart.link && <a href={url(c.fanart.link)}>{tr("ガイドライン ▶")}</a>}</small></div>}
             {booksOf(c.slug).length > 0 && <p class="chr-books">{tr("でてくる本")} {booksOf(c.slug).map((b) => <a href={`#${b.id}`}>『{b.title}{b.sub}』</a>)}</p>}
             <p class="chr-links">
