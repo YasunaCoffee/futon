@@ -21,7 +21,7 @@ const cast = castOf(p.cast);
       <div class="bb">
         <h1 class="ep-title">{d.title}{p.kind && <small style="font-size:12px;margin-left:8px;color:var(--sub)">{p.kind}</small>}</h1>
         <p class="ep-meta">{dotted(d.date)} ／ {p.meta}</p>
-        {p.swipe ? <Swipe images={p.images} /> : (
+        {p.swipe ? <Swipe images={p.images} dir={p.swipe} /> : (
         <div class="ep-imgs">
           {p.images.map((i) => <img src={url(i.src)} alt={i.alt}>)}
         </div>)}

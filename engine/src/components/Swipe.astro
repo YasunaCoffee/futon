@@ -1,19 +1,20 @@
 ---
 // 話の画像を横にスワイプして1枚ずつ読む(shelves.yaml の page.swipe: true)。
-// 左から右へ並べ、スマホは指で、PCは矢印ボタンか横スクロールで送る。下の点で今何枚目かが分かる。
+// ltr は左から右へ、rtl は漫画の向きで右から左へ並べる。スマホは指で、PCは矢印ボタンかキーで送る。下の点で今何枚目かが分かる。
 import { url } from "@futon/lib/content";
 import { tr } from "@futon/lib/i18n";
-interface Props { images: { src: string; alt: string }[] }
-const { images } = Astro.props;
+interface Props { images: { src: string; alt: string }[]; dir?: "ltr" | "rtl" }
+const { images, dir = "ltr" } = Astro.props;
+const rtl = dir === "rtl";
 ---
-<div class="fswipe">
+<div class="fswipe" dir={dir}>
   <div class="fswipe-track" tabindex="0" aria-label={tr("スワイプで次へ")}>
     {images.map((i, n) => <figure class="fswipe-slide" aria-label={`${n + 1} / ${images.length}`}><img src={url(i.src)} alt={i.alt} loading={n ? "lazy" : undefined}></figure>)}
   </div>
-  <button class="fswipe-btn prev" type="button" aria-label={tr("まえへ")} hidden>‹</button>
-  <button class="fswipe-btn next" type="button" aria-label={tr("つぎへ")}>›</button>
+  <button class="fswipe-btn prev" type="button" aria-label={tr("まえへ")} hidden>{rtl ? "›" : "‹"}</button>
+  <button class="fswipe-btn next" type="button" aria-label={tr("つぎへ")}>{rtl ? "‹" : "›"}</button>
   <div class="fswipe-dots">{images.map((_, n) => <button type="button" aria-label={`${n + 1}`} class={n ? "" : "on"}></button>)}</div>
-  <p class="fswipe-hint">{tr("← スワイプで次へ")}</p>
+  <p class="fswipe-hint">{rtl ? tr("スワイプで次へ →") : tr("← スワイプで次へ")}</p>
 </div>
 
 <style>
@@ -23,8 +24,8 @@ const { images } = Astro.props;
   .fswipe-slide{flex:0 0 100%;margin:0;scroll-snap-align:center;display:flex;justify-content:center;align-items:flex-start}
   .fswipe-slide img{width:100%;height:auto;display:block}
   .fswipe-btn{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;border:0;background:rgba(0,0,0,.45);color:#fff;font-size:24px;line-height:36px;padding:0;cursor:pointer}
-  .fswipe-btn.prev{left:6px}
-  .fswipe-btn.next{right:6px}
+  .fswipe-btn.prev{inset-inline-start:6px}
+  .fswipe-btn.next{inset-inline-end:6px}
   .fswipe-btn[hidden]{display:none}
   .fswipe-dots{display:flex;justify-content:center;gap:8px;margin:8px 0 2px}
   .fswipe-dots button{width:9px;height:9px;border-radius:50%;border:0;padding:0;background:#ccc;cursor:pointer}
@@ -39,8 +40,9 @@ const { images } = Astro.props;
     const dots = [...box.querySelectorAll<HTMLButtonElement>(".fswipe-dots button")];
     const prev = box.querySelector<HTMLButtonElement>(".prev")!, next = box.querySelector<HTMLButtonElement>(".next")!;
     const hint = box.querySelector<HTMLElement>(".fswipe-hint")!;
-    const now = () => Math.round(track.scrollLeft / track.clientWidth);
-    const go = (n: number) => track.scrollTo({ left: Math.max(0, Math.min(slides.length - 1, n)) * track.clientWidth });
+    const sign = box.dir === "rtl" ? -1 : 1; // 右から左のときは scrollLeft が 0 から負の向きに進む
+    const now = () => Math.round(Math.abs(track.scrollLeft) / track.clientWidth);
+    const go = (n: number) => track.scrollTo({ left: sign * Math.max(0, Math.min(slides.length - 1, n)) * track.clientWidth });
     const paint = () => {
       const n = now();
       dots.forEach((d, i) => d.classList.toggle("on", i === n));
@@ -51,7 +53,7 @@ const { images } = Astro.props;
     prev.addEventListener("click", () => go(now() - 1));
     next.addEventListener("click", () => go(now() + 1));
     dots.forEach((d, i) => d.addEventListener("click", () => go(i)));
-    track.addEventListener("keydown", (e) => { if (e.key === "ArrowRight") go(now() + 1); if (e.key === "ArrowLeft") go(now() - 1); });
+    track.addEventListener("keydown", (e) => { const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0; if (d) go(now() + d * sign); });
     paint();
   }
 </script>

@@ -17,6 +17,7 @@
 | 「この話に出てくる人を出して」 | 棚全体なら `shelves.yaml` の `cast: [slug]`、1話だけなら md に `cast: [slug]` |
 | 「見た目を変えて」 | `site.json` の `"theme"` を書き換える(heisei(標準) / plain / techou / kaomoji / vhs / keitai / mado / receipt) |
 | 「メニューにリンクを足して」(お問い合わせフォームなど) | `site.json` の `menu` に `{ "label": "おといあわせ", "href": "https://…" }` を足す |
+| 「漫画を横スワイプで読めるようにして」 | `shelves.yaml` のその棚の `page` に `swipe: rtl`(右から左。左から右なら `swipe: true`)を足す。画像が2枚以上の話だけに効く |
 | 「英語のサイトにして」 | `site.json` に `"lang": "en"`(テーマのメニューやボタンが英語になる)。1語だけ変えるなら `"labels": { "ホーム": "Top" }`。中身の文章はそのまま好きな言語で書く |
 | 「サイト名・紹介文を変えて」 | `site.json` の `title`・`description`・`intro` |
 

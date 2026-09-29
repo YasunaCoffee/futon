@@ -17,7 +17,7 @@ const cast = castOf(p.cast);
   <p class="crumb"><a href={url(`${s.key}/`)}>{s.name}</a> ／ {p.crumb}</p>
   <h1 class="tape">{d.title}{p.kind && <span class="kind">{p.kind}</span>}</h1>
   <p class="meta"><span class="stamp">{dotted(d.date)}</span>{p.meta}</p>
-  {p.swipe ? <Swipe images={p.images} /> : <div class="imgs">{p.images.map((i) => <img src={url(i.src)} alt={i.alt}>)}</div>}
+  {p.swipe ? <Swipe images={p.images} dir={p.swipe} /> : <div class="imgs">{p.images.map((i) => <img src={url(i.src)} alt={i.alt}>)}</div>}
   {p.kessho && <p class="verse">{p.kessho.lines.map((l, i) => <>{i > 0 && <br />}{l}</>)}<small>{p.kessho.source}</small></p>}
   {cast.length > 0 && <p class="memo">{tr("この話に出てくる人")} <Cast list={cast} size={40} /></p>}
   {d.x && <Tweet url={d.x} note={tr("Xでのようす")} />}

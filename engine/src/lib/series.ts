@@ -53,7 +53,7 @@ export type Series = {
     images: Img[]; kessho?: { lines: string[]; source: string }; share: string;
     cast: string[]; // 出てくるキャラの slug(話の md の cast、なければ棚の cast)
     og: string;
-    swipe: boolean; // 画像を横スワイプで1枚ずつ読む(page.swipe)
+    swipe: false | "ltr" | "rtl"; // 画像を横スワイプで1枚ずつ読む(page.swipe。rtl なら漫画の向きで右から左へ)
   };
   topic: (d: any) => { img: string; label: string };
   newsNote?: (d: any) => string;
@@ -75,7 +75,7 @@ function compile(y: any): Series {
       kessho: p.verse && { lines: fill(p.verse.text, d).split("／"), source: fill(p.verse.source, d) },
       share: fill(p.share, d),
       cast: d.cast ?? y.cast ?? [],
-      swipe: !!p.swipe && p.images.length > 1,
+      swipe: p.swipe && p.images.length > 1 ? (p.swipe === "rtl" ? "rtl" : "ltr") : false,
       og: fill(p.og ?? y.hero?.img ?? p.images[0].src, d), // OGP の画像(page.og。無ければ hero、それも無ければ1枚目)
     }),
     topic: (d) => ({ img: fill(y.topic.img, d), label: fill(y.topic.label, d) }),

@@ -15,7 +15,7 @@ const p = s.page(d);
   <p class="meta"><a href={url(`${s.key}/`)}>{s.name}</a> ／ {p.crumb}</p>
   <h1>{d.title}{p.kind && <span class="kind">{p.kind}</span>}</h1>
   <p class="meta">{dotted(d.date)} ／ {p.meta}</p>
-  {p.swipe ? <Swipe images={p.images} /> : <div class="imgs">{p.images.map((i) => <img src={url(i.src)} alt={i.alt}>)}</div>}
+  {p.swipe ? <Swipe images={p.images} dir={p.swipe} /> : <div class="imgs">{p.images.map((i) => <img src={url(i.src)} alt={i.alt}>)}</div>}
   {p.kessho && <p class="verse">{p.kessho.lines.map((l, i) => <>{i > 0 && <br />}{l}</>)}<small>{p.kessho.source}</small></p>}
   {d.x && <Tweet url={d.x} />}
   <Share text={p.share} />

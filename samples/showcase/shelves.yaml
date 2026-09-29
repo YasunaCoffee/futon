@@ -15,7 +15,7 @@
     crumb: 第{kanji}話
     heading: 第{kanji}話
     meta: みほん連載
-    swipe: true # 画像を横スワイプで1枚ずつ読む
+    swipe: rtl # 画像を横スワイプで1枚ずつ読む(rtl は右から左へ)
     images:
       - { src: "{images.right}", alt: "前半" }
       - { src: "{images.left}", alt: "後半" }
