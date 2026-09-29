@@ -25,8 +25,10 @@ const rtl = dir === "rtl";
   .fswipe-slide{flex:0 0 100%;margin:0;scroll-snap-align:center;display:flex;justify-content:center;align-items:flex-start}
   .fswipe-slide img{width:100%;height:auto;display:block}
   .fswipe-btn{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;border:0;background:rgba(0,0,0,.45);color:#fff;font-size:24px;line-height:36px;padding:0;cursor:pointer}
-  .fswipe-btn.prev{inset-inline-start:6px}
-  .fswipe-btn.next{inset-inline-end:6px}
+  .fswipe-btn.prev{left:6px}
+  .fswipe-btn.next{right:6px}
+  .fswipe[dir="rtl"] .fswipe-btn.prev{left:auto;right:6px}
+  .fswipe[dir="rtl"] .fswipe-btn.next{right:auto;left:6px}
   .fswipe-btn[hidden]{display:none}
   .fswipe-dots{display:flex;justify-content:center;gap:8px;margin:8px 0 2px}
   .fswipe-dots button{width:9px;height:9px;border-radius:50%;border:0;padding:0;background:#ccc;cursor:pointer}
