@@ -20,7 +20,7 @@ const techs = (await techPosts()).slice(0, 4);
 <Base tab="home">
   {hero && (
     <a class="hero" href={hero.href}>
-      <img src={url(hero.img)} alt={hero.alt}>
+      <img src={url(hero.img)} alt={hero.alt} fetchpriority="high" decoding="async">
       <span class="hero-cap">{hero.cap}</span>
     </a>
   )}
@@ -32,8 +32,8 @@ const techs = (await techPosts()).slice(0, 4);
       <div class="box">
         <div class="bh"><span>Topics</span></div>
         <div class="bb">
-          {shelves.filter((x) => x.eps[0]).map(({ s, eps: [e] }) => { const t = s.topic(e.data); return <a class="topic" href={url(`${s.key}/${e.data.num}/`)}><img src={url(t.img)} alt=""><p>{t.label}<br>「{e.data.title}」</p><span class="go">{tr("よむ")}</span></a>; })}
-          {notes[0] && <a class="topic" href={notes[0].link} target="_blank" rel="noopener">{notes[0].thumb && <img src={notes[0].thumb} alt="">}<p>note<br>「{notes[0].title}」</p><span class="go">{tr("よむ")}</span></a>}
+          {shelves.filter((x) => x.eps[0]).map(({ s, eps: [e] }) => { const t = s.topic(e.data); return <a class="topic" href={url(`${s.key}/${e.data.num}/`)}><img loading="lazy" decoding="async" src={url(t.img)} alt=""><p>{t.label}<br>「{e.data.title}」</p><span class="go">{tr("よむ")}</span></a>; })}
+          {notes[0] && <a class="topic" href={notes[0].link} target="_blank" rel="noopener">{notes[0].thumb && <img loading="lazy" decoding="async" src={notes[0].thumb} alt="">}<p>note<br>「{notes[0].title}」</p><span class="go">{tr("よむ")}</span></a>}
         </div>
       </div>
     </aside>
@@ -87,8 +87,8 @@ const techs = (await techPosts()).slice(0, 4);
 
     <aside>
       {site.store && <a class="ban store" href={site.store} target="_blank" rel="noopener"><span class="big">{site.storeName ?? <>{site.title}<br>{tr("ストア")}</>}</span><span class="sub">{site.storeLabel}</span></a>}
-      {shelves.filter(({ s }) => s.banner).map(({ s, eps }) => s.banner && <a class={`ban ${s.banner.cls}`} href={url(`${s.key}/`)}><span class="cap">{s.name}</span><span class="pic"><img src={url(s.banner.img)} alt="" style={s.banner.imgStyle}></span><span class="sub">{s.banner.sub(eps.length)}</span></a>)}
-      {(site.banners ?? []).map((b: any) => <a class={`ban ${b.cls}`} href={url(b.href)}><span class="cap">{b.cap}</span><span class="pic"><img src={url(b.img)} alt=""></span><span class="sub">{b.sub}</span></a>)}
+      {shelves.filter(({ s }) => s.banner).map(({ s, eps }) => s.banner && <a class={`ban ${s.banner.cls}`} href={url(`${s.key}/`)}><span class="cap">{s.name}</span><span class="pic"><img loading="lazy" decoding="async" src={url(s.banner.img)} alt="" style={s.banner.imgStyle}></span><span class="sub">{s.banner.sub(eps.length)}</span></a>)}
+      {(site.banners ?? []).map((b: any) => <a class={`ban ${b.cls}`} href={url(b.href)}><span class="cap">{b.cap}</span><span class="pic"><img loading="lazy" decoding="async" src={url(b.img)} alt=""></span><span class="sub">{b.sub}</span></a>)}
       {site.since && <div class="since">{site.since.label}<b>since {site.since.date}</b></div>}
     </aside>
   </div>
@@ -99,7 +99,7 @@ const techs = (await techPosts()).slice(0, 4);
       <div class="bh pink"><span>{tr("キャラクターしょうかい")}</span></div>
       <div class="bb chars">
         {site.characters.map((c) => (
-          <div class="chr" id={c.slug && `chr-${c.slug}`}><div class="pic"><img src={url(c.image)} alt={c.name}></div><span class="plate">{c.name}</span><p>{c.text}</p>
+          <div class="chr" id={c.slug && `chr-${c.slug}`}><div class="pic"><img loading="lazy" decoding="async" src={url(c.image)} alt={c.name}></div><span class="plate">{c.name}</span><p>{c.text}</p>
             {c.facts && <table class="prof-table chr-facts"><tbody>{c.facts.map(([k, v, href]) => <tr><th>{k}</th><td>{href ? <a href={href} target="_blank" rel="noopener">{v}</a> : v}</td></tr>)}</tbody></table>}
             {c.fanart && <div class="fanart"><b>{c.fanart.ok}!</b> {c.fanart.tags}<small>{c.fanart.note} {c.fanart.link && <a href={url(c.fanart.link)}>{tr("ガイドライン ▶")}</a>}</small></div>}
             {booksOf(c.slug).length > 0 && <p class="chr-books">{tr("でてくる本")} {booksOf(c.slug).map((b) => <a href={`#${b.id}`}>『{b.title}{b.sub}』</a>)}</p>}
@@ -159,7 +159,7 @@ const techs = (await techPosts()).slice(0, 4);
     <div class="box">
       <div class="bh"><span>{site.intro.heading}</span></div>
       <div class={`bb about${site.intro.image ? "" : " noimg"}`}>
-        {site.intro.image && <img src={url(site.intro.image)} alt="">}
+        {site.intro.image && <img loading="lazy" decoding="async" src={url(site.intro.image)} alt="">}
         <div>
           {site.intro.paragraphs.map((p: string) => <p set:html={p} />)}
           {site.intro.dream && <div class="dream" set:html={site.intro.dream} />}

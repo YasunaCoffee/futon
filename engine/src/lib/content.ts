@@ -35,8 +35,13 @@ export async function techPosts() {
 const thumbVer = (rel: string) => {
   try { return createHash("sha1").update(fs.readFileSync(futonPath("public", rel))).digest("hex").slice(0, 8); } catch { return ""; }
 };
+// futon sync --tech が webp にする。古いふとんの png もそのまま使える
+export const techThumbRel = (id: string) => {
+  const webp = `img/tech/thumbs/${id}.webp`;
+  return fs.existsSync(futonPath("public", webp)) ? webp : `img/tech/thumbs/${id}.png`;
+};
 export const techThumb = (id: string) => {
-  const rel = `img/tech/thumbs/${id}.png`, v = thumbVer(rel);
+  const rel = techThumbRel(id), v = thumbVer(rel);
   return url(rel) + (v ? `?v=${v}` : "");
 };
 

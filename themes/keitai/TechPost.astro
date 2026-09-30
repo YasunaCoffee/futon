@@ -3,13 +3,13 @@
 import Base from "./Base.astro";
 import Share from "@futon/components/Share.astro";
 import { render } from "astro:content";
-import { dotted, url } from "@futon/lib/content";
+import { dotted, url, techThumbRel } from "@futon/lib/content";
 import { tr } from "@futon/lib/i18n";
 const { p, newer, older } = Astro.props;
 const { Content } = await render(p);
 const d = p.data;
 ---
-<Base image={`img/tech/thumbs/${p.id}.png`} title={d.title} tab="tech" description={d.description}>
+<Base image={techThumbRel(p.id)} title={d.title} tab="tech" description={d.description}>
   <h1 class="ttl">{d.emoji && `${d.emoji} `}{d.title}</h1>
   <p class="meta">{dotted(d.date)}{d.category && ` ／ ${d.category}`}</p>
   <article class="prose"><Content /></article>
