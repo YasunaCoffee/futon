@@ -1,5 +1,7 @@
 import { getCollection } from "astro:content";
-import { readFutonJson } from "./futon";
+import { readFutonJson, futonPath } from "./futon";
+import fs from "node:fs";
+import { createHash } from "node:crypto";
 // サイトの設定(futon/site.json)。名前・ロゴ・運営者・フィードの宛先・キャラクター・本・動画など
 const site: any = readFutonJson("site.json");
 import { series } from "./series";
@@ -29,7 +31,14 @@ export async function techPosts() {
   return (await getCollection("tech")).filter((e) => !e.data.draft && (SHOW_ALL || ymd(e.data.date) <= today))
     .sort((a, b) => +b.data.date - +a.data.date || a.id.localeCompare(b.id)); // 同じ日付なら記事名順(毎回同じ並びにする)
 }
-export const techThumb = (id: string) => url(`img/tech/thumbs/${id}.png`);
+// サムネは同じファイル名のまま描き直されるので、中身の印(?v=)を付けてブラウザや CDN の古い画像を使わせない
+const thumbVer = (rel: string) => {
+  try { return createHash("sha1").update(fs.readFileSync(futonPath("public", rel))).digest("hex").slice(0, 8); } catch { return ""; }
+};
+export const techThumb = (id: string) => {
+  const rel = `img/tech/thumbs/${id}.png`, v = thumbVer(rel);
+  return url(rel) + (v ? `?v=${v}` : "");
+};
 
 // kind: まんが(series.ts のシリーズ)・動画・技術記事。series はシリーズの key か "video" / "tech"
 export type Item = { kind: "manga" | "video" | "tech"; series: string; label: string; title: string; date: Date; href: string;
