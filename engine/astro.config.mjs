@@ -58,6 +58,8 @@ const extraPages = {
   },
 };
 
+const BASE = (process.env.FUTON_BASE || "/").replace(/\/?$/, "/"); // サブフォルダに置くときの頭(/ か /heisei/ など)
+
 // sitemap.xml:site.json に url があって noindex でないときだけ、干したページを全部並べて書き出す
 // (404 は入れない)。検索エンジンに robots.txt の Sitemap: 行で教えると見つけてもらいやすい
 const sitemap = {
@@ -65,12 +67,36 @@ const sitemap = {
   hooks: {
     "astro:build:done": ({ dir, pages }) => {
       if (!site.url || site.noindex) return;
-      const base = (process.env.FUTON_BASE || "/").replace(/\/?$/, "/");
       const esc = (u) => u.replace(/&/g, "&amp;").replace(/</g, "&lt;");
       const urls = pages.map((p) => p.pathname).filter((p) => !/^404\/?$/.test(p))
-        .map((p) => new URL(base.slice(1) + p, site.url.replace(/\/?$/, "/")).href).sort();
+        .map((p) => new URL(BASE.slice(1) + p, site.url.replace(/\/?$/, "/")).href).sort();
       const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((u) => `  <url><loc>${esc(u)}</loc></url>`).join("\n")}\n</urlset>\n`;
       fs.writeFileSync(new URL("sitemap.xml", dir), xml);
+    },
+  },
+};
+
+// robots.txt:ふとんの public/ に自分の robots.txt が無ければ、標準のものを書き出す。
+// AI の学習・収集用クローラーは断り、AI 検索(リンクで紹介するもの)とふつうの検索は通す。
+// 従量課金のサーバーだとクローラーの転送量がそのまま請求になるので、公開した日から効かせておく。
+// 全部通したいときは site.json に "aiCrawlers": "allow"
+const AI_TRAINING = ["GPTBot", "ClaudeBot", "anthropic-ai", "Google-Extended", "Applebot-Extended", "CCBot", "Bytespider",
+  "meta-externalagent", "FacebookBot", "Amazonbot", "cohere-ai", "cohere-training-data-crawler", "Diffbot", "Timpibot",
+  "omgili", "omgilibot", "ImagesiftBot", "AI2Bot", "Ai2Bot-Dolma", "img2dataset"];
+const AI_SEARCH = ["OAI-SearchBot", "ChatGPT-User", "Claude-SearchBot", "Claude-User", "PerplexityBot", "Perplexity-User",
+  "DuckAssistBot", "MistralAI-User", "YouBot"];
+const robots = {
+  name: "futon-robots",
+  hooks: {
+    "astro:build:done": ({ dir }) => {
+      if (fs.existsSync(path.join(FUTON, "public", "robots.txt"))) return;
+      const ua = (list) => list.map((n) => `User-agent: ${n}`).join("\n");
+      const parts = ["# futon が書き出した robots.txt(ふとんの public/robots.txt を置くとそちらが使われる)"];
+      if (site.aiCrawlers !== "allow")
+        parts.push(`# AI の学習・収集用:お断り\n${ua(AI_TRAINING)}\nDisallow: /`, `# AI 検索(リンクで紹介するもの):歓迎\n${ua(AI_SEARCH)}\nAllow: /`);
+      parts.push("# ふつうの検索エンジンなど\nUser-agent: *\nAllow: /");
+      if (site.url && !site.noindex) parts.push(`Sitemap: ${new URL(BASE.slice(1) + "sitemap.xml", site.url.replace(/\/?$/, "/")).href}`);
+      fs.writeFileSync(new URL("robots.txt", dir), parts.join("\n\n") + "\n");
     },
   },
 };
@@ -82,7 +108,7 @@ export default defineConfig({
   base: process.env.FUTON_BASE || "/",
   trailingSlash: "always",
   publicDir: path.join(FUTON, "public"),
-  integrations: [extraPages, sitemap],
+  integrations: [extraPages, sitemap, robots],
   vite: {
     resolve: { alias: { "@futon": path.join(ENGINE, "src"), "@theme": THEME } },
     server: { fs: { allow: [ENGINE, FUTON, THEME] } },

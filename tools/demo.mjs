@@ -81,5 +81,7 @@ footer{text-align:center;margin-top:40px;color:var(--sub);font-size:13px}
 <ul class="grid">${THEMES.map((x) => card(...x)).join("\n")}</ul>
 <footer>MIT(見本のヤスナとのんたんの絵とブッダめっちゃロジカルの4コマは MIT の対象外・© yasuna)</footer>
 </div></body></html>`);
+// 入口にも robots.txt を置く(各テーマの中に futon が書き出したものを写す)
+if (fs.existsSync(path.join(OUT, "heisei", "robots.txt"))) fs.copyFileSync(path.join(OUT, "heisei", "robots.txt"), path.join(OUT, "robots.txt"));
 console.log(bad ? `✗ ${bad} 件ビルドできませんでした` : `デモを干しました: ${OUT}`);
 process.exit(bad ? 1 : 0);
