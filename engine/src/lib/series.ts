@@ -14,7 +14,7 @@ export const formats = {
     source: z.string(),
     kanji: z.string(),
     type: z.enum(["A", "B", "C"]),
-    images: z.object({ right: z.string(), left: z.string(), card: z.string() }),
+    images: z.object({ right: z.string(), left: z.string(), card: z.string(), thumb: z.string().optional() }),
   },
   // 1枚で読む
   single: {
