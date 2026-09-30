@@ -6,7 +6,7 @@
 - 画像・音声・サムネ: futon/public/img/tech/ futon/public/audio/tech/ futon/public/img/tech/thumbs/
 - 中身のフォルダは環境変数 FUTON で差し替えられる(既定は futon)
 - 本文のパスを書き換える:/img/ → /img/tech/、/audio/ → /audio/tech/、/posts/<slug>/ → /tech/<slug>/
-- ```linkcard ブロックは linkcards.cache.json を使って、静的なカードのHTMLにする
+- ```linkcard ブロックは linkcards.cache.json を使って、静的なカードのHTMLにする(X のポストは埋め込みにする)
 """
 import html, json, os, re, shutil, sys
 
@@ -30,13 +30,29 @@ def card(url):
             f'<span><b>{title}</b><small>{desc}</small><em>{site}</em></span></a>')
 
 
+TWEET = re.compile(r"^https?://(?:www\.)?(?:x|twitter)\.com/[^/]+/status/\d+", re.I)
+WIDGETS = '<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
+
+
+def tweet(url):
+    u = re.sub(r"^https?://(?:www\.)?x\.com/", "https://twitter.com/", url, flags=re.I)
+    return f'<blockquote class="twitter-tweet" data-dnt="true"><a href="{html.escape(u)}">{html.escape(url)}</a></blockquote>'
+
+
 def linkcards(m):
     urls = [u.strip() for u in m.group(1).splitlines() if u.strip()]
-    return '<div class="lcards">' + "".join(card(u) for u in urls) + "</div>"
+    tweets = [u for u in urls if TWEET.match(u)]
+    links = [u for u in urls if not TWEET.match(u)]
+    out = "".join(tweet(u) for u in tweets)
+    if links:
+        out += '<div class="lcards">' + "".join(card(u) for u in links) + "</div>"
+    return out
 
 
 def convert(body):
     body = re.sub(r"```linkcard\n(.*?)```", linkcards, body, flags=re.S)
+    if 'class="twitter-tweet"' in body and WIDGETS not in body:
+        body += "\n\n" + WIDGETS + "\n"
     body = re.sub(r"(\]\(|src=\"|href=\")/img/", r"\1/img/tech/", body)
     body = re.sub(r"(\]\(|src=\"|href=\")/audio/", r"\1/audio/tech/", body)
     body = re.sub(r"(\]\(|href=\")/posts/", r"\1/tech/", body)
