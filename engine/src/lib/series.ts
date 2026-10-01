@@ -14,7 +14,7 @@ export const formats = {
     source: z.string(),
     kanji: z.string(),
     type: z.enum(["A", "B", "C"]),
-    images: z.object({ right: z.string(), left: z.string(), card: z.string(), thumb: z.string().optional() }),
+    images: z.object({ right: z.string(), left: z.string(), card: z.string(), thumb: z.string().optional(), og: z.string().optional() }),
   },
   // 1枚で読む
   single: {
@@ -76,7 +76,8 @@ function compile(y: any): Series {
       share: fill(p.share, d),
       cast: d.cast ?? y.cast ?? [],
       swipe: p.swipe && p.images.length > 1 ? (p.swipe === "rtl" ? "rtl" : "ltr") : false,
-      og: fill(p.og ?? y.hero?.img ?? p.images[0].src, d), // OGP の画像(page.og。無ければ hero、それも無ければ1枚目)
+      // OGP の画像(page.og。その回に無ければ hero、それも無ければ1枚目)
+      og: fill(p.og, d) || fill(y.hero?.img, d) || fill(p.images[0].src, d),
     }),
     topic: (d) => ({ img: fill(y.topic.img, d), label: fill(y.topic.label, d) }),
     newsNote: y.newsNote ? (d) => fill(y.newsNote, d) : undefined,
