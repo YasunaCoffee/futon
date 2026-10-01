@@ -18,7 +18,22 @@ const visible = (d: { hidden?: boolean; date: Date }) =>
 export const ymd = (d: Date) => d.toISOString().slice(0, 10);
 export const md = (d: Date) => `${d.getUTCMonth() + 1}/${d.getUTCDate()}`;
 export const dotted = (d: Date) => ymd(d).replaceAll("-", ".");
-export const url = (p: string) => import.meta.env.BASE_URL.replace(/\/$/, "") + "/" + p.replace(/^\//, "");
+// 画像は同じファイル名のまま描き直されるので、中身の印(?v=)を付けてブラウザや CDN に古い画像を使わせない
+const verCache = new Map<string, string>();
+const fileVer = (rel: string) => {
+  if (!verCache.has(rel)) {
+    let v = "";
+    try { v = createHash("sha1").update(fs.readFileSync(futonPath("public", rel))).digest("hex").slice(0, 8); } catch {}
+    verCache.set(rel, v);
+  }
+  return verCache.get(rel)!;
+};
+const IMG = /\.(webp|png|jpe?g|gif|svg|avif)$/i;
+export const url = (p: string) => {
+  const rel = p.replace(/^\//, "");
+  const v = IMG.test(rel) ? fileVer(rel) : "";
+  return import.meta.env.BASE_URL.replace(/\/$/, "") + "/" + rel + (v ? `?v=${v}` : "");
+};
 
 const byNewest = (a: any, b: any) => b.data.date - a.data.date || b.data.num - a.data.num;
 
@@ -31,19 +46,12 @@ export async function techPosts() {
   return (await getCollection("tech")).filter((e) => !e.data.draft && (SHOW_ALL || ymd(e.data.date) <= today))
     .sort((a, b) => +b.data.date - +a.data.date || a.id.localeCompare(b.id)); // 同じ日付なら記事名順(毎回同じ並びにする)
 }
-// サムネは同じファイル名のまま描き直されるので、中身の印(?v=)を付けてブラウザや CDN の古い画像を使わせない
-const thumbVer = (rel: string) => {
-  try { return createHash("sha1").update(fs.readFileSync(futonPath("public", rel))).digest("hex").slice(0, 8); } catch { return ""; }
-};
 // futon sync --tech が webp にする。古いふとんの png もそのまま使える
 export const techThumbRel = (id: string) => {
   const webp = `img/tech/thumbs/${id}.webp`;
   return fs.existsSync(futonPath("public", webp)) ? webp : `img/tech/thumbs/${id}.png`;
 };
-export const techThumb = (id: string) => {
-  const rel = techThumbRel(id), v = thumbVer(rel);
-  return url(rel) + (v ? `?v=${v}` : "");
-};
+export const techThumb = (id: string) => url(techThumbRel(id));
 
 // kind: まんが(series.ts のシリーズ)・動画・技術記事。series はシリーズの key か "video" / "tech"
 export type Item = { kind: "manga" | "video" | "tech"; series: string; label: string; title: string; date: Date; href: string;
