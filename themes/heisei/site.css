@@ -242,12 +242,12 @@ button.btn{cursor:pointer}
 
 /* ---- AIとの技術記事 ---- */
 .count{font-family:var(--maru);font-size:11px;background:rgba(255,255,255,.25);border-radius:8px;padding:0 6px}
-.techlist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
-.techlist a{display:grid;grid-template-columns:110px minmax(0,1fr);gap:10px;align-items:center;text-decoration:none;color:var(--ink);background:var(--blue-lt);border-radius:8px;padding:6px;min-height:72px}
+.techlist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.techlist a{display:flex;flex-direction:column;gap:6px;text-decoration:none;color:var(--ink);background:var(--blue-lt);border-radius:8px;padding:8px;height:100%;box-sizing:border-box}
 .techlist a:hover{background:var(--pink-lt)}
-.techlist img{width:110px;aspect-ratio:16/9;object-fit:cover;border-radius:4px;border:1px solid #fff}
-.techlist a:not(:has(img)){grid-template-columns:1fr}
-.techlist b{font-weight:normal;font-size:12.5px;line-height:1.5;display:block}
+/* サムネは文字入りなので、縮めずにカードの幅いっぱいで見せる(OGP と同じ 1200x630 の形) */
+.techlist img{width:100%;height:auto;aspect-ratio:1200/630;object-fit:cover;border-radius:4px;border:1px solid #fff;display:block}
+.techlist b{font-weight:normal;font-size:14px;line-height:1.5;display:block}
 .techlist .d{font-family:var(--dot);font-size:11px;color:var(--sub)}
 .post-emoji{font-size:40px;margin:0;line-height:1.2}
 .prose{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:15px;line-height:1.9;max-width:680px;margin:0 auto;overflow-wrap:anywhere}
