@@ -135,12 +135,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with: { fetch-depth: 2 }
+        with: { fetch-depth: 50 }
       - id: news
         run: |
           url=$(node -p "(require('./futon/site.json').url ?? '').replace(/\/$/, '')")
           body=""
-          for f in $(git diff --diff-filter=A --name-only HEAD^ HEAD -- 'futon/*/*.md'); do
+          for f in $(git diff --diff-filter=A --name-only "${{ github.event.before }}" HEAD -- 'futon/*/*.md'); do
             shelf=$(basename "$(dirname "$f")")
             title=$(sed -n 's/^title: //p' "$f" | head -1 | tr -d '"')
             case "$shelf" in
