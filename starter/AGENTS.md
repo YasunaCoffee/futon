@@ -20,6 +20,7 @@
 | 「漫画を横スワイプで読めるようにして」 | `shelves.yaml` のその棚の `page` に `swipe: rtl`(右から左。左から右なら `swipe: true`)を足す。画像が2枚以上の話だけに効く |
 | 「英語のサイトにして」 | `site.json` に `"lang": "en"`(テーマのメニューやボタンが英語になる)。1語だけ変えるなら `"labels": { "ホーム": "Top" }`。中身の文章はそのまま好きな言語で書く |
 | 「AI のクローラーも全部通して」 | `site.json` に `"aiCrawlers": "allow"`。自分で書くなら `public/robots.txt` を置く(そちらが優先) |
+| 「/dev/null のログを出して」 | `site.json` の `feeds` に `"devnull": { "user": "<GitHubのユーザー名>" }` を足す(ホームに新しい commit が出る) |
 | 「サイト名・紹介文を変えて」 | `site.json` の `title`・`description`・`intro` |
 
 ## 公開する前に

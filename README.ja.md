@@ -81,7 +81,7 @@ futon には8着ついてくる。`site.json` に名前を1行書くだけで着
 
 | ファイル | 何 |
 |---|---|
-| `site.json` | `lang`(テーマの言葉。`"ja"` か `"en"`)・`labels`(テーマの言葉を1語ずつ変える。例 `{ "ホーム": "トップ" }`)・`menu`(メニューに足すリンク。例 `[{ "label": "おといあわせ", "href": "https://forms.gle/…" }]`。外のサイトは新しいタブで開く)・`store` / `storeName`(おみせのリンクと、その呼び名。例 `"storeName": "〇〇の本屋"`)・`booksHeading`(本の棚の見出し)・サイトの名前・ロゴ・あいさつ・運営者・フィードの宛先(note / Zenn)・紹介文・キャラクター(プロフィールは `facts: [[項目, 中身]]`。3つ目に URL を書くとリンクになる)・本・動画・Xの埋め込み・追加ページ・`theme`・`noindex`・`url`(公開するアドレス。シェアのカード画像と、干すときに書き出す `sitemap.xml` に要る。`noindex` なら書き出さない)・`ogImage`(自分の画像がないページのシェア画像)・`aiCrawlers`(`"allow"` で AI の学習用クローラーも通す。書かなければ、干すときに書き出す `robots.txt` で学習用は断り、AI 検索とふつうの検索は通す。従量課金のサーバーだとクローラーの転送量がそのまま請求になるため。`public/robots.txt` を置けばそちらが使われる)・`imageBase`(`futon add` / `sync` が画像を取りに行く先)・記事の呼び方(`tech: { label, tab, lead, description }`) |
+| `site.json` | `lang`(テーマの言葉。`"ja"` か `"en"`)・`labels`(テーマの言葉を1語ずつ変える。例 `{ "ホーム": "トップ" }`)・`menu`(メニューに足すリンク。例 `[{ "label": "おといあわせ", "href": "https://forms.gle/…" }]`。外のサイトは新しいタブで開く)・`store` / `storeName`(おみせのリンクと、その呼び名。例 `"storeName": "〇〇の本屋"`)・`booksHeading`(本の棚の見出し)・サイトの名前・ロゴ・あいさつ・運営者・フィードの宛先(note / Zenn / [/dev/null](#devnull-とつなぐ))・紹介文・キャラクター(プロフィールは `facts: [[項目, 中身]]`。3つ目に URL を書くとリンクになる)・本・動画・Xの埋め込み・追加ページ・`theme`・`noindex`・`url`(公開するアドレス。シェアのカード画像と、干すときに書き出す `sitemap.xml` に要る。`noindex` なら書き出さない)・`ogImage`(自分の画像がないページのシェア画像)・`aiCrawlers`(`"allow"` で AI の学習用クローラーも通す。書かなければ、干すときに書き出す `robots.txt` で学習用は断り、AI 検索とふつうの検索は通す。従量課金のサーバーだとクローラーの転送量がそのまま請求になるため。`public/robots.txt` を置けばそちらが使われる)・`imageBase`(`futon add` / `sync` が画像を取りに行く先)・記事の呼び方(`tech: { label, tab, lead, description }`) |
 | `shelves.yaml` | まんがの棚(シリーズ)。1件足すと一覧・話のページ・メニュー・ホーム・RSS に出る。`- group: <key>` の行で棚をまとめられる(メニューのタブが1つになり、`/<key>/` に棚がならぶ)。`page.swipe: true` で話の画像を横スワイプで1枚ずつ読める(`rtl` にすると漫画の向きで右から左へ)。書き方は雛形の先頭に |
 | `<棚>/*.md` | 話。`date` が未来なら、その日のビルドまで出ない(予約配信)。`hidden: true` で伏せる。`cast` で「この話に出てくる人」を1話だけ変えられる |
 | `tech/*.md` | 技術記事(あれば) |
@@ -113,6 +113,54 @@ export async function sync(ctx, value, args) {
 
 エンジンには技術ブログ(Lume)の取り込み口 `--tech <リポジトリ>` が入っている。
 画像を取れない環境では足す回を `sync/pending.json` に積み、`futon fetch-pending` で後から足せる。
+
+## /dev/null とつなぐ
+
+[/dev/null](https://dev-null.sh/) は、投稿が commit でタイムラインが log の、開発者向けの SNS。
+
+**ログをホームに出す。** `site.json` に `"feeds": { "devnull": { "user": "<GitHubのユーザー名>" } }` を書くと、干すときに公開の読み取り API から新しい commit を取って、ホームに「/dev/null のログ」の欄を出す(標準テーマ heisei)。取れなかったときは欄を出さずに干す。
+
+**新しい回を自動で commit する。** サイトを GitHub に置いているなら、次のワークフローで、push した新しい回や記事の題とリンクが /dev/null に commit される。寝ている間にサイトが整って、ついでに近況も流れる。
+SSH 鍵(パスフレーズなしの Ed25519)を作って公開鍵を GitHub アカウントに足し、秘密鍵をリポジトリの Settings → Secrets and variables → Actions に `DEVNULL_SSH_KEY` という名前で入れておく。
+
+```yaml
+# .github/workflows/devnull.yml:新しい回や記事を push したら、/dev/null に commit する
+name: devnull
+on:
+  push:
+    branches: [main]
+    paths: ["futon/**/*.md"]
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 2 }
+      - id: news
+        run: |
+          url=$(node -p "(require('./futon/site.json').url ?? '').replace(/\/$/, '')")
+          body=""
+          for f in $(git diff --diff-filter=A --name-only HEAD^ HEAD -- 'futon/*/*.md'); do
+            shelf=$(basename "$(dirname "$f")")
+            title=$(sed -n 's/^title: //p' "$f" | head -1 | tr -d '"')
+            case "$shelf" in
+              guidelines|pages) continue ;;
+              tech) href="$url/tech/$(basename "$f" .md)/" ;;
+              *) href="$url/$shelf/$(sed -n 's/^num: //p' "$f" | head -1 | tr -d '"')/" ;;
+            esac
+            body+="🛏️ $title $href"$'\n'
+          done
+          if [ -n "$body" ]; then
+            { echo "body<<__END__"; printf '%s' "$body"; echo "__END__"; } >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.news.outputs.body != ''
+        uses: nunomaduro/dev-null.sh/.github/actions/commit@production
+        with:
+          body: ${{ steps.news.outputs.body }}
+          ssh-key: ${{ secrets.DEVNULL_SSH_KEY }}
+```
+
+投稿は /dev/null の自動の見回り(モデレーション)を通ってから出る。1分に10件まで。
 
 ## テーマ(着せ替え)
 

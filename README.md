@@ -89,7 +89,7 @@ A scheduled job runs `futon sync` every morning to pull the newest episodes from
 
 | File | What |
 |---|---|
-| `site.json` | `lang` (`"ja"` or `"en"` for the theme's words), `labels` (rename any theme word), `menu` (extra menu links, e.g. `[{ "label": "Contact", "href": "https://forms.gle/…" }]`; other sites open in a new tab), `store` / `storeName` (your shop link and what to call it, e.g. `"storeName": "My Bookshop"`), `booksHeading` (the heading over your books), site name, logo, greeting, owner, feeds (note / Zenn), intro, characters (profile rows in `facts: [[label, value]]`; a third item makes it a link), books, videos, embedded posts, extra pages, `theme`, `noindex`, `url` (your public address; needed for share-card images and `sitemap.xml`, which is written on build unless `noindex`), `ogImage` (the share image for pages without their own), `aiCrawlers` (`"allow"` to let AI training crawlers in; by default the generated `robots.txt` turns them away while letting AI search and normal search engines through — crawler traffic can turn into a big bill on pay-per-use hosting), `imageBase` (where `futon add` / `sync` fetch images), and what to call articles (`tech: { label, tab, lead, description }`) |
+| `site.json` | `lang` (`"ja"` or `"en"` for the theme's words), `labels` (rename any theme word), `menu` (extra menu links, e.g. `[{ "label": "Contact", "href": "https://forms.gle/…" }]`; other sites open in a new tab), `store` / `storeName` (your shop link and what to call it, e.g. `"storeName": "My Bookshop"`), `booksHeading` (the heading over your books), site name, logo, greeting, owner, feeds (note / Zenn / [/dev/null](#hooking-up-devnull)), intro, characters (profile rows in `facts: [[label, value]]`; a third item makes it a link), books, videos, embedded posts, extra pages, `theme`, `noindex`, `url` (your public address; needed for share-card images and `sitemap.xml`, which is written on build unless `noindex`), `ogImage` (the share image for pages without their own), `aiCrawlers` (`"allow"` to let AI training crawlers in; by default the generated `robots.txt` turns them away while letting AI search and normal search engines through — crawler traffic can turn into a big bill on pay-per-use hosting), `imageBase` (where `futon add` / `sync` fetch images), and what to call articles (`tech: { label, tab, lead, description }`) |
 | `shelves.yaml` | Comic shelves (series). Add one and it appears in the index, episode pages, menu, home and RSS. A `- group: <key>` line groups shelves (one menu tab, shelves listed at `/<key>/`). `page.swipe: true` lets readers swipe through an episode's images one at a time (`rtl` for right-to-left, manga order). The starter's header explains the format |
 | `<shelf>/*.md` | Episodes. A future `date` stays hidden until the build on that day (scheduling). `hidden: true` hides one. `cast` overrides "who's in this episode" for one episode |
 | `tech/*.md` | Articles (optional) |
@@ -121,6 +121,54 @@ export async function sync(ctx, value, args) {
 
 The engine includes a source for a Lume tech blog: `--tech <repo>`.
 Where images can't be fetched, episodes to add are queued in `sync/pending.json`; add them later with `futon fetch-pending`.
+
+## Hooking up /dev/null
+
+[/dev/null](https://dev-null.sh/) is a social network for developers where posts are commits and the timeline is a log.
+
+**Show your log on the home page.** Put `"feeds": { "devnull": { "user": "<your GitHub username>" } }` in `site.json`, and every build pulls your latest commits from its public read API into a "/dev/null log" box on the home page (default theme heisei). If it can't reach /dev/null, the box is left out and the build goes on.
+
+**Commit new episodes automatically.** If your site lives on GitHub, the workflow below commits the title and link of each new episode or article you push to /dev/null. Your site tidies itself up while you sleep, and tells everyone about it too.
+Make an SSH key (Ed25519, no passphrase), add the public key to your GitHub account, and store the private key as `DEVNULL_SSH_KEY` under the repository's Settings → Secrets and variables → Actions.
+
+```yaml
+# .github/workflows/devnull.yml:commit new episodes and articles to /dev/null when you push them
+name: devnull
+on:
+  push:
+    branches: [main]
+    paths: ["futon/**/*.md"]
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 2 }
+      - id: news
+        run: |
+          url=$(node -p "(require('./futon/site.json').url ?? '').replace(/\/$/, '')")
+          body=""
+          for f in $(git diff --diff-filter=A --name-only HEAD^ HEAD -- 'futon/*/*.md'); do
+            shelf=$(basename "$(dirname "$f")")
+            title=$(sed -n 's/^title: //p' "$f" | head -1 | tr -d '"')
+            case "$shelf" in
+              guidelines|pages) continue ;;
+              tech) href="$url/tech/$(basename "$f" .md)/" ;;
+              *) href="$url/$shelf/$(sed -n 's/^num: //p' "$f" | head -1 | tr -d '"')/" ;;
+            esac
+            body+="🛏️ $title $href"$'\n'
+          done
+          if [ -n "$body" ]; then
+            { echo "body<<__END__"; printf '%s' "$body"; echo "__END__"; } >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.news.outputs.body != ''
+        uses: nunomaduro/dev-null.sh/.github/actions/commit@production
+        with:
+          body: ${{ steps.news.outputs.body }}
+          ssh-key: ${{ secrets.DEVNULL_SSH_KEY }}
+```
+
+Posts go through /dev/null's automatic moderation before they show up, at up to 10 a minute.
 
 ## Writing a theme
 
