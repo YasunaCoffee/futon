@@ -164,5 +164,6 @@
  "まえへ": "Previous",
  "つぎへ": "Next",
  "← スワイプで次へ": "← Swipe for the next page",
- "スワイプで次へ →": "Swipe for the next page →"
+ "スワイプで次へ →": "Swipe for the next page →",
+ "/dev/null のログ": "/dev/null log"
 }

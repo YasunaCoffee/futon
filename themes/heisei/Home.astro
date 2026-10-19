@@ -2,7 +2,7 @@
 import Base from "./Base.astro";
 import { episodes, techPosts, techThumb, newest, isNew, md, url, site, today, books, booksOf } from "@futon/lib/content";
 import { series } from "@futon/lib/series";
-import { noteItems } from "@futon/lib/note";
+import { noteItems, devnullItems } from "@futon/lib/note";
 import Tweet from "@futon/components/Tweet.astro";
 import { tr } from "@futon/lib/i18n";
 const tech = { label: tr("記事"), tab: tr("きじ"), lead: "", description: "", ...(site.tech ?? {}) }; // 記事の呼び方(site.json の tech)
@@ -15,6 +15,7 @@ const heroShelf = shelves.find((x) => x.s.hero && x.eps[0]);
 const hero = heroShelf && { ...heroShelf.s.hero!(heroShelf.eps[0].data), href: url(`${heroShelf.s.key}/${heroShelf.eps[0].data.num}/`) };
 const ticker = items.slice(0, 3).map((i) => `${md(i.date)} 【${i.label}】「${i.title}」`).join(" ★ ");
 const notes = await noteItems(4);
+const commits = await devnullItems(5);
 const techs = (await techPosts()).slice(0, 4);
 ---
 <Base tab="home">
@@ -66,6 +67,18 @@ const techs = (await techPosts()).slice(0, 4);
             <ul class="notes">
               {notes.map((n) => (
                 <li><a href={n.link} target="_blank" rel="noopener">{n.thumb && <img src={n.thumb} alt="" loading="lazy">}<span><b>{n.title}</b><span class="d">{md(n.date)}</span></span></a></li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+      {commits.length > 0 && (
+        <div class="box">
+          <div class="bh"><span>{tr("/dev/null のログ")}</span><a href={`${(site.feeds.devnull.url ?? "https://dev-null.sh").replace(/\/$/, "")}/@${site.feeds.devnull.user}`} target="_blank" rel="noopener">{tr("もっと ▶")}</a></div>
+          <div class="bb">
+            <ul class="devnull">
+              {commits.map((c) => (
+                <li><a href={c.link} target="_blank" rel="noopener"><code>{c.hash}</code><span><b>{c.title.length > 90 ? `${c.title.slice(0, 90)}…` : c.title}</b><span class="d">{md(c.date)}</span></span></a></li>
               ))}
             </ul>
           </div>
