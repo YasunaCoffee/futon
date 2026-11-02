@@ -80,4 +80,5 @@ for f in sorted(os.listdir(os.path.join(SRC, "src/posts"))):
 copytree(os.path.join(SRC, "src/public/img"), os.path.join(FUTON, "public/img/tech"))
 copytree(os.path.join(SRC, "src/public/audio"), os.path.join(FUTON, "public/audio/tech"))
 copytree(os.path.join(SRC, "src/thumbnails"), os.path.join(FUTON, "public/img/tech/thumbs"))
+copytree(os.path.join(SRC, "src/og"), os.path.join(FUTON, "public/img/tech/og"))
 print(f"{n} 本を取り込みました")
