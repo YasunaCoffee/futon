@@ -36,6 +36,8 @@ npm run build                     # ふとんを干す(dist/ に書き出す。�
 ```bash
 npx futon sync --dry …   # 寝かしつけ(元データから最新にする。--dry で確認だけ)
 npx futon add <棚> …     # 1話足す
+npx futon card --dist    # 干したページのカード(og:image)を、公開前にまとめて確かめる
+npx futon card <URL>     # 公開ページを X・Discord のふりをして読み、サムネが出るか確かめる(見本 card-preview.html も書き出す)
 ```
 
 (npm の `futon` という名前は別の人のパッケージ。futon は `@yasuna/futon` なので、

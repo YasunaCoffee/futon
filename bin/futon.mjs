@@ -8,6 +8,7 @@
 //   futon sync [--各取り込み口]     寝かしつけ(元データから最新にする。--dry で確認だけ)
 //   futon add <棚> --num … …       1話足す
 //   futon fetch-pending            画像を取れなかった回(sync/pending.json)を足す
+//   futon card <URL> | --dist      カードの見え方を確かめる(SNS に貼ったときサムネが出るか)
 //
 // フォルダは引数か環境変数 FUTON で渡す。どちらもなければ ./futon。
 import fs from "node:fs";
@@ -69,6 +70,11 @@ switch (cmd) {
     const script = { sync: "sync.mjs", add: "add.mjs", "fetch-pending": "fetch_pending.mjs" }[cmd];
     process.argv = [process.argv[0], path.join(PKG, "lib", script), ...rest];
     await import(path.join(PKG, "lib", script));
+    break;
+  }
+  case "card": {
+    process.argv = [process.argv[0], path.join(PKG, "lib", "card.mjs"), ...rest];
+    await import(path.join(PKG, "lib", "card.mjs"));
     break;
   }
   default:

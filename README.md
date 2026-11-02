@@ -47,6 +47,8 @@ Inside that folder you can also use `npx futon …`:
 ```bash
 npx futon sync --dry …   # tuck in (update from sources; --dry just reports)
 npx futon add <shelf> …  # add one episode
+npx futon card --dist    # check every built page's social card (og:image) before you publish
+npx futon card <URL>     # check a live page as X and Discord see it, and write card-preview.html
 ```
 
 (The npm name `futon` belongs to someone else's package. futon is `@yasuna/futon`, so don't run `npx futon` in a folder where it isn't installed. To add it to an existing project: `npm i @yasuna/futon`, then `npx futon init`.)
