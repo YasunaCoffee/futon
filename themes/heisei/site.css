@@ -264,6 +264,9 @@ button.btn{cursor:pointer}
 .prose img{margin:12px auto;border:1px solid #CDE6F6;border-radius:6px;height:auto}
 .prose a{color:#1F63B5}
 .prose blockquote{margin:14px 0;padding:8px 14px;background:var(--cream);border-left:4px solid var(--cream-line);color:#5A5040}
+/* 本文に書く <p class="note-ribbon">…</p>。ピンクのリボン(テック記事の頭の「AIエージェントと執筆しています」など) */
+.prose .note-ribbon{display:inline-block;margin:0 0 14px;padding:3px 24px 3px 12px;font-family:var(--round);font-weight:400;font-size:13px;line-height:1.5;color:#fff;background:var(--pink);border-bottom:2px solid #C23A66;clip-path:polygon(0 0,100% 0,calc(100% - 10px) 50%,100% 100%,0 100%)}
+.prose .note-ribbon::before{content:"♥ "}
 .prose ul,.prose ol{padding-left:1.4em;margin:0 0 14px}
 .prose li + li{margin-top:4px}
 .prose code{font-family:ui-monospace,Menlo,monospace;font-size:.88em;background:#EEF6FC;border:1px solid #D4E8F6;border-radius:4px;padding:0 4px}

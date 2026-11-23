@@ -52,6 +52,11 @@ export const techThumbRel = (id: string) => {
   return fs.existsSync(futonPath("public", webp)) ? webp : `img/tech/thumbs/${id}.png`;
 };
 export const techThumb = (id: string) => url(techThumbRel(id));
+// 記事ページの og:image。X は webp を出さないことがあるので、OGP 用の jpg があればそちらを使う
+export const techOgRel = (id: string) => {
+  const jpg = `img/tech/og/${id}.jpg`;
+  return fs.existsSync(futonPath("public", jpg)) ? jpg : techThumbRel(id);
+};
 
 // kind: まんが(series.ts のシリーズ)・動画・技術記事。series はシリーズの key か "video" / "tech"
 export type Item = { kind: "manga" | "video" | "tech"; series: string; label: string; title: string; date: Date; href: string;
